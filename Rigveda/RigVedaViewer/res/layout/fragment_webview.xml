@@ -1,0 +1,104 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/common_background"
+    android:orientation="vertical" >
+
+    <ProgressBar
+        android:id="@+id/loadingBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="7.33dp"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:progressDrawable="@drawable/progess_drawable" />
+
+    <com.kou.android.RigVedaViewer.base.BaseWebView
+        android:id="@+id/webviewMain"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:layout_below="@id/loadingBar" />
+
+    <LinearLayout
+        android:id="@+id/llMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingBottom="7.33dp" >
+
+        <ImageView
+            android:id="@+id/ivNavPrev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5.33dp"
+            android:src="@drawable/nav_prev" />
+
+        <ImageView
+            android:id="@+id/ivNavNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="5.33dp"
+            android:src="@drawable/nav_next" />
+
+        <Button
+            android:id="@+id/btnRandom"
+            android:layout_width="49.33dp"
+            android:layout_height="33.33dp"
+            android:includeFontPadding="false"
+            android:paddingBottom="7.33dp"
+            android:text="@string/button_random" />
+
+        <Button
+            android:id="@+id/btnFootNote"
+            android:layout_width="49.33dp"
+            android:layout_height="33.33dp"
+            android:includeFontPadding="false"
+            android:text="@string/button_footnote" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivToLeftNotSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/llMenu"
+        android:paddingBottom="14.66dp"
+        android:paddingRight="3.33dp"
+        android:src="@drawable/to_left_not_selected" />
+
+    <ImageView
+        android:id="@+id/ivToLeftSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/ivToLeftNotSelected"
+        android:paddingBottom="14.66dp"
+        android:paddingRight="3.33dp"
+        android:src="@drawable/to_left_selected" />
+
+    <ImageView
+        android:id="@+id/ivToRightNotSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/llMenu"
+        android:paddingBottom="14.66dp"
+        android:paddingLeft="3.33dp"
+        android:src="@drawable/to_right_not_selected" />
+
+    <ImageView
+        android:id="@+id/ivToRightSelected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@id/ivToRightNotSelected"
+        android:paddingBottom="14.66dp"
+        android:paddingLeft="3.33dp"
+        android:src="@drawable/to_right_selected" />
+
+</RelativeLayout>

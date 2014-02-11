@@ -1,0 +1,122 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/option_activity_background"
+    tools:context=".OptionActivity" >
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="12.33dp"
+        android:paddingLeft="7.33dp"
+        android:paddingRight="7.33dp"
+        android:paddingTop="12.33dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_caption_option"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cbAlias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_alias"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbMobileImageHide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_mobile_image_hide"
+                android:textColor="@color/black" />
+            
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="7.33dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_caption_menu"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cbShowPrev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_prev"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbShowNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_next"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbShowRandom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_random"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbShowFootNote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_footnote"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbShowMenuLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_menuleft"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbShowMenuRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_menuright"
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/btnAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_about_btn" />
+
+            <TextView
+                android:id="@+id/tvAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_about_text"
+                android:visibility="gone" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

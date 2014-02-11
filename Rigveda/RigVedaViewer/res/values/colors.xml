@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="red">#900</color>
+    <color name="green">#090</color>
+    <color name="blue">#009</color>
+    <color name="white">#FFF</color>
+    <color name="black">#000</color>
+    <color name="darkgrey">#A9A9A9</color>
+    <color name="cyan">#00FFFF</color>
+    
+    <color name="disabled">#000</color>
+    
+    <color name="webview_progress">#44D5FF</color>
+    
+    <color name="common_background">#F3F3F3</color>
+    
+    <color name="option_activity_background">#F8F7F0</color>
+
+</resources>

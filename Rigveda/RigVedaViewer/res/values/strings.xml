@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">리그베다 뷰어</string>
+    <string name="rigveda_viewer">RigVeda Viewer</string>
+    
+    <string name="url_blank">about:blank</string>
+    <string name="url_random_page">http://rigvedawiki.net/r1/wiki.php/?action=randompage</string>
+    <string name="url_home_page">http://rigvedawiki.net/r1/wiki.php</string>
+    <string name="url_home_page_with_slash">http://rigvedawiki.net/r1/wiki.php/</string>
+    
+    <string name="foot_note_title">RigVeda Wiki Footnote</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="progress_dialog_message">Loading......</string>
+    <string name="backbutton_message">뒤로가기를 한번 더 누르면 앱이 종료됩니다.</string>
+    <string name="error_network_not_available">네트워크 연결이 끊어졌습니다.\n연결 상태를 확인 해 주세요.</string>
+    <string name="user_agent_galaxy_s2">Mozilla/5.0 (Linux; U; Android 2.3.3; ko-kr; SHW-M250S Build/GINGERBREAD) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1</string>
+    <string name="user_agent_pc">Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/32.0.1700.76 Safari/537.36</string>
+    
+    <string name="action_settings">Settings</string>
+    <string name="menu_optn">설정</string>
+    <string name="menu_prev">이전</string>
+    <string name="menu_next">다음</string>
+    <string name="menu_rand">랜덤</string>
+    <string name="loading_footnote">각주를 읽어오는 중입니다.</string>
+    <string name="no_footnote">각주가 존재하지 않습니다.</string>
+    
+    <string name="button_random">랜덤</string>
+    <string name="button_footnote">각주</string>
+    <string name="option_caption_option">옵션설정</string>
+    <string name="option_caption_menu">메뉴설정</string>
+    
+    <string name="option_show_alias">링크드립표시 (링크의 실제 이름과 화면에 보여주고 있는 태그의 명칭이 다른 경우 화면에 표시)</string>
+    <string name="option_show_mobile_image_hide">데이터 절약모드 (이미지를 숨기고, 클릭 시에만 별도 화면에서 표시)</string>
+    <string name="option_show_prev">이전으로 가기 버튼 보이기</string>
+    <string name="option_show_next">다음으로 가기 버튼 보이기</string>
+    <string name="option_show_random">랜덤 버튼 보이기</string>
+    <string name="option_show_footnote">각주모음 버튼 보이기</string>
+    <string name="option_show_menuleft">메뉴를 왼쪽에 표시</string>
+    <string name="option_show_menuright">메뉴를 오른쪽에 표시</string>
+    <string name="option_about_btn">About</string>
+    <string name="option_about_text">RigVeda Viewer\n\n리그베다위키 비공식 뷰어 앱\n2014.02.03\nStanley_Kou\n\nhttp://stanleykou.tistory.com/\n\n이 앱은 리그베다위키의 허락 하에 뷰어로서 개발되었습니다.\n리그베다 위키와 관련된 질문이나 문의사항은 리그베다위키 게시판으로 해주시기 바랍니다.</string>
+    <string name="option_clipboard_copied">클립보드에 블로그 URL이 복사되었습니다</string>
+    <string name="http_stanleykou_tistory_com_">http://stanleykou.tistory.com/</string>
+    
+    
+    
+
+</resources>
