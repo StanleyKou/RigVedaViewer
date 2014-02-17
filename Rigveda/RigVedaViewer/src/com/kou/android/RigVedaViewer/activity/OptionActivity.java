@@ -19,7 +19,6 @@ import com.kou.android.RigVedaViewer.utils.Logger;
  * 
  * */
 
-@SuppressWarnings("deprecation")
 public class OptionActivity extends Activity implements OnCheckedChangeListener, OnClickListener {
 	private final String TAG = OptionActivity.class.getSimpleName();
 

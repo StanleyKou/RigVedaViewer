@@ -23,7 +23,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
@@ -44,15 +46,13 @@ import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
 import com.kou.android.RigVedaViewer.utils.Logger;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
-;
-
 /**
  * CustomWebViewFragment.
  * 
  * Core part of this app. Holding WebView,
  * 
  * */
-@SuppressWarnings("deprecation")
+
 public class CustomWebViewFragment extends Fragment implements OnClickListener, OnTouchListener {
 	private final String TAG = CustomWebViewFragment.class.getSimpleName();
 
@@ -125,6 +125,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		ivNavNext = (ImageView) mMainView.findViewById(R.id.ivNavNext);
 		ivNavNext.setOnClickListener(this);
 
+		CookieManager.getInstance().setAcceptCookie(true);
+		CookieSyncManager.createInstance(getActivity());
+		CookieSyncManager.getInstance().startSync();
 		return mMainView;
 	}
 
@@ -155,6 +158,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public void onPause() {
+		CookieSyncManager.getInstance().stopSync();
 		super.onPause();
 	}
 
@@ -162,12 +166,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	public void onStop() {
 		mWebview.stopLoading();
 		super.onStop();
-	}
-
-	@Override
-	public void onDestroy() {
-		// mWebview.destroy();
-		super.onDestroy();
 	}
 
 	@Override
@@ -298,6 +296,11 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		mWebview.getSettings().setUseWideViewPort(true);
 		mWebview.getSettings().setAllowFileAccess(true);
 
+		mWebview.setInitialScale(1);
+
+		mWebview.getSettings().setJavaScriptEnabled(true); // for redirect
+		mWebview.addJavascriptInterface(new CustomJavaScriptInterface(), "HTMLOUT");
+
 		mWebview.setOnLongClickListener(new View.OnLongClickListener() {
 
 			@Override
@@ -318,9 +321,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 
 		});
-
-		mWebview.getSettings().setJavaScriptEnabled(true); // for redirect
-		mWebview.addJavascriptInterface(new CustomJavaScriptInterface(), "HTMLOUT");
 
 		mWebview.setWebViewClient(new WebViewClient() {
 
@@ -502,6 +502,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		showLinkDrip();
 		modifyYouTubeIframeWidth();
 		runFootNoteJS();
+
 	}
 
 	private void showLinkDrip() {
@@ -523,8 +524,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyYouTubeIframeWidth() {
-
-		// <iframe width="560" height="315" src="http://www.youtube.com/embed/0xeO1qWH1JA" frameborder="0" allowfullscreen></iframe>
+		Logger.d(TAG, "modifyYouTubeIframeWidth()");
 		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
 		boolean value = pref.getBoolean("cbModifyYouTubeWidth", true);
 		if (true == value) {
@@ -633,12 +633,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private class CustomJavaScriptInterface {
-		@SuppressWarnings("unused")
+		@JavascriptInterface
 		public void processFootNote(String fnInnerHTML, String href, String rfnTitle) {
 			makeFootNoteList(fnInnerHTML, href, rfnTitle);
 		}
 
-		@SuppressWarnings("unused")
+		@JavascriptInterface
 		public void setFootNote() {
 			if (ssb.length() == 0) {
 				ssb.append(getString(R.string.no_footnote));
