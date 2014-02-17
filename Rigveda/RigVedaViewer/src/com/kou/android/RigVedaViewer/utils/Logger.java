@@ -5,12 +5,6 @@ import java.io.StringWriter;
 
 import android.util.Log;
 
-/**
- * Logger
- * 
- * android.util.Log의 wrapper
- * 
- */
 public class Logger {
 	private Logger() {
 	}
@@ -31,12 +25,6 @@ public class Logger {
 
 	public static int logLevel = Logger.NONE;
 
-	/**
-	 * Logger 클래스를 이용하여 찍을 로그의 등급을 결정 ERROR(6) > WARN(5) > INFO(4) > DEBUG(3) > VERBOSE(2)
-	 * 
-	 * @param logLevel
-	 *            새로운 로그 레벨, WARN(5)으로 설정하면 WARN이상의 로그만 출력
-	 */
 	public static void setLogLevel(int logLevel) {
 		if (logLevel >= Logger.ALL && logLevel <= Logger.NONE) {
 			Logger.logLevel = logLevel;

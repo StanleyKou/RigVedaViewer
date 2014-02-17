@@ -38,7 +38,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	private final int BACK_AGAIN_TO_EXIT_TIME = 2000; // Millisecond
 
 	public WebViewFragmentHolderActivity() {
-		super(R.string.rigveda_viewer);
+		super(R.string.app_name_eng);
 		Logger.d(TAG, TAG, "Constructor::CenterFragmentChangeActivity()");
 	}
 
@@ -77,7 +77,6 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-
 	}
 
 	/**

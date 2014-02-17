@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.Fragment;
+import android.text.ClipboardManager;
 import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
 import android.view.LayoutInflater;
@@ -21,22 +23,28 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.base.BaseWebView;
+import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
 import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.Utils;
+
+;
 
 /**
  * CustomWebViewFragment.
@@ -44,6 +52,7 @@ import com.kou.android.RigVedaViewer.utils.Logger;
  * Core part of this app. Holding WebView,
  * 
  * */
+@SuppressWarnings("deprecation")
 public class CustomWebViewFragment extends Fragment implements OnClickListener, OnTouchListener {
 	private final String TAG = CustomWebViewFragment.class.getSimpleName();
 
@@ -116,9 +125,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		ivNavNext = (ImageView) mMainView.findViewById(R.id.ivNavNext);
 		ivNavNext.setOnClickListener(this);
 
-		CookieManager.getInstance().setAcceptCookie(true);
-		CookieSyncManager.createInstance(getActivity());
-		CookieSyncManager.getInstance().startSync();
 		return mMainView;
 	}
 
@@ -149,7 +155,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public void onPause() {
-		CookieSyncManager.getInstance().stopSync();
 		super.onPause();
 	}
 
@@ -157,6 +162,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	public void onStop() {
 		mWebview.stopLoading();
 		super.onStop();
+	}
+
+	@Override
+	public void onDestroy() {
+		// mWebview.destroy();
+		super.onDestroy();
 	}
 
 	@Override
@@ -285,75 +296,31 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		// mWebview.getSettings().setBuiltInZoomControls(true);
 		mWebview.getSettings().setSupportZoom(true);
 		mWebview.getSettings().setUseWideViewPort(true);
-		// mWebview.getSettings().setUserAgentString(getString(R.string.user_agent_pc));
+		mWebview.getSettings().setAllowFileAccess(true);
 
-		// Fullpage인 경우 로딩 완료 후 화면 전체를 한 눈에 보여주도록 스케일 조정.
-		mWebview.setInitialScale(1);
+		mWebview.setOnLongClickListener(new View.OnLongClickListener() {
+
+			@Override
+			public boolean onLongClick(View v) {
+
+				HitTestResult result = mWebview.getHitTestResult();
+				Logger.d(TAG, "LongClick: " + result.getExtra());
+
+				if (result.getType() == HitTestResult.IMAGE_TYPE || result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
+					AlertDialog dialog = getImageProcessDialog(result.getExtra());
+					dialog.show();
+				} else if (result.getType() == HitTestResult.ANCHOR_TYPE || result.getType() == HitTestResult.SRC_ANCHOR_TYPE) {
+					AlertDialog dialog = getLinkProcessDialog(result.getExtra());
+					dialog.show();
+				}
+
+				return false;
+			}
+
+		});
+
 		mWebview.getSettings().setJavaScriptEnabled(true); // for redirect
-
 		mWebview.addJavascriptInterface(new CustomJavaScriptInterface(), "HTMLOUT");
-
-		// String footNote = sb.toString();
-		//
-		// if (footNote.equalsIgnoreCase("") == true) {
-		// footNote = getString(R.string.no_footnote);
-		// ((WebViewFragmentHolderActivity) getActivity()).setFootNote(footNote);
-		// } else {
-		//
-		// // [wiki:"전쟁" 뭘] [wiki:"세금" 하려고]
-		// // [[2000년대]]
-		// // http://fifthsun5.egloos.com/3031076
-		//
-		// StringBuilder sbOut = new StringBuilder();
-		// StringBuilder sbLink = new StringBuilder();
-		//
-		// Field field;
-		// boolean flag1 = false;
-		// boolean flag2 = false;
-		// try {
-		// field = String.class.getDeclaredField("value");
-		// field.setAccessible(true);
-		//
-		// try {
-		// final char[] chars = (char[]) field.get(footNote);
-		// final int len = chars.length;
-		// for (int i = 0; i < len; i++) {
-		//
-		// if (chars[i] == '[') {
-		// if (i + 1 < len && chars[i + 1] == '[') {
-		// flag1 = true;
-		// }
-		// }
-		//
-		// if (chars[i] == ']') {
-		// if (i + 1 < len && chars[i + 1] == ']') {
-		// flag2 = true;
-		// }
-		// }
-		//
-		// if (flag2 == true) {
-		// sbOut.append(sbLink);
-		// sbLink.setLength(0);
-		// flag1 = flag2 = false;
-		// }
-		//
-		// if (flag1 == true) {
-		// sbLink.append(chars[i]);
-		// } else {
-		// sbOut.append(chars[i]);
-		// }
-		//
-		// }
-		//
-		// ((WebViewFragmentHolderActivity) getActivity()).setFootNote(sbOut.toString());
-		//
-		// } catch (Exception ex) {
-		// throw new RuntimeException(ex);
-		// }
-		// } catch (NoSuchFieldException e) {
-		// e.printStackTrace();
-		// }
-		// }
 
 		mWebview.setWebViewClient(new WebViewClient() {
 
@@ -388,7 +355,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				view.stopLoading();
 
-				if (url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page)) == false) {
+				if (url.contains("file:///android_asset/webkit/")) {
+					// do nothing. security origin error.
+				} else if (url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page)) == false) {
 					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 					startActivity(i);
 				} else {
@@ -451,11 +420,72 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		loadUrlHomePage();
 	}
 
+	private AlertDialog getImageProcessDialog(final String tabbedUrl) {
+
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		dialogBuilder.setTitle(getString(R.string.dialog_image_title));
+		String[] itemList = { getString(R.string.dialog_image_save), getString(R.string.dialog_image_url_copy) };
+
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, itemList);
+		dialogBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case 0:
+					downloadImageFromUrl(mCurrentUrl, tabbedUrl);
+
+					break;
+				case 1:
+					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), mCurrentUrl, tabbedUrl);
+					clipboard.setText(downloadablelUrl);
+					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
+					break;
+
+				}
+			}
+
+		});
+
+		return dialogBuilder.create();
+	}
+
+	private AlertDialog getLinkProcessDialog(final String tabbedUrl) {
+		AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+		dialogBuilder.setTitle(getString(R.string.dialog_link_title));
+		String[] itemList = { getString(R.string.dialog_link_new_page), getString(R.string.dialog_link_copy) };
+
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.select_dialog_item, itemList);
+		dialogBuilder.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case 0:
+					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tabbedUrl));
+					startActivity(i);
+					break;
+				case 1:
+					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), mCurrentUrl, tabbedUrl);
+					clipboard.setText(downloadablelUrl);
+					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
+					break;
+
+				}
+			}
+
+		});
+
+		return dialogBuilder.create();
+	}
+
 	private void modifyWebPageAfterFinished(final String url) {
 		// 현재 화면이 랜덤 페이지가 아닌 경우에만 동작
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
 			handler.postDelayed(modifyWebPageRunnable, 100);
-			// 타이밍 이슈때문에 딜레이. 구글애드가 읽혀오는 시간, 이미지가 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
+			// 타이밍 이슈때문에 딜레이. 리그베다 원래 페이지의 구글애드가 읽혀오는 시간, 이미지 로딩이 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
 			// handler.postDelayed(modifyWebPageRunnable, 2000);
 		}
 	}
@@ -470,6 +500,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private void modifyWebPage() {
 		showLinkDrip();
+		modifyYouTubeIframeWidth();
 		runFootNoteJS();
 	}
 
@@ -480,7 +511,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		boolean value = pref.getBoolean("cbAlias", true);
 		if (true == value) {
 
-			//
 			// 본문에 각주를 표시하지 않음
 			mWebview.loadUrl("javascript:function attachToA(){$('a').each(function(i, obj){if (obj.id == '' && obj.title != '' && obj.title != obj.innerHTML) { obj.innerHTML += '<span style=background-color:#8AC007;>(' + obj.title + ')</span>';}});}");
 
@@ -489,6 +519,17 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			mWebview.loadUrl("javascript:if (typeof alreadyAttachToA === 'undefined'){attachToA();}");
 			mWebview.loadUrl("javascript:var alreadyAttachToA = true;");
+		}
+	}
+
+	private void modifyYouTubeIframeWidth() {
+
+		// <iframe width="560" height="315" src="http://www.youtube.com/embed/0xeO1qWH1JA" frameborder="0" allowfullscreen></iframe>
+		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+		boolean value = pref.getBoolean("cbModifyYouTubeWidth", true);
+		if (true == value) {
+			// iframe 태그의 가로세로를 모두 auto로 설정
+			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='auto';obj.height='auto';});}modifyYoutubeWidth();");
 		}
 	}
 
@@ -665,12 +706,18 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			String linkitem = "";
 
-			if (linkWikiTag.startsWith("[http://")) {
+			if (linkWikiTag.contains("|")) {
+				// case 1 : [[안나(겨울왕국)|안나]]
+				String linkitems[] = linkWikiTag.split("[|]");
+				linkitem = linkitems[0];
+				linkitem = linkitem.replace("[", "");
+				linkitem = getString(R.string.url_home_page_with_slash) + linkitem;
+			} else if (linkWikiTag.startsWith("[http://")) {
 				// case 1 : [http
 				int linkidx1 = linkWikiTag.indexOf("h");
 				int linkidx2 = linkWikiTag.indexOf(" ", linkidx1 + 1);
 				linkitem = linkWikiTag.substring(linkidx1, linkidx2);
-			} else if (linkWikiTag.startsWith("[w")) {
+			} else if (linkWikiTag.startsWith("[wiki")) {
 				// case 2: [w
 				int linkidx1 = linkWikiTag.indexOf("\"");
 				int linkidx2 = linkWikiTag.indexOf("\"", linkidx1 + 1);
@@ -691,11 +738,17 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					((WebViewFragmentHolderActivity) getActivity()).toggle();
 				}
 			}, idx1 + initialLengthForLink, idx2 + initialLengthForLink, 0);
-			
+
 			idx1 = rfnTitle.indexOf("[", idx2);
 		}
 
 		ssb.append("\n\n");
+	}
+
+	private void downloadImageFromUrl(String mCurrentUrl, String tabbedUrl) {
+
+		DownloadFilesTask downloadFilesTask = new DownloadFilesTask(getActivity(), mCurrentUrl);
+		downloadFilesTask.execute(tabbedUrl);
 	}
 
 }

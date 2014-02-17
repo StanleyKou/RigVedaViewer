@@ -38,6 +38,7 @@ public class SplashActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_activity);
 		Utils.installShortcut(this);
+		Utils.createDirIfNotExists(this);
 		mHandler.postDelayed(mSplashRunnable, SPLASH_TIME);
 	}
 

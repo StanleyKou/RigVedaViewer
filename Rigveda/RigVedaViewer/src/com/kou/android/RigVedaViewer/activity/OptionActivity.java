@@ -19,11 +19,12 @@ import com.kou.android.RigVedaViewer.utils.Logger;
  * 
  * */
 
+@SuppressWarnings("deprecation")
 public class OptionActivity extends Activity implements OnCheckedChangeListener, OnClickListener {
 	private final String TAG = OptionActivity.class.getSimpleName();
 
 	private CheckBox cbAlias;
-	private CheckBox cbMobileImageHide;
+	private CheckBox cbModifyYouTubeWidth;
 	private CheckBox cbShowPrev;
 	private CheckBox cbShowNext;
 	private CheckBox cbShowRandom;
@@ -45,7 +46,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		setContentView(R.layout.option_activity);
 
 		cbAlias = (CheckBox) findViewById(R.id.cbAlias);
-		cbMobileImageHide = (CheckBox) findViewById(R.id.cbMobileImageHide);
+		cbModifyYouTubeWidth = (CheckBox) findViewById(R.id.cbModifyYouTubeWidth);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
 		cbShowNext = (CheckBox) findViewById(R.id.cbShowNext);
 		cbShowRandom = (CheckBox) findViewById(R.id.cbShowRandom);
@@ -90,9 +91,9 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbAlias.setChecked(valuecbAlias);
 		cbAlias.setOnCheckedChangeListener(this);
 
-		boolean valuecbMobileImageHide = pref.getBoolean("cbMobileImageHide", false);
-		cbMobileImageHide.setChecked(valuecbMobileImageHide);
-		cbMobileImageHide.setOnCheckedChangeListener(this);
+		boolean valuecbMobileImageHide = pref.getBoolean("cbModifyYouTubeWidth", true);
+		cbModifyYouTubeWidth.setChecked(valuecbMobileImageHide);
+		cbModifyYouTubeWidth.setOnCheckedChangeListener(this);
 
 		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
 		cbShowPrev.setChecked(valuecbShowPrev);
@@ -126,7 +127,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		SharedPreferences.Editor editor = pref.edit();
 
 		editor.putBoolean("cbAlias", cbAlias.isChecked());
-		editor.putBoolean("cbMobileImageHide", cbMobileImageHide.isChecked());
+		editor.putBoolean("cbMobileImageHide", cbModifyYouTubeWidth.isChecked());
 		editor.putBoolean("cbShowPrev", cbShowPrev.isChecked());
 		editor.putBoolean("cbShowNext", cbShowNext.isChecked());
 		editor.putBoolean("cbShowRandom", cbShowRandom.isChecked());
@@ -150,10 +151,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		}
 			break;
 
-		case R.id.cbMobileImageHide: {
+		case R.id.cbModifyYouTubeWidth: {
 			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbMobileImageHide", cbMobileImageHide.isChecked());
+			editor.putBoolean("cbModifyYouTubeWidth", cbModifyYouTubeWidth.isChecked());
 			editor.commit();
 		}
 			break;

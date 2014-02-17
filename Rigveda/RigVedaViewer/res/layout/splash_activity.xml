@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:contentDescription="@string/rigveda_viewer"
+        android:contentDescription="@string/app_name_eng"
         android:scaleType="fitXY"
         android:src="@drawable/splash_2014_02_04" />
 

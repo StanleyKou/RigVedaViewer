@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kou.android.RigVedaViewer"
-    android:versionCode="5"
-    android:versionName="1.04" >
+    android:versionCode="7"
+    android:versionName="1.06" >
 
     <uses-sdk
         android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -28,6 +29,7 @@
         </activity>
         <activity
             android:name="com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait" />
         <activity
             android:name="com.kou.android.RigVedaViewer.activity.OptionActivity"

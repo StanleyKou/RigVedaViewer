@@ -53,7 +53,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 	public TextView getFootNote() {
 		return tvFootNote;
 	}
-
+	
 	@Override
 	public void onClick(View v) {
 
@@ -82,4 +82,6 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 		}
 
 	}
+	
+	//getSlidingMenu().setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
 }
