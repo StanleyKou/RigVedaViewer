@@ -6,6 +6,7 @@
     tools:context=".OptionActivity" >
 
     <ScrollView
+        android:id="@+id/svHolder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="12.33dp"
@@ -21,43 +22,276 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7.33dp"
+                android:paddingBottom="16.33dp"
                 android:text="@string/option_caption_option"
+                android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnClearCache"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_clear_cache"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
             <CheckBox
                 android:id="@+id/cbAlias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_alias"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
             <CheckBox
                 android:id="@+id/cbModifyYouTubeWidth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_modify_youtube_iframe_width"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:textSize="14dp" />
 
-            <View
+            <CheckBox
+                android:id="@+id/cbTextColor"
                 android:layout_width="wrap_content"
-                android:layout_height="7.33dp" />
+                android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
+                android:text="@string/option_color_caption"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <LinearLayout
+                android:id="@+id/llColor"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/option_textcolor_background"
+                android:orientation="vertical"
+                android:padding="7.33dp" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7.33dp"
+                    android:paddingLeft="21.33dp" >
+
+                    <Button
+                        android:id="@+id/btnType1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginLeft="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#FFFFFF"
+                        android:paddingBottom="7.33dp"
+                        android:paddingLeft="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type1"
+                        android:textColor="#000000" />
+
+                    <Button
+                        android:id="@+id/btnType1Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginRight="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#FFFFFF"
+                        android:paddingBottom="7.33dp"
+                        android:paddingRight="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type1_link"
+                        android:textColor="#002EE2" />
+
+                    <Button
+                        android:id="@+id/btnType2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginLeft="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#000000"
+                        android:paddingBottom="7.33dp"
+                        android:paddingLeft="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type2"
+                        android:textColor="#999999" />
+
+                    <Button
+                        android:id="@+id/btnType2Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginRight="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#000000"
+                        android:paddingBottom="7.33dp"
+                        android:paddingRight="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type2_link"
+                        android:textColor="#CC6600" />
+
+                    <Button
+                        android:id="@+id/btnType3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginLeft="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#BBBBBB"
+                        android:paddingBottom="7.33dp"
+                        android:paddingLeft="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type3"
+                        android:textColor="#121255" />
+
+                    <Button
+                        android:id="@+id/btnType3Link"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3.33dp"
+                        android:layout_marginRight="3.33dp"
+                        android:layout_marginTop="3.33dp"
+                        android:background="#BBBBBB"
+                        android:paddingBottom="7.33dp"
+                        android:paddingRight="7.33dp"
+                        android:paddingTop="7.33dp"
+                        android:text="@string/option_color_type3_link"
+                        android:textColor="#0072FF" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7.33dp"
+                    android:paddingLeft="21.33dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="7.33dp"
+                        android:text="@string/option_color_text"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <Button
+                        android:id="@+id/btnTextColorPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33.33dp"
+                        android:text="@string/option_color_text_button" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7.33dp"
+                    android:paddingLeft="21.33dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="7.33dp"
+                        android:text="@string/option_color_background"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <Button
+                        android:id="@+id/btnBackgroundColorPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33.33dp"
+                        android:text="@string/option_color_background_button" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7.33dp"
+                    android:paddingLeft="21.33dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="7.33dp"
+                        android:text="@string/option_color_link"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <Button
+                        android:id="@+id/btnLinkColorPicker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="33.33dp"
+                        android:text="@string/option_color_link_button" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="0.67dp" >
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="7.67dp"
+                        android:text="@string/option_color_sample_caption"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/black"
+                        android:orientation="horizontal"
+                        android:padding="0.67dp" >
+
+                        <TextView
+                            android:id="@+id/tvColorSample"
+                            android:layout_width="60dp"
+                            android:layout_height="25dp"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/option_color_sample"
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/tvColorSampleLink"
+                            android:layout_width="60dp"
+                            android:layout_height="25dp"
+                            android:background="@color/white"
+                            android:gravity="center"
+                            android:text="@string/option_color_sample_link"
+                            android:textColor="#002EE2"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7.33dp"
+                android:paddingBottom="16.33dp"
+                android:paddingTop="21.33dp"
                 android:text="@string/option_caption_menu"
-                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:textSize="18dp"
                 android:textStyle="bold" />
 
             <CheckBox
                 android:id="@+id/cbShowPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_prev"
                 android:textColor="@color/black" />
@@ -66,6 +300,7 @@
                 android:id="@+id/cbShowNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_next"
                 android:textColor="@color/black" />
@@ -74,6 +309,7 @@
                 android:id="@+id/cbShowRandom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_random"
                 android:textColor="@color/black" />
@@ -82,6 +318,7 @@
                 android:id="@+id/cbShowFootNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_footnote"
                 android:textColor="@color/black" />
@@ -90,6 +327,7 @@
                 android:id="@+id/cbShowMenuLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_menuleft"
                 android:textColor="@color/black" />
@@ -98,6 +336,7 @@
                 android:id="@+id/cbShowMenuRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:button="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_menuright"
                 android:textColor="@color/black" />
@@ -114,7 +353,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="7.33dp"
+                android:paddingTop="7.33dp"
                 android:text="@string/option_about_text"
+                android:textColor="@color/black"
                 android:visibility="gone" />
         </LinearLayout>
     </ScrollView>

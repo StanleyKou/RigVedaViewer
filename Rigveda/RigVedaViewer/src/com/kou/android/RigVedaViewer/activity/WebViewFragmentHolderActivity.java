@@ -34,6 +34,8 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	final int MENU_OPTN = 2;
 	final int MENU_RAND = 3;
 
+	private final int REQUEST_OPTION = 1000; // Millisecond
+
 	private boolean bIsBackKeyPressed = false;
 	private final int BACK_AGAIN_TO_EXIT_TIME = 2000; // Millisecond
 
@@ -127,7 +129,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 		case MENU_OPTN:
 			Intent intent = new Intent(WebViewFragmentHolderActivity.this, OptionActivity.class);
-			startActivity(intent);
+			startActivityForResult(intent, REQUEST_OPTION);
 			break;
 
 		case MENU_RAND:
@@ -228,4 +230,15 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 		return ((CustomWebViewFragment) mContent).getmCurrentUrl();
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+		switch (requestCode) {
+		case REQUEST_OPTION:
+			((CustomWebViewFragment) mContent).reload();
+			break;
+		}
+
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

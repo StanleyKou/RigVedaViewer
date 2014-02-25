@@ -1,29 +1,58 @@
 package com.kou.android.RigVedaViewer.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.Utils;
+
+import de.devmil.common.ui.color.ColorSelectorDialog;
+import de.devmil.common.ui.color.ColorSelectorDialog.OnColorChangedListener;
 
 /**
  * SplashActivity
  * 
  * */
 
+// https://code.google.com/p/devmil-android-color-picker/
 public class OptionActivity extends Activity implements OnCheckedChangeListener, OnClickListener {
-	private final String TAG = OptionActivity.class.getSimpleName();
+	private final static String TAG = OptionActivity.class.getSimpleName();
 
+	public final static String textColorPrefKey = "textColor";
+	public final static String backgroundColorPrefKey = "backgroundColor";
+	public final static String linkColorPrefKey = "linkColor";
+
+	private final int TEXTCOLOR_TYPE1 = 0xFF000000;
+	private final int TEXTCOLOR_TYPE2 = 0xFF999999;
+	private final int TEXTCOLOR_TYPE3 = 0xFF121255;
+
+	private final int BACKGROUND_TYPE1 = 0xFFFFFFFF;
+	private final int BACKGROUND_TYPE2 = 0xFF000000;
+	private final int BACKGROUND_TYPE3 = 0xFFBBBBBB;
+
+	private final int LINKCOLOR_TYPE1 = 0xFF002EE2;
+	private final int LINKCOLOR_TYPE2 = 0xFFCC6600;
+	private final int LINKCOLOR_TYPE3 = 0xFF0072FF;
+
+	private ScrollView svHolder;
+
+	private Button btnClearCache;
 	private CheckBox cbAlias;
 	private CheckBox cbModifyYouTubeWidth;
+	private CheckBox cbTextColor;
 	private CheckBox cbShowPrev;
 	private CheckBox cbShowNext;
 	private CheckBox cbShowRandom;
@@ -33,6 +62,35 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 	private View btnAbout;
 	private View tvAbout;
+
+	private View llColor;
+
+	private ColorSelectorDialog textColorDialog;
+	private ColorSelectorDialog backgroundColorDialog;
+	private ColorSelectorDialog linkColorDialog;
+
+	private OnColorChangedListener textColorListener;
+	private OnColorChangedListener backgroundColorListener;
+	private OnColorChangedListener linkColorListener;
+
+	private Button btnTextColorPicker;
+	private Button btnBackgroundColorPicker;
+	private Button btnLinkColorPicker;
+
+	private Button btnType1;
+	private Button btnType2;
+	private Button btnType3;
+
+	private Button btnType1Link;
+	private Button btnType2Link;
+	private Button btnType3Link;
+
+	private TextView tvColorSample;
+	private TextView tvColorSampleLink;
+
+	private int textColor;
+	private int backgroundColor;
+	private int linkColor;
 
 	/**
 	 * Initialize Activity.
@@ -44,8 +102,13 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.option_activity);
 
+		btnClearCache = (Button) findViewById(R.id.btnClearCache);
+		btnClearCache.setOnClickListener(this);
+
+		svHolder = (ScrollView) findViewById(R.id.svHolder);
 		cbAlias = (CheckBox) findViewById(R.id.cbAlias);
 		cbModifyYouTubeWidth = (CheckBox) findViewById(R.id.cbModifyYouTubeWidth);
+		cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
 		cbShowNext = (CheckBox) findViewById(R.id.cbShowNext);
 		cbShowRandom = (CheckBox) findViewById(R.id.cbShowRandom);
@@ -58,15 +121,98 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 		tvAbout = findViewById(R.id.tvAbout);
 		tvAbout.setOnClickListener(this);
+
+		llColor = findViewById(R.id.llColor);
+
+		btnType1 = (Button) findViewById(R.id.btnType1);
+		btnType1.setOnClickListener(this);
+
+		btnType2 = (Button) findViewById(R.id.btnType2);
+		btnType2.setOnClickListener(this);
+
+		btnType3 = (Button) findViewById(R.id.btnType3);
+		btnType3.setOnClickListener(this);
+
+		btnType1Link = (Button) findViewById(R.id.btnType1Link);
+		btnType1Link.setOnClickListener(this);
+
+		btnType2Link = (Button) findViewById(R.id.btnType2Link);
+		btnType2Link.setOnClickListener(this);
+
+		btnType3Link = (Button) findViewById(R.id.btnType3Link);
+		btnType3Link.setOnClickListener(this);
+
+		btnTextColorPicker = (Button) findViewById(R.id.btnTextColorPicker);
+		btnTextColorPicker.setOnClickListener(this);
+
+		btnBackgroundColorPicker = (Button) findViewById(R.id.btnBackgroundColorPicker);
+		btnBackgroundColorPicker.setOnClickListener(this);
+
+		btnLinkColorPicker = (Button) findViewById(R.id.btnLinkColorPicker);
+		btnLinkColorPicker.setOnClickListener(this);
+
+		tvColorSample = (TextView) findViewById(R.id.tvColorSample);
+		tvColorSampleLink = (TextView) findViewById(R.id.tvColorSampleLink);
+
+		textColorListener = new OnColorChangedListener() {
+
+			@Override
+			public void colorChanged(int color) {
+				tvColorSample.setTextColor(color);
+				textColor = color;
+
+				commitTextBackgroundColor();
+			}
+		};
+
+		backgroundColorListener = new OnColorChangedListener() {
+
+			@Override
+			public void colorChanged(int color) {
+				tvColorSample.setBackgroundColor(color);
+				tvColorSampleLink.setBackgroundColor(color);
+				backgroundColor = color;
+
+				commitTextBackgroundColor();
+			}
+		};
+
+		linkColorListener = new OnColorChangedListener() {
+
+			@Override
+			public void colorChanged(int color) {
+				tvColorSampleLink.setTextColor(color);
+				linkColor = color;
+
+				commitTextBackgroundColor();
+			}
+		};
+
+		textColorDialog = new ColorSelectorDialog(this, textColorListener, TEXTCOLOR_TYPE1);
+		backgroundColorDialog = new ColorSelectorDialog(this, backgroundColorListener, BACKGROUND_TYPE1);
+		linkColorDialog = new ColorSelectorDialog(this, linkColorListener, LINKCOLOR_TYPE1);
+
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+
+		case R.id.btnClearCache:
+			Toast.makeText(this, R.string.option_clear_cache_complete, Toast.LENGTH_SHORT).show();
+			clearCache(this, 0);
+			break;
+
 		case R.id.btnAbout:
 
 			if (tvAbout.getVisibility() == View.GONE) {
 				tvAbout.setVisibility(View.VISIBLE);
+				svHolder.post(new Runnable() {
+					@Override
+					public void run() {
+						svHolder.fullScroll(View.FOCUS_DOWN);
+					}
+				});
 			} else {
 				tvAbout.setVisibility(View.GONE);
 			}
@@ -78,7 +224,64 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			clipboard.setText(getString(R.string.http_stanleykou_tistory_com_));
 			Toast.makeText(this, R.string.option_clipboard_copied, Toast.LENGTH_SHORT).show();
 			break;
+
+		case R.id.btnTextColorPicker:
+			textColorDialog.show();
+			break;
+
+		case R.id.btnBackgroundColorPicker:
+			backgroundColorDialog.show();
+			break;
+
+		case R.id.btnLinkColorPicker:
+			linkColorDialog.show();
+			break;
+
+		case R.id.btnType1:
+		case R.id.btnType1Link:
+			textColor = TEXTCOLOR_TYPE1;
+			backgroundColor = BACKGROUND_TYPE1;
+			linkColor = LINKCOLOR_TYPE1;
+			setSampleTextColor();
+			commitTextBackgroundColor();
+			break;
+
+		case R.id.btnType2:
+		case R.id.btnType2Link:
+			textColor = TEXTCOLOR_TYPE2;
+			backgroundColor = BACKGROUND_TYPE2;
+			linkColor = LINKCOLOR_TYPE2;
+			setSampleTextColor();
+			commitTextBackgroundColor();
+			break;
+
+		case R.id.btnType3:
+		case R.id.btnType3Link:
+			textColor = TEXTCOLOR_TYPE3;
+			backgroundColor = BACKGROUND_TYPE3;
+			linkColor = LINKCOLOR_TYPE3;
+			setSampleTextColor();
+			commitTextBackgroundColor();
+			break;
+
 		}
+	}
+
+	private void setSampleTextColor() {
+		tvColorSample.setTextColor((int) textColor);
+		tvColorSample.setBackgroundColor((int) backgroundColor);
+		tvColorSampleLink.setTextColor((int) linkColor);
+		tvColorSampleLink.setBackgroundColor((int) backgroundColor);
+	}
+
+	private void commitTextBackgroundColor() {
+		SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+		SharedPreferences.Editor editor = pref.edit();
+		editor.putInt(textColorPrefKey, textColor);
+		editor.putInt(backgroundColorPrefKey, backgroundColor);
+		editor.putInt(linkColorPrefKey, linkColor);
+
+		editor.commit();
 	}
 
 	protected void onResume() {
@@ -90,9 +293,38 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbAlias.setChecked(valuecbAlias);
 		cbAlias.setOnCheckedChangeListener(this);
 
-		boolean valuecbMobileImageHide = pref.getBoolean("cbModifyYouTubeWidth", true);
-		cbModifyYouTubeWidth.setChecked(valuecbMobileImageHide);
+		boolean valuecbModifyYouTubeWidth = pref.getBoolean("cbModifyYouTubeWidth", true);
+		cbModifyYouTubeWidth.setChecked(valuecbModifyYouTubeWidth);
 		cbModifyYouTubeWidth.setOnCheckedChangeListener(this);
+
+		boolean valuecbTextColor = pref.getBoolean("cbTextColor", false);
+		cbTextColor.setChecked(valuecbTextColor);
+		cbTextColor.setOnCheckedChangeListener(this);
+
+		if (cbTextColor.isChecked() == true) {
+			llColor.setVisibility(View.VISIBLE);
+		} else {
+			llColor.setVisibility(View.GONE);
+		}
+
+		btnTextColorPicker.setEnabled(cbTextColor.isChecked());
+		btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
+		btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
+		btnType1.setEnabled(cbTextColor.isChecked());
+		btnType2.setEnabled(cbTextColor.isChecked());
+		btnType3.setEnabled(cbTextColor.isChecked());
+		btnType1Link.setEnabled(cbTextColor.isChecked());
+		btnType2Link.setEnabled(cbTextColor.isChecked());
+		btnType3Link.setEnabled(cbTextColor.isChecked());
+
+		textColor = pref.getInt(textColorPrefKey, TEXTCOLOR_TYPE1);
+		backgroundColor = pref.getInt(backgroundColorPrefKey, BACKGROUND_TYPE1);
+		linkColor = pref.getInt(linkColorPrefKey, LINKCOLOR_TYPE1);
+
+		tvColorSample.setTextColor(textColor);
+		tvColorSample.setBackgroundColor(backgroundColor);
+		tvColorSampleLink.setTextColor(linkColor);
+		tvColorSampleLink.setBackgroundColor(backgroundColor);
 
 		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
 		cbShowPrev.setChecked(valuecbShowPrev);
@@ -117,6 +349,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		boolean valuecbShowMenuRight = pref.getBoolean("cbShowMenuRight", false);
 		cbShowMenuRight.setChecked(valuecbShowMenuRight);
 		cbShowMenuRight.setOnCheckedChangeListener(this);
+
 	}
 
 	@Override
@@ -155,6 +388,29 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("cbModifyYouTubeWidth", cbModifyYouTubeWidth.isChecked());
 			editor.commit();
+		}
+			break;
+		case R.id.cbTextColor: {
+			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean("cbTextColor", cbTextColor.isChecked());
+			editor.commit();
+
+			if (cbTextColor.isChecked() == true) {
+				llColor.setVisibility(View.VISIBLE);
+			} else {
+				llColor.setVisibility(View.GONE);
+			}
+
+			btnTextColorPicker.setEnabled(cbTextColor.isChecked());
+			btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
+			btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
+			btnType1.setEnabled(cbTextColor.isChecked());
+			btnType2.setEnabled(cbTextColor.isChecked());
+			btnType3.setEnabled(cbTextColor.isChecked());
+			btnType1Link.setEnabled(cbTextColor.isChecked());
+			btnType2Link.setEnabled(cbTextColor.isChecked());
+			btnType3Link.setEnabled(cbTextColor.isChecked());
 		}
 			break;
 
@@ -230,6 +486,15 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			break;
 		}
 
+	}
+
+	/*
+	 * Delete the files older than numDays days from the application cache 0 means all files.
+	 */
+	public void clearCache(final Context context, final int numDays) {
+		Logger.i(TAG, String.format("Starting cache prune, deleting files older than %d days", numDays));
+		int numDeletedFiles = Utils.clearCacheFolder(context.getCacheDir(), numDays);
+		Logger.i(TAG, String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
 	}
 
 }

@@ -40,6 +40,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
+import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.base.BaseWebView;
 import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
@@ -501,6 +502,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void modifyWebPage() {
 		showLinkDrip();
 		modifyYouTubeIframeWidth();
+		modifyTextBackgroundColor();
 		runFootNoteJS();
 
 	}
@@ -530,6 +532,37 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		if (true == value) {
 			// iframe 태그의 가로세로를 모두 auto로 설정
 			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='auto';obj.height='auto';});}modifyYoutubeWidth();");
+		}
+	}
+
+	private void modifyTextBackgroundColor() {
+		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+		boolean value = pref.getBoolean("cbTextColor", false);
+		if (true == value) {
+			Logger.d(TAG, "modifyTextBackgroundColor()");
+
+			int textColor = pref.getInt(OptionActivity.textColorPrefKey, 0xFF000000);
+			int backgroundColor = pref.getInt(OptionActivity.backgroundColorPrefKey, 0xFFFFFFFF);
+			int linkTextColor = pref.getInt(OptionActivity.linkColorPrefKey, 0xFFFFFFFF);
+
+			// int textColorAlpha = 0xFF000000 & textColor;
+			// int backgroundColorAlpha = 0xFF000000 & backgroundColor;
+			// int linkTextColorAlpha = 0xFF000000 & linkTextColor;
+
+			textColor = 0x00FFFFFF & textColor;
+			backgroundColor = 0x00FFFFFF & backgroundColor;
+			linkTextColor = 0x00FFFFFF & linkTextColor;
+
+			String textColorString = Utils.getSixDigitHexString(textColor);
+			String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
+			String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
+
+			String loadStringDiv = String.format("javascript:$('div').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');})", textColorString, backgroundColorString);
+			mWebview.loadUrl(loadStringDiv);
+
+			String loadStringA = String.format("javascript:$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');})", linkTextColorString, backgroundColorString);
+			mWebview.loadUrl(loadStringA);
+
 		}
 	}
 
@@ -611,6 +644,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	public boolean canGoBack() {
 
 		return mWebview.canGoBack();
+	}
+
+	public void reload() {
+		mWebview.reload();
 	}
 
 	public AlertDialog getNetworkErrorDialog() {

@@ -32,8 +32,26 @@
     <string name="option_caption_option">옵션설정</string>
     <string name="option_caption_menu">메뉴설정</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
-    <string name="option_show_alias">링크드립표시 (링크의 실제 이름과 화면에 보여주고 있는 태그의 명칭이 다른 경우 화면에 표시)</string>
+    <string name="option_clear_cache">리그베다뷰어 인터넷 캐쉬 모두삭제</string>
+    <string name="option_clear_cache_complete">리그베다뷰어의 인터넷 캐쉬가 모두삭제되었습니다.</string>
+    <string name="option_show_alias">링크드립표시 (링크의 실제 이름과 표시되는 이름이 다른 경우 화면에 표시)</string>
     <string name="option_modify_youtube_iframe_width">유뷰브 동영상의 가로크기를 단말 가로크기에 맞춤</string>
+    <string name="option_color_caption">색상변경</string>
+    <string name="option_color_text">텍스트색상 직접선택</string>
+    <string name="option_color_text_button">선택</string>
+    <string name="option_color_background">배경색상 직접선택</string>
+    <string name="option_color_background_button">선택</string>
+    <string name="option_color_link">링크색상 직접선택</string>
+    <string name="option_color_link_button">선택</string>
+    <string name="option_color_type1">샘플1</string>
+    <string name="option_color_type2">샘플2</string>
+    <string name="option_color_type3">샘플3</string>
+    <string name="option_color_type1_link">링크</string>
+    <string name="option_color_type2_link">링크</string>
+    <string name="option_color_type3_link">링크</string>
+    <string name="option_color_sample_caption">적용결과: </string>
+    <string name="option_color_sample">가나다</string>
+    <string name="option_color_sample_link">링크</string>
     <string name="option_show_prev">이전으로 가기 버튼 보이기</string>
     <string name="option_show_next">다음으로 가기 버튼 보이기</string>
     <string name="option_show_random">랜덤 버튼 보이기</string>
@@ -55,5 +73,15 @@
     <string name="dialog_link_url_copy_colon">클립보드에 복사:</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <string name="http_stanleykou_tistory_com_">http://stanleykou.tistory.com/</string>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- devmil-android-color-picker -->
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+    <string name="color_select_color">Select a color</string>
+    <string name="color_old_color">Old color</string>
+    <string name="color_new_color">New color</string>
+    <string name="color_hex_invalid">Invalid color hex code!</string>
+    <string name="prefOK">OK</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.kou.android.RigVedaViewer.utils;
 
 import java.io.File;
+import java.util.Date;
 import java.util.List;
 
 import android.app.Activity;
@@ -11,6 +12,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Environment;
+import android.text.format.DateUtils;
 import android.view.Display;
 
 import com.kou.android.RigVedaViewer.R;
@@ -143,7 +145,7 @@ public class Utils {
 
 		// 아래 형태는 다운로드 불가능. 다운로드 가능한 형태로 만들어주어야 함.
 		// http://rigvedawiki.net/r1/pds/1297609867_loptimist_.jpg
-		
+
 		String splittedForCheck[] = tabbedUrl.split("/");
 		String lastStringForCheck = splittedForCheck[splittedForCheck.length - 1];
 
@@ -154,4 +156,52 @@ public class Utils {
 		}
 		return tabbedUrl;
 	}
+
+	public static String getSixDigitHexString(int textColor) {
+		StringBuilder sb = new StringBuilder();
+
+		String hexString = String.format("%x", textColor);
+
+		int i = 0;
+		int size = hexString.length();
+
+		for (i = 0; i < 6 - size; i++) {
+			sb.append("0");
+		}
+		sb.append(hexString);
+
+		return sb.toString();
+	}
+
+	// http://stackoverflow.com/questions/2465432/android-webview-completely-clear-the-cache
+	// helper method for clearCache() , recursive
+	// returns number of deleted files
+	public static int clearCacheFolder(final File dir, final int numDays) {
+
+		int deletedFiles = 0;
+		if (dir != null && dir.isDirectory()) {
+			try {
+				for (File child : dir.listFiles()) {
+
+					// first delete subdirectories recursively
+					if (child.isDirectory()) {
+						deletedFiles += clearCacheFolder(child, numDays);
+					}
+
+					// then delete the files and subdirectories in this dir
+					// only empty directories can be deleted, so subdirs have been done first
+					if (child.lastModified() < new Date().getTime() - numDays * DateUtils.DAY_IN_MILLIS) {
+						if (child.delete()) {
+							deletedFiles++;
+						}
+					}
+				}
+			} catch (Exception e) {
+				Logger.e(TAG, String.format("Failed to clean the cache, error %s", e.getMessage()));
+			}
+		}
+		return deletedFiles;
+	}
+
+	
 }
