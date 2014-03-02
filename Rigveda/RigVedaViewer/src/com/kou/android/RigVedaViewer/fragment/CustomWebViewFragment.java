@@ -1,5 +1,11 @@
 package com.kou.android.RigVedaViewer.fragment;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -184,6 +190,34 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		case R.id.ivNavNext:
 			processNaviNext();
 			break;
+		}
+
+	}
+
+	private void captureScreen() {
+
+		String mPath = Utils.getAppStorageFolder(getActivity()) + File.separator + "test.png";
+
+		// create bitmap screen capture
+		Bitmap bitmap;
+		View v1 = mMainView.getRootView();
+		v1.setDrawingCacheEnabled(true);
+		bitmap = Bitmap.createBitmap(v1.getDrawingCache());
+		v1.setDrawingCacheEnabled(false);
+
+		OutputStream fout = null;
+		File imageFile = new File(mPath);
+
+		try {
+			fout = new FileOutputStream(imageFile);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 90, fout);
+			fout.flush();
+			fout.close();
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 	}
@@ -389,7 +423,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					clearHistory();
 				}
 
-				modifyWebPageAfterFinished(url);
+				postModifyWebPage(url);
 			}
 
 			@Override
@@ -482,12 +516,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		return dialogBuilder.create();
 	}
 
-	private void modifyWebPageAfterFinished(final String url) {
+	private void postModifyWebPage(final String url) {
 		// 현재 화면이 랜덤 페이지가 아닌 경우에만 동작
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
 			handler.postDelayed(modifyWebPageRunnable, 100);
 			// 타이밍 이슈때문에 딜레이. 리그베다 원래 페이지의 구글애드가 읽혀오는 시간, 이미지 로딩이 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
-			// handler.postDelayed(modifyWebPageRunnable, 2000);
+			handler.postDelayed(modifyWebPageRunnable, 2000);
 		}
 	}
 
@@ -503,6 +537,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		showLinkDrip();
 		modifyYouTubeIframeWidth();
 		modifyTextBackgroundColor();
+		modifyTextSize();
+
 		runFootNoteJS();
 
 	}
@@ -562,6 +598,19 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			String loadStringA = String.format("javascript:$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');})", linkTextColorString, backgroundColorString);
 			mWebview.loadUrl(loadStringA);
+
+		}
+	}
+
+	private void modifyTextSize() {
+		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+		boolean value = pref.getBoolean("cbFontSize", false);
+		if (true == value) {
+			Logger.d(TAG, "modifyTextSize()");
+			int fontSize = pref.getInt(OptionActivity.fontSizefKey, OptionActivity.DEFAULT_FONT_SIZE_PERCENT);
+
+			String loadFontSize = String.format("javascript:$('div').each(function(i, obj){$(this).css('font-size','%d%%');})", fontSize);
+			mWebview.loadUrl(loadFontSize);
 
 		}
 	}

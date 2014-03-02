@@ -5,12 +5,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.ClipboardManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +37,8 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	public final static String textColorPrefKey = "textColor";
 	public final static String backgroundColorPrefKey = "backgroundColor";
 	public final static String linkColorPrefKey = "linkColor";
+	public final static String fontSizefKey = "fontSize";
+	public final static int DEFAULT_FONT_SIZE_PERCENT = 100;
 
 	private final int TEXTCOLOR_TYPE1 = 0xFF000000;
 	private final int TEXTCOLOR_TYPE2 = 0xFF999999;
@@ -53,6 +58,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private CheckBox cbAlias;
 	private CheckBox cbModifyYouTubeWidth;
 	private CheckBox cbTextColor;
+	private CheckBox cbFontSize;
 	private CheckBox cbShowPrev;
 	private CheckBox cbShowNext;
 	private CheckBox cbShowRandom;
@@ -63,34 +69,34 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private View btnAbout;
 	private View tvAbout;
 
+	// Font - Background color
 	private View llColor;
-
 	private ColorSelectorDialog textColorDialog;
 	private ColorSelectorDialog backgroundColorDialog;
 	private ColorSelectorDialog linkColorDialog;
-
 	private OnColorChangedListener textColorListener;
 	private OnColorChangedListener backgroundColorListener;
 	private OnColorChangedListener linkColorListener;
-
 	private Button btnTextColorPicker;
 	private Button btnBackgroundColorPicker;
 	private Button btnLinkColorPicker;
-
 	private Button btnType1;
 	private Button btnType2;
 	private Button btnType3;
-
 	private Button btnType1Link;
 	private Button btnType2Link;
 	private Button btnType3Link;
-
 	private TextView tvColorSample;
 	private TextView tvColorSampleLink;
-
 	private int textColor;
 	private int backgroundColor;
 	private int linkColor;
+
+	// Font size
+	private View llFontSize;
+	private Button btnFontUp;
+	private Button btnFontDown;
+	private EditText etFontSize;
 
 	/**
 	 * Initialize Activity.
@@ -109,6 +115,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbAlias = (CheckBox) findViewById(R.id.cbAlias);
 		cbModifyYouTubeWidth = (CheckBox) findViewById(R.id.cbModifyYouTubeWidth);
 		cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
+		cbFontSize = (CheckBox) findViewById(R.id.cbFontSize);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
 		cbShowNext = (CheckBox) findViewById(R.id.cbShowNext);
 		cbShowRandom = (CheckBox) findViewById(R.id.cbShowRandom);
@@ -122,38 +129,29 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		tvAbout = findViewById(R.id.tvAbout);
 		tvAbout.setOnClickListener(this);
 
+		// Font - background color
 		llColor = findViewById(R.id.llColor);
-
+		llFontSize = findViewById(R.id.llFontSize);
 		btnType1 = (Button) findViewById(R.id.btnType1);
 		btnType1.setOnClickListener(this);
-
 		btnType2 = (Button) findViewById(R.id.btnType2);
 		btnType2.setOnClickListener(this);
-
 		btnType3 = (Button) findViewById(R.id.btnType3);
 		btnType3.setOnClickListener(this);
-
 		btnType1Link = (Button) findViewById(R.id.btnType1Link);
 		btnType1Link.setOnClickListener(this);
-
 		btnType2Link = (Button) findViewById(R.id.btnType2Link);
 		btnType2Link.setOnClickListener(this);
-
 		btnType3Link = (Button) findViewById(R.id.btnType3Link);
 		btnType3Link.setOnClickListener(this);
-
 		btnTextColorPicker = (Button) findViewById(R.id.btnTextColorPicker);
 		btnTextColorPicker.setOnClickListener(this);
-
 		btnBackgroundColorPicker = (Button) findViewById(R.id.btnBackgroundColorPicker);
 		btnBackgroundColorPicker.setOnClickListener(this);
-
 		btnLinkColorPicker = (Button) findViewById(R.id.btnLinkColorPicker);
 		btnLinkColorPicker.setOnClickListener(this);
-
 		tvColorSample = (TextView) findViewById(R.id.tvColorSample);
 		tvColorSampleLink = (TextView) findViewById(R.id.tvColorSampleLink);
-
 		textColorListener = new OnColorChangedListener() {
 
 			@Override
@@ -164,7 +162,6 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 				commitTextBackgroundColor();
 			}
 		};
-
 		backgroundColorListener = new OnColorChangedListener() {
 
 			@Override
@@ -176,7 +173,6 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 				commitTextBackgroundColor();
 			}
 		};
-
 		linkColorListener = new OnColorChangedListener() {
 
 			@Override
@@ -191,6 +187,45 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		textColorDialog = new ColorSelectorDialog(this, textColorListener, TEXTCOLOR_TYPE1);
 		backgroundColorDialog = new ColorSelectorDialog(this, backgroundColorListener, BACKGROUND_TYPE1);
 		linkColorDialog = new ColorSelectorDialog(this, linkColorListener, LINKCOLOR_TYPE1);
+
+		// Font size
+		btnFontUp = (Button) findViewById(R.id.btnFontUp);
+		btnFontUp.setOnClickListener(this);
+		btnFontDown = (Button) findViewById(R.id.btnFontDown);
+		btnFontDown.setOnClickListener(this);
+		etFontSize = (EditText) findViewById(R.id.etFontSize);
+		etFontSize.addTextChangedListener(new TextWatcher() {
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+				SharedPreferences.Editor editor = pref.edit();
+
+				String inputFontSize = etFontSize.getText().toString();
+				int inputFontSizeToInt = 0;
+				try {
+					inputFontSizeToInt = Integer.parseInt(inputFontSize);
+				} catch (NumberFormatException e) {
+					e.toString();
+				}
+
+				if (0 == inputFontSizeToInt) {
+					inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
+				}
+
+				editor.putInt(fontSizefKey, inputFontSizeToInt);
+				editor.commit();
+
+			}
+		});
 
 	}
 
@@ -264,6 +299,49 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			commitTextBackgroundColor();
 			break;
 
+		case R.id.btnFontUp: {
+
+			String inputFontSize = etFontSize.getText().toString();
+			int inputFontSizeToInt = 0;
+			try {
+				inputFontSizeToInt = Integer.parseInt(inputFontSize);
+			} catch (NumberFormatException e) {
+				e.toString();
+			}
+
+			if (0 == inputFontSizeToInt) {
+				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
+			}
+
+			inputFontSizeToInt += 1;
+
+			etFontSize.setText(Integer.toString(inputFontSizeToInt));
+
+		}
+			break;
+
+		case R.id.btnFontDown:
+			String inputFontSize = etFontSize.getText().toString();
+			int inputFontSizeToInt = 0;
+			try {
+				inputFontSizeToInt = Integer.parseInt(inputFontSize);
+			} catch (NumberFormatException e) {
+				e.toString();
+			}
+
+			if (0 == inputFontSizeToInt) {
+				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
+			}
+
+			inputFontSizeToInt -= 1;
+
+			if (inputFontSizeToInt < 1) {
+				inputFontSizeToInt = 1;
+			}
+
+			etFontSize.setText(Integer.toString(inputFontSizeToInt));
+			break;
+
 		}
 	}
 
@@ -325,6 +403,19 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		tvColorSample.setBackgroundColor(backgroundColor);
 		tvColorSampleLink.setTextColor(linkColor);
 		tvColorSampleLink.setBackgroundColor(backgroundColor);
+
+		boolean valuecbFontSize = pref.getBoolean("cbFontSize", false);
+		cbFontSize.setChecked(valuecbFontSize);
+		cbFontSize.setOnCheckedChangeListener(this);
+
+		if (cbFontSize.isChecked() == true) {
+			llFontSize.setVisibility(View.VISIBLE);
+		} else {
+			llFontSize.setVisibility(View.GONE);
+		}
+
+		int fontSize = pref.getInt(fontSizefKey, DEFAULT_FONT_SIZE_PERCENT);
+		etFontSize.setText(Integer.toString(fontSize));
 
 		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
 		cbShowPrev.setChecked(valuecbShowPrev);
@@ -390,6 +481,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			editor.commit();
 		}
 			break;
+
 		case R.id.cbTextColor: {
 			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 			SharedPreferences.Editor editor = pref.edit();
@@ -411,6 +503,34 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			btnType1Link.setEnabled(cbTextColor.isChecked());
 			btnType2Link.setEnabled(cbTextColor.isChecked());
 			btnType3Link.setEnabled(cbTextColor.isChecked());
+		}
+			break;
+
+		case R.id.cbFontSize: {
+			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean("cbFontSize", cbFontSize.isChecked());
+
+			String inputFontSize = etFontSize.getText().toString();
+			int inputFontSizeToInt = 0;
+			try {
+				inputFontSizeToInt = Integer.parseInt(inputFontSize);
+			} catch (NumberFormatException e) {
+				e.toString();
+			}
+
+			if (0 == inputFontSizeToInt) {
+				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
+			}
+
+			editor.putInt(fontSizefKey, inputFontSizeToInt);
+			editor.commit();
+
+			if (cbFontSize.isChecked() == true) {
+				llFontSize.setVisibility(View.VISIBLE);
+			} else {
+				llFontSize.setVisibility(View.GONE);
+			}
 		}
 			break;
 

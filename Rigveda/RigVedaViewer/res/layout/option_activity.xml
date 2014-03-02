@@ -41,7 +41,9 @@
                 android:id="@+id/cbAlias"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
+                android:includeFontPadding="true"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_alias"
                 android:textColor="@color/black"
@@ -51,7 +53,8 @@
                 android:id="@+id/cbModifyYouTubeWidth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_modify_youtube_iframe_width"
                 android:textColor="@color/black"
@@ -61,7 +64,8 @@
                 android:id="@+id/cbTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:text="@string/option_color_caption"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -277,6 +281,75 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <CheckBox
+                android:id="@+id/cbFontSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
+                android:text="@string/option_fontSize_caption"
+                android:textColor="@color/black"
+                android:textSize="14dp" />
+
+            <LinearLayout
+                android:id="@+id/llFontSize"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/option_textcolor_background"
+                android:orientation="vertical"
+                android:padding="7.33dp" >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="7.33dp"
+                    android:paddingLeft="21.33dp"
+                    android:paddingTop="7.33dp" >
+
+                    <EditText
+                        android:id="@+id/etFontSize"
+                        android:layout_width="60dp"
+                        android:layout_height="31dp"
+                        android:background="@color/white"
+                        android:digits="0123456789"
+                        android:gravity="center"
+                        android:inputType="numberDecimal"
+                        android:textColor="@color/black"
+                        android:textSize="18dp" />
+
+                    <TextView
+                        android:id="@+id/tvFontSizePercent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="31dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/option_fontSize_percent"
+                        android:textColor="@color/black"
+                        android:textSize="18dp" />
+
+                    <Button
+                        android:id="@+id/btnFontUp"
+                        android:layout_width="31dp"
+                        android:layout_height="31dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/option_fontSize_up"
+                        android:textColor="@color/black"
+                        android:textSize="18dp" />
+
+                    <Button
+                        android:id="@+id/btnFontDown"
+                        android:layout_width="31dp"
+                        android:layout_height="31dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:text="@string/option_fontSize_down"
+                        android:textColor="@color/black"
+                        android:textSize="18dp" />
+                </LinearLayout>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -291,7 +364,8 @@
                 android:id="@+id/cbShowPrev"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_prev"
                 android:textColor="@color/black" />
@@ -300,7 +374,8 @@
                 android:id="@+id/cbShowNext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_next"
                 android:textColor="@color/black" />
@@ -309,7 +384,8 @@
                 android:id="@+id/cbShowRandom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_random"
                 android:textColor="@color/black" />
@@ -318,7 +394,8 @@
                 android:id="@+id/cbShowFootNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_footnote"
                 android:textColor="@color/black" />
@@ -327,7 +404,8 @@
                 android:id="@+id/cbShowMenuLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_menuleft"
                 android:textColor="@color/black" />
@@ -336,7 +414,8 @@
                 android:id="@+id/cbShowMenuRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:button="@drawable/cb_selector"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
                 android:paddingBottom="7.33dp"
                 android:text="@string/option_show_menuright"
                 android:textColor="@color/black" />
