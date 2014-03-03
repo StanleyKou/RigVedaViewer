@@ -561,9 +561,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			modifyYouTubeIframeWidth();
 			modifyTextBackgroundColor();
 			modifyTextSize();
+			modifyOrientationCSS();
 		}
 		modifyMakeFootNote();
-		modifyOrientationCSS();
+		
 
 	}
 
