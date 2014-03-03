@@ -1,9 +1,12 @@
 package com.kou.android.RigVedaViewer.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
 import android.text.method.LinkMovementMethod;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.TextView.BufferType;
 
 import com.kou.android.RigVedaViewer.R;
+import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.utils.Logger;
 
@@ -53,7 +57,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 	public TextView getFootNote() {
 		return tvFootNote;
 	}
-	
+
 	@Override
 	public void onClick(View v) {
 
@@ -69,6 +73,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	public void setFootNoteSSB(SpannableStringBuilder ssb) {
 		if (tvFootNote != null) {
+			setFootNoteTextSize();
 			tvFootNote.setText("");
 			tvFootNote.setMovementMethod(LinkMovementMethod.getInstance());
 			tvFootNote.setText(ssb, BufferType.SPANNABLE);
@@ -78,10 +83,23 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	public void setFootNote(String footNote) {
 		if (tvFootNote != null) {
+			setFootNoteTextSize();
 			tvFootNote.setText(footNote);
 		}
 
 	}
-	
-	//getSlidingMenu().setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
+
+	private void setFootNoteTextSize() {
+		if (getActivity() != null) {
+			SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
+
+			boolean valuecbFontSize = pref.getBoolean("cbFontSize", false);
+			if (true == valuecbFontSize) {
+
+				float fontSize = pref.getInt(OptionActivity.fontSizefKey, OptionActivity.DEFAULT_FONT_SIZE_PERCENT);
+				float modifiedFontsize = tvFootNote.getTextSize() * (fontSize / 100f);
+				tvFootNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, modifiedFontsize);
+			}
+		}
+	}
 }

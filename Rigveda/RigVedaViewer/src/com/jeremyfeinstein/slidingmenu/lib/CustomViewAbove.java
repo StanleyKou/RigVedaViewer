@@ -860,18 +860,18 @@ public class CustomViewAbove extends ViewGroup {
 			// setScrollingCacheEnabled(true);
 
 			if (mViewBehind != null) {
-				Logger.d(TAG, "DEBUG!!! mViewBehind is not null");
+				Logger.d(TAG, "mViewBehind is not null");
 			} else {
-				Logger.d(TAG, "DEBUG!!! mViewBehind is null");
-			}
-			
-			if (mContent.isEnabled()) {
-				Logger.d(TAG, "DEBUG!!! mContent is enabled");
-			} else {
-				Logger.d(TAG, "DEBUG!!! mContent is not enabled");
+				Logger.d(TAG, "mViewBehind is null");
 			}
 
-			if (isMenuOpen() == false) {
+			if (mContent.isEnabled()) {
+				Logger.d(TAG, "mContent is enabled");
+			} else {
+				Logger.d(TAG, "mContent is not enabled");
+			}
+
+			if (false == isMenuOpen()) {
 				Logger.d(TAG, "globalX :" + GlobalVariables.getWebviewScrollX());
 
 				if (GlobalVariables.getWebviewScrollX() == 0) {

@@ -94,7 +94,7 @@ public class HsvSelectorView extends LinearLayout {
 		hsv[0] = hueSelector.getHue();
 		hsv[1] = hsvColorValueView.getSaturation();
 		hsv[2] = hsvColorValueView.getValue();
-		int alpha = includeAlpha ? alphaSelector.getAlpha() : 255;
+		int alpha = includeAlpha ? (int)alphaSelector.getAlpha() : 255;
 		return Color.HSVToColor(alpha, hsv);
 	}
 	

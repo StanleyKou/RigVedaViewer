@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -50,6 +51,7 @@ import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.base.BaseWebView;
 import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
+import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.Logger;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
@@ -86,10 +88,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private ImageView ivNavPrev;
 	private ImageView ivNavNext;
 
-	private String mCurrentUrl = "";
+	// private String mCurrentURL = "";
 
 	public String getmCurrentUrl() {
-		return mCurrentUrl;
+		return GlobalVariables.mCurrentURL;
 	}
 
 	private SpannableStringBuilder ssb = new SpannableStringBuilder();
@@ -97,7 +99,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mMainView = (View) inflater.inflate(R.layout.fragment_webview, container, false);
-		initWebView();
+		initWebView(savedInstanceState);
 
 		btnRandom = (Button) mMainView.findViewById(R.id.btnRandom);
 		btnFootNote = (Button) mMainView.findViewById(R.id.btnFootNote);
@@ -149,18 +151,24 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		boolean valuecbShowFootNote = pref.getBoolean("cbShowFootNote", true);
 		boolean valuecbShowMenuLeft = pref.getBoolean("cbShowMenuLeft", true);
 
-		ivNavPrev.setVisibility(valuecbShowPrev == true ? View.VISIBLE : View.GONE);
-		ivNavNext.setVisibility(valuecbShowNext == true ? View.VISIBLE : View.GONE);
-		btnRandom.setVisibility(valuecbShowRandom == true ? View.VISIBLE : View.GONE);
-		btnFootNote.setVisibility(valuecbShowFootNote == true ? View.VISIBLE : View.GONE);
+		ivNavPrev.setVisibility(true == valuecbShowPrev ? View.VISIBLE : View.GONE);
+		ivNavNext.setVisibility(true == valuecbShowNext ? View.VISIBLE : View.GONE);
+		btnRandom.setVisibility(true == valuecbShowRandom ? View.VISIBLE : View.GONE);
+		btnFootNote.setVisibility(true == valuecbShowFootNote ? View.VISIBLE : View.GONE);
 
-		if (valuecbShowMenuLeft == true) {
+		if (true == valuecbShowMenuLeft) {
 			showMenuLeft();
 		} else {
 			showMenuRight();
 		}
 
 		super.onResume();
+	}
+
+	@Override
+	public void onDestroyView() {
+		saveScrollPosition();
+		super.onDestroyView();
 	}
 
 	@Override
@@ -194,6 +202,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	}
 
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		mWebview.saveState(outState);
+		super.onSaveInstanceState(outState);
+	}
+
 	private void captureScreen() {
 
 		String mPath = Utils.getAppStorageFolder(getActivity()) + File.separator + "test.png";
@@ -225,7 +239,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 
-		if (isMenuLeft == true) {
+		if (true == isMenuLeft) {
 			switch (event.getAction()) {
 
 			case MotionEvent.ACTION_DOWN:
@@ -324,8 +338,11 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
-	private void initWebView() {
+	private void initWebView(Bundle savedInstanceState) {
+
 		mWebview = (BaseWebView) mMainView.findViewById(R.id.webviewMain);
+		mWebview.restoreState(savedInstanceState);
+
 		// mWebview.getSettings().setBuiltInZoomControls(true);
 		mWebview.getSettings().setSupportZoom(true);
 		mWebview.getSettings().setUseWideViewPort(true);
@@ -383,7 +400,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-				if (mCurrentUrl != null && url != null && url.equals(mCurrentUrl)) {
+				if (GlobalVariables.mCurrentURL != null && url != null && url.equals(GlobalVariables.mCurrentURL)) {
 					mWebview.goBack();
 					return true;
 				}
@@ -392,7 +409,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				if (url.contains("file:///android_asset/webkit/")) {
 					// do nothing. security origin error.
-				} else if (url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page)) == false) {
+				} else if (false == url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page))) {
 					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 					startActivity(i);
 				} else {
@@ -406,7 +423,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				Logger.d(TAG, "onPageFinished");
-				mCurrentUrl = url;
+				GlobalVariables.mCurrentURL = url;
 
 				mProgressBar.setVisibility(View.GONE);
 
@@ -419,7 +436,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 				}
 
 				String homeURL = getHomeURL();
-				if (url.equalsIgnoreCase(homeURL) == true && mWebview.canGoForward() == false) {
+				if (true == url.equalsIgnoreCase(homeURL) && false == mWebview.canGoForward()) {
 					clearHistory();
 				}
 
@@ -452,7 +469,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
-		loadUrlHomePage();
+		if (GlobalVariables.mCurrentURL != null && GlobalVariables.mCurrentURL.length() > 0) {
+			loadUrl(GlobalVariables.mCurrentURL);
+		} else {
+			loadUrlHomePage();
+		}
+
 	}
 
 	private AlertDialog getImageProcessDialog(final String tabbedUrl) {
@@ -468,12 +490,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case 0:
-					downloadImageFromUrl(mCurrentUrl, tabbedUrl);
+					downloadImageFromUrl(GlobalVariables.mCurrentURL, tabbedUrl);
 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), mCurrentUrl, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.mCurrentURL, tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -503,7 +525,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), mCurrentUrl, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.mCurrentURL, tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -534,16 +556,18 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	};
 
 	private void modifyWebPage() {
-		showLinkDrip();
-		modifyYouTubeIframeWidth();
-		modifyTextBackgroundColor();
-		modifyTextSize();
-
-		runFootNoteJS();
+		if (getActivity() != null) { // on orientation changed, there is no activity for a while.
+			modifyShowLinkDrip();
+			modifyYouTubeIframeWidth();
+			modifyTextBackgroundColor();
+			modifyTextSize();
+		}
+		modifyMakeFootNote();
+		modifyOrientationCSS();
 
 	}
 
-	private void showLinkDrip() {
+	private void modifyShowLinkDrip() {
 		Logger.d(TAG, "showLinkDrip()");
 		// 링크명과 표시 명이 다른 경우, 표시 명에 링크 명을 추가로 표시
 		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
@@ -615,10 +639,34 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}
 	}
 
-	private void runFootNoteJS() {
+	private void modifyMakeFootNote() {
 		Logger.d(TAG, "runFootNoteJS()");
 		mWebview.loadUrl("javascript:$('.foot').children().each(function(i, obj) {if (obj.tagName.toLowerCase() == 'a' && obj.title != '') {window.HTMLOUT.processFootNote(obj.innerHTML, $(obj).attr('id'), obj.title);}});");
 		mWebview.loadUrl("javascript:window.HTMLOUT.setFootNote();");
+	}
+
+	private void modifyOrientationCSS() {
+		if (GlobalVariables.mCurrentURLScrollPercent > 0) {
+			float webviewsize = mWebview.getContentHeight() - mWebview.getTop();
+			float positionInWV = webviewsize * GlobalVariables.mCurrentURLScrollPercent;
+			int positionY = Math.round(mWebview.getTop() + positionInWV);
+			mWebview.scrollTo(0, positionY);
+			GlobalVariables.mCurrentURLScrollPercent = 0;
+		}
+
+		// landscape : rightbox float none, leftbox width 100%
+		// $('#rightBox').css('float', 'none');
+		// $('#leftBox').css('width', '100%');
+
+		int orientation = getResources().getConfiguration().orientation;
+		if (Configuration.ORIENTATION_LANDSCAPE == orientation) {
+			String leftBoxRightBoxCSS = "javascript:$('#rightBox').css('float', 'none');$('#leftBox').css('width', '100%');";
+			mWebview.loadUrl(leftBoxRightBoxCSS);
+		} else {
+			// portrait : rightbox float true, leftbox clear
+			// $( "#rightBox" ).css( "float", "right" );
+		}
+
 	}
 
 	public void loadUrlHomePage() {
@@ -835,6 +883,11 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 		DownloadFilesTask downloadFilesTask = new DownloadFilesTask(getActivity(), mCurrentUrl);
 		downloadFilesTask.execute(tabbedUrl);
+	}
+
+	public void saveScrollPosition() {
+		float percentWebview = (mWebview.getScrollY() - mWebview.getTop()) / (float) mWebview.getContentHeight();
+		GlobalVariables.mCurrentURLScrollPercent = percentWebview;
 	}
 
 }

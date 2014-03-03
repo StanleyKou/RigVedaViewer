@@ -379,7 +379,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbTextColor.setChecked(valuecbTextColor);
 		cbTextColor.setOnCheckedChangeListener(this);
 
-		if (cbTextColor.isChecked() == true) {
+		if (true == cbTextColor.isChecked()) {
 			llColor.setVisibility(View.VISIBLE);
 		} else {
 			llColor.setVisibility(View.GONE);
@@ -408,7 +408,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbFontSize.setChecked(valuecbFontSize);
 		cbFontSize.setOnCheckedChangeListener(this);
 
-		if (cbFontSize.isChecked() == true) {
+		if (true == cbFontSize.isChecked()) {
 			llFontSize.setVisibility(View.VISIBLE);
 		} else {
 			llFontSize.setVisibility(View.GONE);
@@ -488,7 +488,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			editor.putBoolean("cbTextColor", cbTextColor.isChecked());
 			editor.commit();
 
-			if (cbTextColor.isChecked() == true) {
+			if (true == cbTextColor.isChecked()) {
 				llColor.setVisibility(View.VISIBLE);
 			} else {
 				llColor.setVisibility(View.GONE);
@@ -526,7 +526,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			editor.putInt(fontSizefKey, inputFontSizeToInt);
 			editor.commit();
 
-			if (cbFontSize.isChecked() == true) {
+			if (true == cbFontSize.isChecked()) {
 				llFontSize.setVisibility(View.VISIBLE);
 			} else {
 				llFontSize.setVisibility(View.GONE);
@@ -567,7 +567,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			break;
 
 		case R.id.cbShowMenuLeft: {
-			if (isChecked == true) {
+			if (true == isChecked) {
 				cbShowMenuRight.setChecked(false);
 				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 				SharedPreferences.Editor editor = pref.edit();
@@ -586,7 +586,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		}
 			break;
 		case R.id.cbShowMenuRight: {
-			if (isChecked == true) {
+			if (true == isChecked) {
 				cbShowMenuLeft.setChecked(false);
 				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 				SharedPreferences.Editor editor = pref.edit();

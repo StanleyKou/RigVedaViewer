@@ -17,6 +17,8 @@ import com.kou.android.RigVedaViewer.utils.Utils;
 public class SplashActivity extends Activity {
 	private final String TAG = SplashActivity.class.getSimpleName();
 	private final int SPLASH_TIME = 800;
+	public static final String installShortCutPrefKey = "installShortCut";
+
 	private Handler mHandler = new Handler();
 	private Runnable mSplashRunnable = new Runnable() {
 		@Override

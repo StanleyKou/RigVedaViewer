@@ -168,7 +168,7 @@ public class HsvAlphaSelectorView extends LinearLayout {
 		placeSelector();
 	}
 	
-	public int getAlpha()
+	public float getAlpha()
 	{
 		return alpha;
 	}

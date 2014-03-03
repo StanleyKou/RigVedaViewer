@@ -1,6 +1,7 @@
 package com.kou.android.RigVedaViewer.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
@@ -97,11 +98,18 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		Logger.d(TAG, "onRestoreInstanceState()");
 
+		mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
+
 		// It Works! FIXME: 앱 백그라운드 시 메모리 가비지 컬렉션 후 되살아날 때 이렇게 해주어야 우측메뉴가 보임
 		mMenu = new FootNoteMenuFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, mMenu).commit();
 
 		super.onRestoreInstanceState(savedInstanceState);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
 	}
 
 	@Override
@@ -158,7 +166,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 				((CustomWebViewFragment) mContent).goBack();
 				return true;
 			} else {
-				if (bIsBackKeyPressed == false) { // show toast
+				if (false == bIsBackKeyPressed) { // show toast
 					Toast.makeText(this, R.string.backbutton_message, Toast.LENGTH_SHORT).show();
 					bIsBackKeyPressed = true;
 

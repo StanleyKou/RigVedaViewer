@@ -7,6 +7,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -69,18 +70,31 @@ public class Utils {
 	}
 
 	public static void installShortcut(Context context) {
-		Intent shortcutIntent = new Intent(Intent.ACTION_MAIN, null);
-		shortcutIntent.setClass(context, SplashActivity.class);
-		shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-		shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 
-		Intent intent = new Intent();
-		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.app_name));
-		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.drawable.icon_launcher_rigveda));
-		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-		intent.putExtra("duplicate", false);
-		context.sendBroadcast(intent);
+		// installShortCutPrefKey
+		SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
+
+		boolean isShortcutInstalled = pref.getBoolean(SplashActivity.installShortCutPrefKey, false);
+
+		if (false == isShortcutInstalled) {
+
+			Intent shortcutIntent = new Intent(Intent.ACTION_MAIN, null);
+			shortcutIntent.setClass(context, SplashActivity.class);
+			shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+			shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+			Intent intent = new Intent();
+			intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+			intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, context.getString(R.string.app_name));
+			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(context, R.drawable.icon_launcher_rigveda));
+			intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+			intent.putExtra("duplicate", false); // go launcher에서 인식불가. 원래는 preference 이용하지 않고 이 값만 이용해도 중복되지 않음.
+			context.sendBroadcast(intent);
+
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean(SplashActivity.installShortCutPrefKey, true);
+			editor.commit();
+		}
 	}
 
 	public static String getRomanNumber(int number) {
@@ -203,5 +217,4 @@ public class Utils {
 		return deletedFiles;
 	}
 
-	
 }
