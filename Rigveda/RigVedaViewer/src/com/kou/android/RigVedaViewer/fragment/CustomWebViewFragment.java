@@ -67,6 +67,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private View mMainView;
 	private BaseWebView mWebview;
+	private View mWebviewSunglass;
 
 	private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -89,7 +90,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private ImageView ivNavPrev;
 	private ImageView ivNavNext;
 
-	// private String mCurrentURL = "";
+	private boolean isModifyFinished = false;
 
 	public String getCurrentURL() {
 		return GlobalVariables.currentURL;
@@ -396,8 +397,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+				mWebviewSunglass.setVisibility(View.VISIBLE);
 				mProgressBar.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(0);
+
+				isModifyFinished = false;
+
 				super.onPageStarted(view, url, favicon);
 
 				handler.removeCallbacks(modifyWebPageRunnable);
@@ -487,6 +492,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
+		mWebviewSunglass = mMainView.findViewById(R.id.webviewSunGlass);
+
 		if (getCurrentURL() != null && getCurrentURL().length() > 0) {
 			loadUrl(getCurrentURL());
 		} else {
@@ -561,7 +568,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
 			handler.postDelayed(modifyWebPageRunnable, 100);
 			// 타이밍 이슈때문에 딜레이. 리그베다 원래 페이지의 구글애드가 읽혀오는 시간, 이미지 로딩이 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
-			// handler.postDelayed(modifyWebPageRunnable, 2000);
+			// bool 변수로 페이지 수정이 완료되었는지 체크를 하기 때문에 두 번 동작하지는 않음.
+			handler.postDelayed(modifyWebPageRunnable, 2000);
+			handler.postDelayed(modifyWebPageRunnable, 5000);
 		}
 	}
 
@@ -569,7 +578,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 		@Override
 		public void run() {
-			modifyWebPage();
+			if (isModifyFinished == false) {
+				modifyWebPage();
+			}
 		}
 	};
 
@@ -583,6 +594,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}
 		modifyMakeFootNote();
 
+		mWebviewSunglass.setVisibility(View.GONE);
+
+		isModifyFinished = true;
 	}
 
 	private void modifyShowLinkDrip() {

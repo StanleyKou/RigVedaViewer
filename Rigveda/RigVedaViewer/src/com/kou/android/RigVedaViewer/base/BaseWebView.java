@@ -35,17 +35,23 @@ public class BaseWebView extends WebView {
 
 	public BaseWebView(Context context) {
 		super(context.getApplicationContext());
-		setWebViewClient(new MyWebViewClient((Activity) context));
+		if (false == isInEditMode()) {
+			setWebViewClient(new MyWebViewClient((Activity) context));
+		}
 	}
 
 	public BaseWebView(Context context, AttributeSet attrs) {
 		super(context.getApplicationContext(), attrs);
-		setWebViewClient(new MyWebViewClient((Activity) context));
+		if (false == isInEditMode()) {
+			setWebViewClient(new MyWebViewClient((Activity) context));
+		}
 	}
 
 	public BaseWebView(Context context, AttributeSet attrs, int defStyle) {
 		super(context.getApplicationContext(), attrs, defStyle);
-		setWebViewClient(new MyWebViewClient((Activity) context));
+		if (false == isInEditMode()) {
+			setWebViewClient(new MyWebViewClient((Activity) context));
+		}
 	}
 
 	@Override
