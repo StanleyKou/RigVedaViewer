@@ -60,8 +60,8 @@
             android:layout_height="33.33dp"
             android:includeFontPadding="false"
             android:paddingBottom="7.33dp"
-            android:textSize="10dp"
-            android:text="@string/button_reverse_link" />
+            android:text="@string/button_reverse_link"
+            android:textSize="10dp" />
 
         <Button
             android:id="@+id/btnFootNote"
@@ -110,5 +110,11 @@
         android:paddingBottom="14.66dp"
         android:paddingLeft="3.33dp"
         android:src="@drawable/to_right_selected" />
+
+    <View
+        android:id="@+id/webviewSunGlass"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/webview_sun_glass" />
 
 </RelativeLayout>

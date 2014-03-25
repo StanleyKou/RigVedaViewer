@@ -34,7 +34,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	final int MENU_OPTN = 2;
 	final int MENU_RAND = 3;
 
-	private final int REQUEST_OPTION = 1000; // Millisecond
+	private final int REQUEST_OPTION = 1000;
 
 	private boolean bIsBackKeyPressed = false;
 	private final int BACK_AGAIN_TO_EXIT_TIME = 2000; // Millisecond

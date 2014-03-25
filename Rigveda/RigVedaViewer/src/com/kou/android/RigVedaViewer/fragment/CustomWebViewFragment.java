@@ -594,7 +594,14 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}
 		modifyMakeFootNote();
 
-		mWebviewSunglass.setVisibility(View.GONE);
+		handler.postDelayed(new Runnable() {
+
+			@Override
+			public void run() {
+				mWebviewSunglass.setVisibility(View.GONE);
+
+			}
+		}, 500);
 
 		isModifyFinished = true;
 	}

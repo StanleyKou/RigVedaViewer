@@ -43,4 +43,14 @@
         android:paddingRight="7.33dp"
         android:src="@drawable/footnote_close" />
 
+    <ImageView
+        android:id="@+id/ivFootNoteSettings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:paddingBottom="7.33dp"
+        android:paddingRight="7.33dp"
+        android:src="@drawable/footnote_settings" />
+
 </RelativeLayout>

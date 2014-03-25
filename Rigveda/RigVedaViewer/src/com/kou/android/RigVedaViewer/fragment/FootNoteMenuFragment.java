@@ -1,6 +1,7 @@
 package com.kou.android.RigVedaViewer.fragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,11 +29,13 @@ import com.kou.android.RigVedaViewer.utils.Logger;
 public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	public final String TAG = FootNoteMenuFragment.class.getSimpleName();
+	private final int REQUEST_OPTION = 1000;
 
 	private RelativeLayout mainView;
 	private TextView tvFootNote;
 
 	private View ivFootNoteClose;
+	private View ivFootNoteSettings;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +50,9 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 		ivFootNoteClose = mainView.findViewById(R.id.ivFootNoteClose);
 		ivFootNoteClose.setContentDescription(getString(R.string.footnote_close));
 		ivFootNoteClose.setOnClickListener(this);
+
+		ivFootNoteSettings = mainView.findViewById(R.id.ivFootNoteSettings);
+		ivFootNoteSettings.setOnClickListener(this);
 
 		return mainView;
 	}
@@ -70,6 +76,12 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 				((WebViewFragmentHolderActivity) getActivity()).toggle();
 			}
 			break;
+		case R.id.ivFootNoteSettings:
+			if (((WebViewFragmentHolderActivity) getActivity()).getSlidingMenu().isMenuShowing()) {
+				((WebViewFragmentHolderActivity) getActivity()).toggle();
+			}
+			Intent intent = new Intent(getActivity(), OptionActivity.class);
+			startActivityForResult(intent, REQUEST_OPTION);
 		}
 
 	}

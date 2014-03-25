@@ -33,7 +33,6 @@
                 android:id="@+id/btnClearCache"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7.33dp"
                 android:text="@string/option_clear_cache"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -45,7 +44,7 @@
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
                 android:includeFontPadding="true"
-                android:paddingBottom="7.33dp"
+                android:paddingTop="7.33dp"
                 android:text="@string/option_show_alias"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -56,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
-                android:paddingBottom="7.33dp"
+                android:paddingTop="7.33dp"
                 android:text="@string/option_modify_youtube_iframe_width"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -67,6 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
+                android:paddingTop="7.33dp"
                 android:text="@string/option_color_caption"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
@@ -288,6 +288,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
+                android:paddingTop="7.33dp"
                 android:text="@string/option_fontSize_caption"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
