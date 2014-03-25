@@ -91,7 +91,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	// private String mCurrentURL = "";
 
 	public String getmCurrentUrl() {
-		return GlobalVariables.mCurrentURL;
+		return GlobalVariables.currentURL;
 	}
 
 	private SpannableStringBuilder ssb = new SpannableStringBuilder();
@@ -99,6 +99,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mMainView = (View) inflater.inflate(R.layout.fragment_webview, container, false);
+		mMainView.setOnTouchListener(this);
+
 		initWebView(savedInstanceState);
 
 		btnRandom = (Button) mMainView.findViewById(R.id.btnRandom);
@@ -137,6 +139,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		CookieManager.getInstance().setAcceptCookie(true);
 		CookieSyncManager.createInstance(getActivity());
 		CookieSyncManager.getInstance().startSync();
+
 		return mMainView;
 	}
 
@@ -238,72 +241,73 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+		if (v.getId() == R.id.llMenu || v.getId() == R.id.btnRandom || v.getId() == R.id.btnFootNote) {
+			if (true == isMenuLeft) {
+				switch (event.getAction()) {
 
-		if (true == isMenuLeft) {
-			switch (event.getAction()) {
-
-			case MotionEvent.ACTION_DOWN:
-				ivToRightNotSelected.setVisibility(View.VISIBLE);
-				break;
-			case MotionEvent.ACTION_UP:
-				ivToRightNotSelected.setVisibility(View.GONE);
-				ivToRightSelected.setVisibility(View.GONE);
-
-				ivToLeftNotSelected.setVisibility(View.GONE);
-				ivToLeftSelected.setVisibility(View.GONE);
-
-				if (event.getX() > 100) {
-					showMenuRight();
-				}
-				break;
-			case MotionEvent.ACTION_MOVE:
-
-				if (event.getX() > 100) {
-					ivToRightNotSelected.setVisibility(View.INVISIBLE);
-					ivToRightSelected.setVisibility(View.VISIBLE);
-				} else {
+				case MotionEvent.ACTION_DOWN:
 					ivToRightNotSelected.setVisibility(View.VISIBLE);
+					break;
+				case MotionEvent.ACTION_UP:
+					ivToRightNotSelected.setVisibility(View.GONE);
 					ivToRightSelected.setVisibility(View.GONE);
-				}
 
-				break;
-			}
-		} else {
-
-			switch (event.getAction()) {
-
-			case MotionEvent.ACTION_DOWN:
-				ivToLeftNotSelected.setVisibility(View.VISIBLE);
-				((WebViewFragmentHolderActivity) getActivity()).getSlidingMenu().setSlidingEnabled(false);
-
-				break;
-			case MotionEvent.ACTION_UP:
-				ivToRightNotSelected.setVisibility(View.GONE);
-				ivToRightSelected.setVisibility(View.GONE);
-
-				ivToLeftNotSelected.setVisibility(View.GONE);
-				ivToLeftSelected.setVisibility(View.GONE);
-
-				((WebViewFragmentHolderActivity) getActivity()).getSlidingMenu().setSlidingEnabled(true);
-
-				if (event.getX() < -50) {
-					showMenuLeft();
-				}
-
-				break;
-			case MotionEvent.ACTION_MOVE:
-
-				if (event.getX() < -50) {
-					ivToLeftNotSelected.setVisibility(View.INVISIBLE);
-					ivToLeftSelected.setVisibility(View.VISIBLE);
-				} else {
-					ivToLeftNotSelected.setVisibility(View.VISIBLE);
+					ivToLeftNotSelected.setVisibility(View.GONE);
 					ivToLeftSelected.setVisibility(View.GONE);
+
+					if (event.getX() > 100) {
+						showMenuRight();
+					}
+					break;
+				case MotionEvent.ACTION_MOVE:
+
+					if (event.getX() > 100) {
+						ivToRightNotSelected.setVisibility(View.INVISIBLE);
+						ivToRightSelected.setVisibility(View.VISIBLE);
+					} else {
+						ivToRightNotSelected.setVisibility(View.VISIBLE);
+						ivToRightSelected.setVisibility(View.GONE);
+					}
+
+					break;
+				}
+			} else {
+
+				switch (event.getAction()) {
+
+				case MotionEvent.ACTION_DOWN:
+					ivToLeftNotSelected.setVisibility(View.VISIBLE);
+					((WebViewFragmentHolderActivity) getActivity()).getSlidingMenu().setSlidingEnabled(false);
+
+					break;
+				case MotionEvent.ACTION_UP:
+					ivToRightNotSelected.setVisibility(View.GONE);
+					ivToRightSelected.setVisibility(View.GONE);
+
+					ivToLeftNotSelected.setVisibility(View.GONE);
+					ivToLeftSelected.setVisibility(View.GONE);
+
+					((WebViewFragmentHolderActivity) getActivity()).getSlidingMenu().setSlidingEnabled(true);
+
+					if (event.getX() < -50) {
+						showMenuLeft();
+					}
+
+					break;
+				case MotionEvent.ACTION_MOVE:
+
+					if (event.getX() < -50) {
+						ivToLeftNotSelected.setVisibility(View.INVISIBLE);
+						ivToLeftSelected.setVisibility(View.VISIBLE);
+					} else {
+						ivToLeftNotSelected.setVisibility(View.VISIBLE);
+						ivToLeftSelected.setVisibility(View.GONE);
+					}
+
+					break;
 				}
 
-				break;
 			}
-
 		}
 
 		return false;
@@ -400,7 +404,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-				if (GlobalVariables.mCurrentURL != null && url != null && url.equals(GlobalVariables.mCurrentURL)) {
+				if (GlobalVariables.currentURL != null && url != null && url.equals(GlobalVariables.currentURL)) {
 					mWebview.goBack();
 					return true;
 				}
@@ -423,7 +427,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				Logger.d(TAG, "onPageFinished");
-				GlobalVariables.mCurrentURL = url;
+				GlobalVariables.currentURL = url;
 
 				mProgressBar.setVisibility(View.GONE);
 
@@ -469,8 +473,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
-		if (GlobalVariables.mCurrentURL != null && GlobalVariables.mCurrentURL.length() > 0) {
-			loadUrl(GlobalVariables.mCurrentURL);
+		if (GlobalVariables.currentURL != null && GlobalVariables.currentURL.length() > 0) {
+			loadUrl(GlobalVariables.currentURL);
 		} else {
 			loadUrlHomePage();
 		}
@@ -490,12 +494,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case 0:
-					downloadImageFromUrl(GlobalVariables.mCurrentURL, tabbedUrl);
+					downloadImageFromUrl(GlobalVariables.currentURL, tabbedUrl);
 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.mCurrentURL, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.currentURL, tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -525,7 +529,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.mCurrentURL, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.currentURL, tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -543,7 +547,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
 			handler.postDelayed(modifyWebPageRunnable, 100);
 			// 타이밍 이슈때문에 딜레이. 리그베다 원래 페이지의 구글애드가 읽혀오는 시간, 이미지 로딩이 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
-			handler.postDelayed(modifyWebPageRunnable, 2000);
+			// handler.postDelayed(modifyWebPageRunnable, 2000);
 		}
 	}
 
@@ -564,7 +568,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			modifyOrientationCSS();
 		}
 		modifyMakeFootNote();
-		
 
 	}
 
@@ -647,12 +650,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyOrientationCSS() {
-		if (GlobalVariables.mCurrentURLScrollPercent > 0) {
+		if (GlobalVariables.currentURLScrollPercent > 0) {
 			float webviewsize = mWebview.getContentHeight() - mWebview.getTop();
-			float positionInWV = webviewsize * GlobalVariables.mCurrentURLScrollPercent;
+			float positionInWV = webviewsize * GlobalVariables.currentURLScrollPercent;
 			int positionY = Math.round(mWebview.getTop() + positionInWV);
 			mWebview.scrollTo(0, positionY);
-			GlobalVariables.mCurrentURLScrollPercent = 0;
+			GlobalVariables.currentURLScrollPercent = 0;
 		}
 
 		// landscape : rightbox float none, leftbox width 100%
@@ -888,7 +891,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	public void saveScrollPosition() {
 		float percentWebview = (mWebview.getScrollY() - mWebview.getTop()) / (float) mWebview.getContentHeight();
-		GlobalVariables.mCurrentURLScrollPercent = percentWebview;
+		GlobalVariables.currentURLScrollPercent = percentWebview;
 	}
 
 }

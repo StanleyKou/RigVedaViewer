@@ -1,7 +1,6 @@
 package com.kou.android.RigVedaViewer.activity;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
@@ -80,8 +79,9 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+		getSlidingMenu().setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-
+	
 	/**
 	 * Override function, to restore screen.
 	 */

@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/common_background"
+    android:contentDescription="@string/fragment_webview.xml"
     android:orientation="vertical" >
 
     <ProgressBar

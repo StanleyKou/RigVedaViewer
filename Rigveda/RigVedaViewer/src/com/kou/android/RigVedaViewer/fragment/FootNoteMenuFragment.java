@@ -18,6 +18,7 @@ import android.widget.TextView.BufferType;
 import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
+import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.Logger;
 
 /**
@@ -37,12 +38,14 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Logger.d(TAG, "onCreateView()");
 
-		Logger.d(TAG, "onCreateView()");
-
 		mainView = (RelativeLayout) inflater.inflate(R.layout.fragment_list, null);
+
 		tvFootNote = (TextView) mainView.findViewById(R.id.tvFootNote);
 
+		GlobalVariables.footNoteTextSize = tvFootNote.getTextSize();
+
 		ivFootNoteClose = mainView.findViewById(R.id.ivFootNoteClose);
+		ivFootNoteClose.setContentDescription(getString(R.string.footnote_close));
 		ivFootNoteClose.setOnClickListener(this);
 
 		return mainView;
@@ -97,9 +100,16 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 			if (true == valuecbFontSize) {
 
 				float fontSize = pref.getInt(OptionActivity.fontSizefKey, OptionActivity.DEFAULT_FONT_SIZE_PERCENT);
-				float modifiedFontsize = tvFootNote.getTextSize() * (fontSize / 100f);
+				float footNoteTextSize = GlobalVariables.footNoteTextSize;
+
+				if (footNoteTextSize == 0) {
+					footNoteTextSize = tvFootNote.getTextSize();
+				}
+
+				float modifiedFontsize = footNoteTextSize * (fontSize / 100f);
 				tvFootNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, modifiedFontsize);
 			}
 		}
 	}
+
 }

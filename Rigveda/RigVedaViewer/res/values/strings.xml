@@ -79,6 +79,26 @@
     <string name="http_stanleykou_tistory_com_">http://stanleykou.tistory.com/</string>
 
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <!-- contents description -->
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+    <string name="color_colorselectview.xml">color_colorselectview.xml</string>
+    <string name="color_hexview.xml">color_hexview.xml</string>
+    <string name="color_hsvview.xml">color_hsvview.xml</string>
+    <string name="color_rgbview.xml">color_rgbview.xml</string>
+    <string name="colorview.xml">colorview.xml</string>
+    <string name="content_frame.xml">content_frame.xml</string>
+    <string name="fragment_list.xml">fragment_list.xml</string>
+    <string name="fragment_row.xml">fragment_row.xml</string>
+    <string name="fragment_webview.xml">fragment_webview.xml</string>
+    <string name="menu_frame.xml">menu_frame.xml</string>
+    <string name="option_activity.xml">option_activity.xml</string>
+    <string name="slidingmenumain.xml">slidingmenumain.xml</string>
+    <string name="splash_activity.xml">splash_activity.xml</string>
+    <string name="footnote_scrollview">footnote_scrollview</string>
+    <string name="footnote_textview">footnote_textview</string>
+    <string name="footnote_close">footnote_close</string>
+
+    <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <!-- devmil-android-color-picker -->
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
 

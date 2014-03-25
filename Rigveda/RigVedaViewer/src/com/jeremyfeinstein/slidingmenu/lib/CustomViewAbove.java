@@ -145,12 +145,14 @@ public class CustomViewAbove extends ViewGroup {
 	public CustomViewAbove(Context context) {
 		this(context, null);
 		Logger.d(TAG, "Constructor::CustomViewAbove()");
+		setContentDescription(CustomViewAbove.class.getSimpleName());
 	}
 
 	public CustomViewAbove(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		Logger.d(TAG, "Constructor::CustomViewAbove(), with AttributeSet");
 		initCustomViewAbove();
+		setContentDescription(CustomViewAbove.class.getSimpleName());
 	}
 
 	void initCustomViewAbove() {
@@ -361,7 +363,6 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public int getBehindWidth() {
-		Logger.d(TAG, "getBehindWidth()");
 		if (mViewBehind == null) {
 			return 0;
 		} else {
@@ -523,7 +524,6 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	public void computeScroll() {
-		Logger.d(TAG, "computeScroll()");
 		if (!mScroller.isFinished()) {
 			if (mScroller.computeScrollOffset()) {
 				int oldX = getScrollX();
@@ -578,8 +578,6 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private void completeScroll() {
-		Logger.d(TAG, "completeScroll()");
-
 		boolean needPopulate = mScrolling;
 		if (needPopulate) {
 			// Done with scroll, no longer want to cache view drawing.
@@ -621,6 +619,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	private boolean thisTouchAllowed(MotionEvent ev) {
 		Logger.d(TAG, "thisTouchAllowed()");
+
 		int x = (int) (ev.getX() + mScrollX);
 		if (isMenuOpen()) {
 			return mViewBehind.menuOpenTouchAllowed(mContent, mCurItem, x);
@@ -664,6 +663,7 @@ public class CustomViewAbove extends ViewGroup {
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		Logger.d(TAG, "onInterceptTouchEvent()");
+
 		if (!mEnabled) {
 			return false;
 		}
@@ -747,6 +747,7 @@ public class CustomViewAbove extends ViewGroup {
 			int index = MotionEventCompat.getActionIndex(ev);
 			mActivePointerId = MotionEventCompat.getPointerId(ev, index);
 			mLastMotionX = mInitialMotionX = ev.getX();
+
 			break;
 
 		case MotionEvent.ACTION_MOVE:
@@ -833,6 +834,7 @@ public class CustomViewAbove extends ViewGroup {
 			mLastMotionX = MotionEventCompat.getX(ev, pointerIndex);
 			break;
 		}
+
 		return true;
 	}
 
@@ -920,7 +922,6 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	protected float getPercentOpen() {
-		Logger.d(TAG, "getPercentOpen()");
 		return Math.abs(mScrollX - mContent.getLeft()) / getBehindWidth();
 	}
 

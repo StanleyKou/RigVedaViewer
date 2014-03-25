@@ -4,7 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_margin="5px"
-    android:background="@drawable/transparentbackrepeat" >
+    android:background="@drawable/transparentbackrepeat"
+    android:contentDescription="@string/colorview.xml" >
 
     <ImageView
         android:id="@+id/imgColorView"
