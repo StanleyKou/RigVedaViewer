@@ -55,6 +55,15 @@
             android:text="@string/button_random" />
 
         <Button
+            android:id="@+id/btnReverseLink"
+            android:layout_width="49.33dp"
+            android:layout_height="33.33dp"
+            android:includeFontPadding="false"
+            android:paddingBottom="7.33dp"
+            android:textSize="10dp"
+            android:text="@string/button_reverse_link" />
+
+        <Button
             android:id="@+id/btnFootNote"
             android:layout_width="49.33dp"
             android:layout_height="33.33dp"

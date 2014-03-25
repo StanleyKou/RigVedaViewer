@@ -77,6 +77,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private boolean isMenuLeft = true;
 
 	private Button btnRandom;
+	private Button btnReverseLink;
 	private Button btnFootNote;
 
 	private ImageView ivToRightNotSelected;
@@ -90,8 +91,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	// private String mCurrentURL = "";
 
-	public String getmCurrentUrl() {
+	public String getCurrentURL() {
 		return GlobalVariables.currentURL;
+	}
+
+	public void setCurrentURL(String currentURL) {
+		GlobalVariables.currentURL = currentURL;
 	}
 
 	private SpannableStringBuilder ssb = new SpannableStringBuilder();
@@ -104,10 +109,13 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		initWebView(savedInstanceState);
 
 		btnRandom = (Button) mMainView.findViewById(R.id.btnRandom);
+		btnReverseLink = (Button) mMainView.findViewById(R.id.btnReverseLink);
 		btnFootNote = (Button) mMainView.findViewById(R.id.btnFootNote);
 
 		btnRandom.setOnClickListener(this);
 		btnRandom.setOnTouchListener(this);
+		btnReverseLink.setOnClickListener(this);
+		btnReverseLink.setOnClickListener(this);
 		btnFootNote.setOnClickListener(this);
 		btnFootNote.setOnTouchListener(this);
 
@@ -151,12 +159,14 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
 		boolean valuecbShowNext = pref.getBoolean("cbShowNext", false);
 		boolean valuecbShowRandom = pref.getBoolean("cbShowRandom", true);
+		boolean valuecbShowReverseLink = pref.getBoolean("cbShowReverseLink", true);
 		boolean valuecbShowFootNote = pref.getBoolean("cbShowFootNote", true);
 		boolean valuecbShowMenuLeft = pref.getBoolean("cbShowMenuLeft", true);
 
 		ivNavPrev.setVisibility(true == valuecbShowPrev ? View.VISIBLE : View.GONE);
 		ivNavNext.setVisibility(true == valuecbShowNext ? View.VISIBLE : View.GONE);
 		btnRandom.setVisibility(true == valuecbShowRandom ? View.VISIBLE : View.GONE);
+		btnReverseLink.setVisibility(true == valuecbShowReverseLink ? View.VISIBLE : View.GONE);
 		btnFootNote.setVisibility(true == valuecbShowFootNote ? View.VISIBLE : View.GONE);
 
 		if (true == valuecbShowMenuLeft) {
@@ -171,6 +181,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public void onDestroyView() {
 		saveScrollPosition();
+		mWebview.destroy();
 		super.onDestroyView();
 	}
 
@@ -191,6 +202,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		switch (v.getId()) {
 		case R.id.btnRandom:
 			loadUrl(R.string.url_random_page);
+			break;
+		case R.id.btnReverseLink:
+			processReverseLink();
 			break;
 		case R.id.btnFootNote:
 			openMenu();
@@ -241,7 +255,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		if (v.getId() == R.id.llMenu || v.getId() == R.id.btnRandom || v.getId() == R.id.btnFootNote) {
+		if (v.getId() == R.id.llMenu || v.getId() == R.id.btnRandom || v.getId() == R.id.btnReverseLink || v.getId() == R.id.btnFootNote) {
 			if (true == isMenuLeft) {
 				switch (event.getAction()) {
 
@@ -404,7 +418,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
-				if (GlobalVariables.currentURL != null && url != null && url.equals(GlobalVariables.currentURL)) {
+				if (getCurrentURL() != null && url != null && url.equals(getCurrentURL())) {
 					mWebview.goBack();
 					return true;
 				}
@@ -427,7 +441,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				Logger.d(TAG, "onPageFinished");
-				GlobalVariables.currentURL = url;
+				setCurrentURL(url);
 
 				mProgressBar.setVisibility(View.GONE);
 
@@ -473,8 +487,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
-		if (GlobalVariables.currentURL != null && GlobalVariables.currentURL.length() > 0) {
-			loadUrl(GlobalVariables.currentURL);
+		if (getCurrentURL() != null && getCurrentURL().length() > 0) {
+			loadUrl(getCurrentURL());
 		} else {
 			loadUrlHomePage();
 		}
@@ -494,12 +508,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case 0:
-					downloadImageFromUrl(GlobalVariables.currentURL, tabbedUrl);
+					downloadImageFromUrl(getCurrentURL(), tabbedUrl);
 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.currentURL, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), getCurrentURL(), tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -529,7 +543,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					break;
 				case 1:
 					ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), GlobalVariables.currentURL, tabbedUrl);
+					String downloadablelUrl = Utils.getDownloadableRigVedaURL(getActivity(), getCurrentURL(), tabbedUrl);
 					clipboard.setText(downloadablelUrl);
 					Toast.makeText(getActivity(), getString(R.string.dialog_image_url_copy_colon) + downloadablelUrl, Toast.LENGTH_SHORT).show();
 					break;
@@ -692,6 +706,16 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	public void clearHistory() {
 		Logger.d(TAG, "clearHistory()");
 		mWebview.clearHistory();
+	}
+
+	public void processReverseLink() {
+		String currentURL = getCurrentURL();
+		if (currentURL.equals(getString(R.string.url_home_page))) {
+			return;
+		}
+
+		String reverseURL = Utils.getReverseLink(getActivity().getApplicationContext(), currentURL);
+		loadUrl(reverseURL);
 	}
 
 	public void openMenu() {

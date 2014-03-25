@@ -392,6 +392,16 @@
                 android:textColor="@color/black" />
 
             <CheckBox
+                android:id="@+id/cbShowReverseLink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
+                android:paddingBottom="7.33dp"
+                android:text="@string/option_show_reverse_link"
+                android:textColor="@color/black" />
+
+            <CheckBox
                 android:id="@+id/cbShowFootNote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

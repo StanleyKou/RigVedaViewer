@@ -62,6 +62,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private CheckBox cbShowPrev;
 	private CheckBox cbShowNext;
 	private CheckBox cbShowRandom;
+	private CheckBox cbShowReverseLink;
 	private CheckBox cbShowFootNote;
 	private CheckBox cbShowMenuLeft;
 	private CheckBox cbShowMenuRight;
@@ -119,6 +120,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
 		cbShowNext = (CheckBox) findViewById(R.id.cbShowNext);
 		cbShowRandom = (CheckBox) findViewById(R.id.cbShowRandom);
+		cbShowReverseLink = (CheckBox) findViewById(R.id.cbShowReverseLink);
 		cbShowFootNote = (CheckBox) findViewById(R.id.cbShowFootNote);
 		cbShowMenuLeft = (CheckBox) findViewById(R.id.cbShowMenuLeft);
 		cbShowMenuRight = (CheckBox) findViewById(R.id.cbShowMenuRight);
@@ -429,6 +431,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbShowRandom.setChecked(valuecbShowRandom);
 		cbShowRandom.setOnCheckedChangeListener(this);
 
+		boolean valuecbShowReverseLink = pref.getBoolean("cbShowReverseLink", true);
+		cbShowReverseLink.setChecked(valuecbShowReverseLink);
+		cbShowReverseLink.setOnCheckedChangeListener(this);
+
 		boolean valuecbShowFootNote = pref.getBoolean("cbShowFootNote", true);
 		cbShowFootNote.setChecked(valuecbShowFootNote);
 		cbShowFootNote.setOnCheckedChangeListener(this);
@@ -454,6 +460,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		editor.putBoolean("cbShowPrev", cbShowPrev.isChecked());
 		editor.putBoolean("cbShowNext", cbShowNext.isChecked());
 		editor.putBoolean("cbShowRandom", cbShowRandom.isChecked());
+		editor.putBoolean("cbShowReverseLink", cbShowReverseLink.isChecked());
 		editor.putBoolean("cbShowFootNote", cbShowFootNote.isChecked());
 		editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
 		editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
@@ -554,6 +561,14 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
 			SharedPreferences.Editor editor = pref.edit();
 			editor.putBoolean("cbShowRandom", isChecked);
+			editor.commit();
+		}
+			break;
+
+		case R.id.cbShowReverseLink: {
+			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = pref.edit();
+			editor.putBoolean("cbShowReverseLink", isChecked);
 			editor.commit();
 		}
 			break;

@@ -217,4 +217,16 @@ public class Utils {
 		return deletedFiles;
 	}
 
+	public static String getReverseLink(Context context, String currentURL) {
+		String itemName = getItemName(currentURL);
+		String reverseURL =context.getString(R.string.url_home_page_with_slash) + itemName +  context.getString(R.string.url_backlink_keyword) + itemName;
+		return reverseURL;
+	}
+
+	private static String getItemName(String currentURL) {
+		String[] array = currentURL.split("/");
+
+		return array[array.length - 1];
+	}
+
 }
