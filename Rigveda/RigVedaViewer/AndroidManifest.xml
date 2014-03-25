@@ -14,7 +14,7 @@
 
     <application
         android:allowBackup="true"
-        android:debuggable="false"
+        android:debuggable="true"
         android:icon="@drawable/icon_2014_02_04"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar" >

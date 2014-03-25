@@ -81,7 +81,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		getSlidingMenu().setTouchModeBehind(SlidingMenu.TOUCHMODE_FULLSCREEN);
 	}
-	
+
 	/**
 	 * Override function, to restore screen.
 	 */
@@ -105,11 +105,6 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, mMenu).commit();
 
 		super.onRestoreInstanceState(savedInstanceState);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
 	}
 
 	@Override
@@ -235,7 +230,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	}
 
 	public String getmCurrentUrl() {
-		return ((CustomWebViewFragment) mContent).getmCurrentUrl();
+		return ((CustomWebViewFragment) mContent).getCurrentURL();
 	}
 
 	@Override
