@@ -33,9 +33,9 @@
                 android:id="@+id/btnClearCache"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="14.33dp"
                 android:text="@string/option_clear_cache"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/black" />
 
             <CheckBox
                 android:id="@+id/cbAlias"
@@ -44,10 +44,9 @@
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
                 android:includeFontPadding="true"
-                android:paddingTop="7.33dp"
+                android:paddingTop="14.33dp"
                 android:text="@string/option_show_alias"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/black" />
 
             <CheckBox
                 android:id="@+id/cbModifyYouTubeWidth"
@@ -55,27 +54,45 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
-                android:paddingTop="7.33dp"
+                android:paddingTop="14.33dp"
                 android:text="@string/option_modify_youtube_iframe_width"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/black" />
 
+            <CheckBox
+                android:id="@+id/cbExternalImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
+                android:paddingTop="14.33dp"
+                android:text="@string/option_show_external_image"
+                android:textColor="@color/black" />
+
+            <CheckBox
+                android:id="@+id/cbNightEyeProtect"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-38dp"
+                android:drawableLeft="@drawable/cb_selector"
+                android:paddingTop="14.33dp"
+                android:text="@string/option_show_night_eye_protect"
+                android:textColor="@color/black" />
+            
             <CheckBox
                 android:id="@+id/cbTextColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
-                android:paddingTop="7.33dp"
+                android:paddingTop="14.33dp"
                 android:text="@string/option_color_caption"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/black" />
 
             <LinearLayout
                 android:id="@+id/llColor"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/option_textcolor_background"
+                android:background="@drawable/option_color_background"
                 android:orientation="vertical"
                 android:padding="7.33dp" >
 
@@ -241,7 +258,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="0.67dp" >
+                    android:padding="7.33dp" >
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -255,14 +272,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:background="@color/black"
                         android:orientation="horizontal"
-                        android:padding="0.67dp" >
+                        android:padding="7.33dp" >
 
                         <TextView
                             android:id="@+id/tvColorSample"
-                            android:layout_width="60dp"
-                            android:layout_height="25dp"
+                            android:layout_width="80dp"
+                            android:layout_height="45dp"
                             android:background="@color/white"
                             android:gravity="center"
                             android:text="@string/option_color_sample"
@@ -271,8 +287,8 @@
 
                         <TextView
                             android:id="@+id/tvColorSampleLink"
-                            android:layout_width="60dp"
-                            android:layout_height="25dp"
+                            android:layout_width="80dp"
+                            android:layout_height="45dp"
                             android:background="@color/white"
                             android:gravity="center"
                             android:text="@string/option_color_sample_link"
@@ -288,16 +304,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="-38dp"
                 android:drawableLeft="@drawable/cb_selector"
-                android:paddingTop="7.33dp"
+                android:paddingTop="14.33dp"
                 android:text="@string/option_fontSize_caption"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/black" />
 
             <LinearLayout
                 android:id="@+id/llFontSize"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/option_textcolor_background"
+                android:background="@drawable/option_color_background"
                 android:orientation="vertical"
                 android:padding="7.33dp" >
 
@@ -307,7 +322,7 @@
                     android:orientation="horizontal"
                     android:paddingBottom="7.33dp"
                     android:paddingLeft="21.33dp"
-                    android:paddingTop="7.33dp" >
+                    android:paddingTop="14.33dp" >
 
                     <EditText
                         android:id="@+id/etFontSize"
@@ -356,7 +371,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16.33dp"
-                android:paddingTop="21.33dp"
+                android:paddingTop="34.33dp"
                 android:text="@string/option_caption_menu"
                 android:textColor="@color/black"
                 android:textSize="18dp"
@@ -432,22 +447,26 @@
                 android:text="@string/option_show_menuright"
                 android:textColor="@color/black" />
 
-            <Button
+            <TextView
                 android:id="@+id/btnAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7.33dp"
-                android:text="@string/option_about_btn" />
+                android:paddingBottom="16.33dp"
+                android:paddingTop="34.33dp"
+                android:text="@string/option_about_btn"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvAbout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="7.33dp"
-                android:paddingTop="7.33dp"
+                android:autoLink="web"
+                android:background="@drawable/textview_border"
+                android:padding="7.33dp"
                 android:text="@string/option_about_text"
-                android:textColor="@color/black"
-                android:visibility="gone" />
+                android:textColor="@color/black" />
         </LinearLayout>
     </ScrollView>
 

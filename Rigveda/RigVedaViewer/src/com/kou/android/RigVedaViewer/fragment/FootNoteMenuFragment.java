@@ -1,8 +1,6 @@
 package com.kou.android.RigVedaViewer.fragment;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
@@ -21,6 +19,7 @@ import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 
 /**
  * FavoriteMenuFragment
@@ -106,12 +105,11 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	private void setFootNoteTextSize() {
 		if (getActivity() != null) {
-			SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
 
-			boolean valuecbFontSize = pref.getBoolean("cbFontSize", false);
+			boolean valuecbFontSize = PreferenceUtils.getcbFontSize(getActivity());
 			if (true == valuecbFontSize) {
 
-				float fontSize = pref.getInt(OptionActivity.fontSizefKey, OptionActivity.DEFAULT_FONT_SIZE_PERCENT);
+				float fontSize = PreferenceUtils.getfontSize(getActivity());
 				float footNoteTextSize = GlobalVariables.footNoteTextSize;
 
 				if (footNoteTextSize == 0) {

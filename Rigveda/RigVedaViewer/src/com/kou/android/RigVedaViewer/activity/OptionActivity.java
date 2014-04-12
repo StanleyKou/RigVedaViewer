@@ -2,7 +2,6 @@ package com.kou.android.RigVedaViewer.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.ClipboardManager;
 import android.text.Editable;
@@ -14,12 +13,12 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
 import de.devmil.common.ui.color.ColorSelectorDialog;
@@ -34,29 +33,11 @@ import de.devmil.common.ui.color.ColorSelectorDialog.OnColorChangedListener;
 public class OptionActivity extends Activity implements OnCheckedChangeListener, OnClickListener {
 	private final static String TAG = OptionActivity.class.getSimpleName();
 
-	public final static String textColorPrefKey = "textColor";
-	public final static String backgroundColorPrefKey = "backgroundColor";
-	public final static String linkColorPrefKey = "linkColor";
-	public final static String fontSizefKey = "fontSize";
-	public final static int DEFAULT_FONT_SIZE_PERCENT = 100;
-
-	private final int TEXTCOLOR_TYPE1 = 0xFF000000;
-	private final int TEXTCOLOR_TYPE2 = 0xFF999999;
-	private final int TEXTCOLOR_TYPE3 = 0xFF121255;
-
-	private final int BACKGROUND_TYPE1 = 0xFFFFFFFF;
-	private final int BACKGROUND_TYPE2 = 0xFF000000;
-	private final int BACKGROUND_TYPE3 = 0xFFBBBBBB;
-
-	private final int LINKCOLOR_TYPE1 = 0xFF002EE2;
-	private final int LINKCOLOR_TYPE2 = 0xFFCC6600;
-	private final int LINKCOLOR_TYPE3 = 0xFF0072FF;
-
-	private ScrollView svHolder;
-
 	private Button btnClearCache;
 	private CheckBox cbAlias;
 	private CheckBox cbModifyYouTubeWidth;
+	private CheckBox cbExternalImage;
+	private CheckBox cbNightEyeProtect;
 	private CheckBox cbTextColor;
 	private CheckBox cbFontSize;
 	private CheckBox cbShowPrev;
@@ -112,9 +93,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		btnClearCache = (Button) findViewById(R.id.btnClearCache);
 		btnClearCache.setOnClickListener(this);
 
-		svHolder = (ScrollView) findViewById(R.id.svHolder);
 		cbAlias = (CheckBox) findViewById(R.id.cbAlias);
 		cbModifyYouTubeWidth = (CheckBox) findViewById(R.id.cbModifyYouTubeWidth);
+		cbExternalImage = (CheckBox) findViewById(R.id.cbExternalImage);
+		cbNightEyeProtect = (CheckBox) findViewById(R.id.cbNightEyeProtect);
 		cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
 		cbFontSize = (CheckBox) findViewById(R.id.cbFontSize);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
@@ -186,9 +168,9 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			}
 		};
 
-		textColorDialog = new ColorSelectorDialog(this, textColorListener, TEXTCOLOR_TYPE1);
-		backgroundColorDialog = new ColorSelectorDialog(this, backgroundColorListener, BACKGROUND_TYPE1);
-		linkColorDialog = new ColorSelectorDialog(this, linkColorListener, LINKCOLOR_TYPE1);
+		textColorDialog = new ColorSelectorDialog(this, textColorListener, PreferenceUtils.TEXTCOLOR_TYPE1);
+		backgroundColorDialog = new ColorSelectorDialog(this, backgroundColorListener, PreferenceUtils.BACKGROUND_TYPE1);
+		linkColorDialog = new ColorSelectorDialog(this, linkColorListener, PreferenceUtils.LINKCOLOR_TYPE1);
 
 		// Font size
 		btnFontUp = (Button) findViewById(R.id.btnFontUp);
@@ -208,24 +190,15 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 			@Override
 			public void afterTextChanged(Editable s) {
-				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = pref.edit();
-
 				String inputFontSize = etFontSize.getText().toString();
-				int inputFontSizeToInt = 0;
+				int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
 				try {
 					inputFontSizeToInt = Integer.parseInt(inputFontSize);
 				} catch (NumberFormatException e) {
 					e.toString();
 				}
 
-				if (0 == inputFontSizeToInt) {
-					inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
-				}
-
-				editor.putInt(fontSizefKey, inputFontSizeToInt);
-				editor.commit();
-
+				PreferenceUtils.setfontSize(getApplicationContext(), inputFontSizeToInt);
 			}
 		});
 
@@ -241,22 +214,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			break;
 
 		case R.id.btnAbout:
-
-			if (tvAbout.getVisibility() == View.GONE) {
-				tvAbout.setVisibility(View.VISIBLE);
-				svHolder.post(new Runnable() {
-					@Override
-					public void run() {
-						svHolder.fullScroll(View.FOCUS_DOWN);
-					}
-				});
-			} else {
-				tvAbout.setVisibility(View.GONE);
-			}
-
-			break;
-
-		case R.id.tvAbout:
+			// about 제목을 클릭하면 블로그 URL이 클립보드로 복사됨. 그냥 클립보드 코드를 넣고 싶었음.
 			ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			clipboard.setText(getString(R.string.http_stanleykou_tistory_com_));
 			Toast.makeText(this, R.string.option_clipboard_copied, Toast.LENGTH_SHORT).show();
@@ -276,27 +234,27 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 		case R.id.btnType1:
 		case R.id.btnType1Link:
-			textColor = TEXTCOLOR_TYPE1;
-			backgroundColor = BACKGROUND_TYPE1;
-			linkColor = LINKCOLOR_TYPE1;
+			textColor = PreferenceUtils.TEXTCOLOR_TYPE1;
+			backgroundColor = PreferenceUtils.BACKGROUND_TYPE1;
+			linkColor = PreferenceUtils.LINKCOLOR_TYPE1;
 			setSampleTextColor();
 			commitTextBackgroundColor();
 			break;
 
 		case R.id.btnType2:
 		case R.id.btnType2Link:
-			textColor = TEXTCOLOR_TYPE2;
-			backgroundColor = BACKGROUND_TYPE2;
-			linkColor = LINKCOLOR_TYPE2;
+			textColor = PreferenceUtils.TEXTCOLOR_TYPE2;
+			backgroundColor = PreferenceUtils.BACKGROUND_TYPE2;
+			linkColor = PreferenceUtils.LINKCOLOR_TYPE2;
 			setSampleTextColor();
 			commitTextBackgroundColor();
 			break;
 
 		case R.id.btnType3:
 		case R.id.btnType3Link:
-			textColor = TEXTCOLOR_TYPE3;
-			backgroundColor = BACKGROUND_TYPE3;
-			linkColor = LINKCOLOR_TYPE3;
+			textColor = PreferenceUtils.TEXTCOLOR_TYPE3;
+			backgroundColor = PreferenceUtils.BACKGROUND_TYPE3;
+			linkColor = PreferenceUtils.LINKCOLOR_TYPE3;
 			setSampleTextColor();
 			commitTextBackgroundColor();
 			break;
@@ -304,15 +262,11 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		case R.id.btnFontUp: {
 
 			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = 0;
+			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
 			try {
 				inputFontSizeToInt = Integer.parseInt(inputFontSize);
 			} catch (NumberFormatException e) {
 				e.toString();
-			}
-
-			if (0 == inputFontSizeToInt) {
-				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
 			}
 
 			inputFontSizeToInt += 1;
@@ -324,15 +278,11 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 		case R.id.btnFontDown:
 			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = 0;
+			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
 			try {
 				inputFontSizeToInt = Integer.parseInt(inputFontSize);
 			} catch (NumberFormatException e) {
 				e.toString();
-			}
-
-			if (0 == inputFontSizeToInt) {
-				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
 			}
 
 			inputFontSizeToInt -= 1;
@@ -355,29 +305,31 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	}
 
 	private void commitTextBackgroundColor() {
-		SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-		editor.putInt(textColorPrefKey, textColor);
-		editor.putInt(backgroundColorPrefKey, backgroundColor);
-		editor.putInt(linkColorPrefKey, linkColor);
-
-		editor.commit();
+		PreferenceUtils.settextColor(getApplicationContext(), textColor);
+		PreferenceUtils.setbackgroundColor(getApplicationContext(), backgroundColor);
+		PreferenceUtils.setlinkColorPrefKey(getApplicationContext(), linkColor);
 	}
 
 	protected void onResume() {
 		super.onResume();
 
-		SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-
-		boolean valuecbAlias = pref.getBoolean("cbAlias", true);
+		boolean valuecbAlias = PreferenceUtils.getcbAlias(getApplicationContext());
 		cbAlias.setChecked(valuecbAlias);
 		cbAlias.setOnCheckedChangeListener(this);
 
-		boolean valuecbModifyYouTubeWidth = pref.getBoolean("cbModifyYouTubeWidth", true);
+		boolean valuecbModifyYouTubeWidth = PreferenceUtils.getcbModifyYouTubeWidth(getApplicationContext());
 		cbModifyYouTubeWidth.setChecked(valuecbModifyYouTubeWidth);
 		cbModifyYouTubeWidth.setOnCheckedChangeListener(this);
 
-		boolean valuecbTextColor = pref.getBoolean("cbTextColor", false);
+		boolean valuecbExternalImage = PreferenceUtils.getcbExternalImage(getApplicationContext());
+		cbExternalImage.setChecked(valuecbExternalImage);
+		cbExternalImage.setOnCheckedChangeListener(this);
+
+		boolean valuecbNightEyeProtect = PreferenceUtils.getcbNightEyeProtect(getApplicationContext());
+		cbNightEyeProtect.setChecked(valuecbNightEyeProtect);
+		cbNightEyeProtect.setOnCheckedChangeListener(this);
+
+		boolean valuecbTextColor = PreferenceUtils.getcbTextColor(getApplicationContext());
 		cbTextColor.setChecked(valuecbTextColor);
 		cbTextColor.setOnCheckedChangeListener(this);
 
@@ -397,16 +349,16 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		btnType2Link.setEnabled(cbTextColor.isChecked());
 		btnType3Link.setEnabled(cbTextColor.isChecked());
 
-		textColor = pref.getInt(textColorPrefKey, TEXTCOLOR_TYPE1);
-		backgroundColor = pref.getInt(backgroundColorPrefKey, BACKGROUND_TYPE1);
-		linkColor = pref.getInt(linkColorPrefKey, LINKCOLOR_TYPE1);
+		textColor = PreferenceUtils.gettextColor(getApplicationContext());
+		backgroundColor = PreferenceUtils.getbackgroundColor(getApplicationContext());
+		linkColor = PreferenceUtils.getlinkColorPrefKey(getApplicationContext());
 
 		tvColorSample.setTextColor(textColor);
 		tvColorSample.setBackgroundColor(backgroundColor);
 		tvColorSampleLink.setTextColor(linkColor);
 		tvColorSampleLink.setBackgroundColor(backgroundColor);
 
-		boolean valuecbFontSize = pref.getBoolean("cbFontSize", false);
+		boolean valuecbFontSize = PreferenceUtils.getcbFontSize(getApplicationContext());
 		cbFontSize.setChecked(valuecbFontSize);
 		cbFontSize.setOnCheckedChangeListener(this);
 
@@ -416,34 +368,34 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			llFontSize.setVisibility(View.GONE);
 		}
 
-		int fontSize = pref.getInt(fontSizefKey, DEFAULT_FONT_SIZE_PERCENT);
+		int fontSize = PreferenceUtils.getfontSize(getApplicationContext());
 		etFontSize.setText(Integer.toString(fontSize));
 
-		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
+		boolean valuecbShowPrev = PreferenceUtils.getcbShowPrev(getApplicationContext());
 		cbShowPrev.setChecked(valuecbShowPrev);
 		cbShowPrev.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowNext = pref.getBoolean("cbShowNext", false);
+		boolean valuecbShowNext = PreferenceUtils.getcbShowNext(getApplicationContext());
 		cbShowNext.setChecked(valuecbShowNext);
 		cbShowNext.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowRandom = pref.getBoolean("cbShowRandom", true);
+		boolean valuecbShowRandom = PreferenceUtils.getcbShowRandom(getApplicationContext());
 		cbShowRandom.setChecked(valuecbShowRandom);
 		cbShowRandom.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowReverseLink = pref.getBoolean("cbShowReverseLink", true);
+		boolean valuecbShowReverseLink = PreferenceUtils.getcbShowReverseLink(getApplicationContext());
 		cbShowReverseLink.setChecked(valuecbShowReverseLink);
 		cbShowReverseLink.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowFootNote = pref.getBoolean("cbShowFootNote", true);
+		boolean valuecbShowFootNote = PreferenceUtils.getcbShowFootNote(getApplicationContext());
 		cbShowFootNote.setChecked(valuecbShowFootNote);
 		cbShowFootNote.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowMenuLeft = pref.getBoolean("cbShowMenuLeft", true);
+		boolean valuecbShowMenuLeft = PreferenceUtils.getcbShowMenuLeft(getApplicationContext());
 		cbShowMenuLeft.setChecked(valuecbShowMenuLeft);
 		cbShowMenuLeft.setOnCheckedChangeListener(this);
 
-		boolean valuecbShowMenuRight = pref.getBoolean("cbShowMenuRight", false);
+		boolean valuecbShowMenuRight = !PreferenceUtils.getcbShowMenuLeft(getApplicationContext());
 		cbShowMenuRight.setChecked(valuecbShowMenuRight);
 		cbShowMenuRight.setOnCheckedChangeListener(this);
 
@@ -451,21 +403,16 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 	@Override
 	protected void onDestroy() {
-		SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-
-		SharedPreferences.Editor editor = pref.edit();
-
-		editor.putBoolean("cbAlias", cbAlias.isChecked());
-		editor.putBoolean("cbMobileImageHide", cbModifyYouTubeWidth.isChecked());
-		editor.putBoolean("cbShowPrev", cbShowPrev.isChecked());
-		editor.putBoolean("cbShowNext", cbShowNext.isChecked());
-		editor.putBoolean("cbShowRandom", cbShowRandom.isChecked());
-		editor.putBoolean("cbShowReverseLink", cbShowReverseLink.isChecked());
-		editor.putBoolean("cbShowFootNote", cbShowFootNote.isChecked());
-		editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
-		editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
-
-		editor.commit();
+		PreferenceUtils.setcbAlias(getApplicationContext(), cbAlias.isChecked());
+		PreferenceUtils.setcbModifyYouTubeWidth(getApplicationContext(), cbModifyYouTubeWidth.isChecked());
+		PreferenceUtils.setcbExternalImage(getApplicationContext(), cbExternalImage.isChecked());
+		PreferenceUtils.setcbNightEyeProtect(getApplicationContext(), cbNightEyeProtect.isChecked());
+		PreferenceUtils.setcbShowPrev(getApplicationContext(), cbShowPrev.isChecked());
+		PreferenceUtils.setcbShowNext(getApplicationContext(), cbShowNext.isChecked());
+		PreferenceUtils.setcbShowRandom(getApplicationContext(), cbShowRandom.isChecked());
+		PreferenceUtils.setcbShowReverseLink(getApplicationContext(), cbShowReverseLink.isChecked());
+		PreferenceUtils.setcbShowFootNote(getApplicationContext(), cbShowFootNote.isChecked());
+		PreferenceUtils.setcbShowMenuLeft(getApplicationContext(), cbShowMenuLeft.isChecked());
 		super.onDestroy();
 	}
 
@@ -473,27 +420,23 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 		switch (buttonView.getId()) {
 
-		case R.id.cbAlias: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbAlias", cbAlias.isChecked());
-			editor.commit();
-		}
+		case R.id.cbAlias:
+			PreferenceUtils.setcbAlias(getApplicationContext(), cbAlias.isChecked());
 			break;
 
-		case R.id.cbModifyYouTubeWidth: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbModifyYouTubeWidth", cbModifyYouTubeWidth.isChecked());
-			editor.commit();
-		}
+		case R.id.cbModifyYouTubeWidth:
+			PreferenceUtils.setcbModifyYouTubeWidth(getApplicationContext(), cbModifyYouTubeWidth.isChecked());
 			break;
+
+		case R.id.cbExternalImage:
+			PreferenceUtils.setcbExternalImage(getApplicationContext(), cbExternalImage.isChecked());
+			break;
+
+		case R.id.cbNightEyeProtect:
+			PreferenceUtils.setcbNightEyeProtect(getApplicationContext(), cbNightEyeProtect.isChecked());
 
 		case R.id.cbTextColor: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbTextColor", cbTextColor.isChecked());
-			editor.commit();
+			PreferenceUtils.setcbTextColor(getApplicationContext(), cbTextColor.isChecked());
 
 			if (true == cbTextColor.isChecked()) {
 				llColor.setVisibility(View.VISIBLE);
@@ -514,24 +457,18 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			break;
 
 		case R.id.cbFontSize: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbFontSize", cbFontSize.isChecked());
+
+			PreferenceUtils.setcbFontSize(getApplicationContext(), cbFontSize.isChecked());
 
 			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = 0;
+			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
 			try {
 				inputFontSizeToInt = Integer.parseInt(inputFontSize);
 			} catch (NumberFormatException e) {
 				e.toString();
 			}
 
-			if (0 == inputFontSizeToInt) {
-				inputFontSizeToInt = DEFAULT_FONT_SIZE_PERCENT;
-			}
-
-			editor.putInt(fontSizefKey, inputFontSizeToInt);
-			editor.commit();
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSizeToInt);
 
 			if (true == cbFontSize.isChecked()) {
 				llFontSize.setVisibility(View.VISIBLE);
@@ -541,83 +478,45 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		}
 			break;
 
-		case R.id.cbShowPrev: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbShowPrev", cbShowPrev.isChecked());
-			editor.commit();
-		}
+		case R.id.cbShowPrev:
+			PreferenceUtils.setcbShowPrev(getApplicationContext(), cbShowPrev.isChecked());
 			break;
 
-		case R.id.cbShowNext: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbShowNext", isChecked);
-			editor.commit();
-		}
+		case R.id.cbShowNext:
+			PreferenceUtils.setcbShowNext(getApplicationContext(), cbShowNext.isChecked());
 			break;
 
-		case R.id.cbShowRandom: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbShowRandom", isChecked);
-			editor.commit();
-		}
+		case R.id.cbShowRandom:
+			PreferenceUtils.setcbShowRandom(getApplicationContext(), cbShowRandom.isChecked());
 			break;
 
-		case R.id.cbShowReverseLink: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbShowReverseLink", isChecked);
-			editor.commit();
-		}
+		case R.id.cbShowReverseLink:
+			PreferenceUtils.setcbShowReverseLink(getApplicationContext(), cbShowReverseLink.isChecked());
 			break;
 
-		case R.id.cbShowFootNote: {
-			SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean("cbShowFootNote", isChecked);
-			editor.commit();
-		}
+		case R.id.cbShowFootNote:
+			PreferenceUtils.setcbShowFootNote(getApplicationContext(), cbShowFootNote.isChecked());
 			break;
 
-		case R.id.cbShowMenuLeft: {
+		case R.id.cbShowMenuLeft:
 			if (true == isChecked) {
+				PreferenceUtils.setcbShowMenuLeft(getApplicationContext(), true);
 				cbShowMenuRight.setChecked(false);
-				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = pref.edit();
-				editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
-				editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
-				editor.commit();
 			} else {
+				PreferenceUtils.setcbShowMenuLeft(getApplicationContext(), false);
 				cbShowMenuRight.setChecked(true);
-				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = pref.edit();
-				editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
-				editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
-				editor.commit();
 			}
 
-		}
 			break;
-		case R.id.cbShowMenuRight: {
+		case R.id.cbShowMenuRight:
 			if (true == isChecked) {
+				PreferenceUtils.setcbShowMenuLeft(getApplicationContext(), false);
 				cbShowMenuLeft.setChecked(false);
-				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = pref.edit();
-				editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
-				editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
-				editor.commit();
 			} else {
+				PreferenceUtils.setcbShowMenuLeft(getApplicationContext(), true);
 				cbShowMenuLeft.setChecked(true);
-				SharedPreferences pref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
-				SharedPreferences.Editor editor = pref.edit();
-				editor.putBoolean("cbShowMenuLeft", cbShowMenuLeft.isChecked());
-				editor.putBoolean("cbShowMenuRight", cbShowMenuRight.isChecked());
-				editor.commit();
 			}
 
-		}
 			break;
 		}
 

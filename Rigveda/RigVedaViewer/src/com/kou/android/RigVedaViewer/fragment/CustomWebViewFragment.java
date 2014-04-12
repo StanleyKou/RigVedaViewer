@@ -47,12 +47,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.base.BaseWebView;
 import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
 /**
@@ -67,7 +67,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private View mMainView;
 	private BaseWebView mWebview;
-	private View mWebviewSunglass;
+	private View mWebviewNightEyeProtecter;
 
 	private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -154,15 +154,13 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public void onResume() {
-		CookieSyncManager.getInstance().sync();
-
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		boolean valuecbShowPrev = pref.getBoolean("cbShowPrev", false);
-		boolean valuecbShowNext = pref.getBoolean("cbShowNext", false);
-		boolean valuecbShowRandom = pref.getBoolean("cbShowRandom", true);
-		boolean valuecbShowReverseLink = pref.getBoolean("cbShowReverseLink", true);
-		boolean valuecbShowFootNote = pref.getBoolean("cbShowFootNote", true);
-		boolean valuecbShowMenuLeft = pref.getBoolean("cbShowMenuLeft", true);
+		CookieSyncManager.getInstance().sync(); // 지금은 필요 없음. 나중에 쿠키를 쓰게되면 유용함.
+		boolean valuecbShowPrev = PreferenceUtils.getcbShowPrev(getActivity());
+		boolean valuecbShowNext = PreferenceUtils.getcbShowNext(getActivity());
+		boolean valuecbShowRandom = PreferenceUtils.getcbShowRandom(getActivity());
+		boolean valuecbShowReverseLink = PreferenceUtils.getcbShowReverseLink(getActivity());
+		boolean valuecbShowFootNote = PreferenceUtils.getcbShowFootNote(getActivity());
+		boolean valuecbShowMenuLeft = PreferenceUtils.getcbShowMenuLeft(getActivity());
 
 		ivNavPrev.setVisibility(true == valuecbShowPrev ? View.VISIBLE : View.GONE);
 		ivNavNext.setVisibility(true == valuecbShowNext ? View.VISIBLE : View.GONE);
@@ -335,11 +333,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		llMenu.setLayoutParams(lp);
 		isMenuLeft = true;
 
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-		editor.putBoolean("cbShowMenuLeft", true);
-		editor.putBoolean("cbShowMenuRight", false);
-		editor.commit();
+		PreferenceUtils.setcbShowMenuLeft(getActivity(), true);
 	}
 
 	private void showMenuRight() {
@@ -349,11 +343,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		llMenu.setLayoutParams(lp);
 		isMenuLeft = false;
 
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		SharedPreferences.Editor editor = pref.edit();
-		editor.putBoolean("cbShowMenuLeft", false);
-		editor.putBoolean("cbShowMenuRight", true);
-		editor.commit();
+		PreferenceUtils.setcbShowMenuLeft(getActivity(), false);
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
@@ -397,7 +387,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				mWebviewSunglass.setVisibility(View.VISIBLE);
+
+				boolean isNightEyeProtecter = PreferenceUtils.getcbNightEyeProtect(getActivity());
+				if (true == isNightEyeProtecter) {
+					mWebviewNightEyeProtecter.setVisibility(View.VISIBLE);
+				}
+
 				mProgressBar.setVisibility(View.VISIBLE);
 				mProgressBar.setProgress(0);
 
@@ -492,7 +487,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
-		mWebviewSunglass = mMainView.findViewById(R.id.webviewSunGlass);
+		mWebviewNightEyeProtecter = mMainView.findViewById(R.id.mWebviewNightEyeProtecter);
 
 		if (getCurrentURL() != null && getCurrentURL().length() > 0) {
 			loadUrl(getCurrentURL());
@@ -591,6 +586,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			modifyTextBackgroundColor();
 			modifyTextSize();
 			modifyOrientationCSS();
+			modifyExternalImageShow();
 		}
 		modifyMakeFootNote();
 
@@ -598,7 +594,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			@Override
 			public void run() {
-				mWebviewSunglass.setVisibility(View.GONE);
+				mWebviewNightEyeProtecter.setVisibility(View.GONE);
 
 			}
 		}, 500);
@@ -609,8 +605,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void modifyShowLinkDrip() {
 		Logger.d(TAG, "showLinkDrip()");
 		// 링크명과 표시 명이 다른 경우, 표시 명에 링크 명을 추가로 표시
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		boolean value = pref.getBoolean("cbAlias", true);
+		boolean value = PreferenceUtils.getcbAlias(getActivity());
+
 		if (true == value) {
 
 			// 본문에 각주를 표시하지 않음
@@ -626,8 +622,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private void modifyYouTubeIframeWidth() {
 		Logger.d(TAG, "modifyYouTubeIframeWidth()");
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		boolean value = pref.getBoolean("cbModifyYouTubeWidth", true);
+		boolean value = PreferenceUtils.getcbModifyYouTubeWidth(getActivity());
+
 		if (true == value) {
 			// iframe 태그의 가로세로를 모두 auto로 설정
 			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='auto';obj.height='auto';});}modifyYoutubeWidth();");
@@ -635,18 +631,13 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyTextBackgroundColor() {
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		boolean value = pref.getBoolean("cbTextColor", false);
+		boolean value = PreferenceUtils.getcbTextColor(getActivity());
 		if (true == value) {
 			Logger.d(TAG, "modifyTextBackgroundColor()");
 
-			int textColor = pref.getInt(OptionActivity.textColorPrefKey, 0xFF000000);
-			int backgroundColor = pref.getInt(OptionActivity.backgroundColorPrefKey, 0xFFFFFFFF);
-			int linkTextColor = pref.getInt(OptionActivity.linkColorPrefKey, 0xFFFFFFFF);
-
-			// int textColorAlpha = 0xFF000000 & textColor;
-			// int backgroundColorAlpha = 0xFF000000 & backgroundColor;
-			// int linkTextColorAlpha = 0xFF000000 & linkTextColor;
+			int textColor = PreferenceUtils.gettextColor(getActivity());
+			int backgroundColor = PreferenceUtils.getbackgroundColor(getActivity());
+			int linkTextColor = PreferenceUtils.getlinkColorPrefKey(getActivity());
 
 			textColor = 0x00FFFFFF & textColor;
 			backgroundColor = 0x00FFFFFF & backgroundColor;
@@ -656,25 +647,22 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
 			String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
 
-			String loadStringDiv = String.format("javascript:$('div').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');})", textColorString, backgroundColorString);
+			String loadStringDiv = String.format("javascript:$('#mainBody').css('color','#%s');$('#mainBody').css('background-color','#%s');", textColorString, backgroundColorString);
 			mWebview.loadUrl(loadStringDiv);
 
-			String loadStringA = String.format("javascript:$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');})", linkTextColorString, backgroundColorString);
+			String loadStringA = String.format("javascript:$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');}$('#mainBody').css('color','#%s');$('#mainBody').css('background-color','#%s');)", linkTextColorString, backgroundColorString, textColorString, backgroundColorString);
 			mWebview.loadUrl(loadStringA);
 
 		}
 	}
 
 	private void modifyTextSize() {
-		SharedPreferences pref = getActivity().getSharedPreferences("pref", Activity.MODE_PRIVATE);
-		boolean value = pref.getBoolean("cbFontSize", false);
+		boolean value = PreferenceUtils.getcbFontSize(getActivity());
 		if (true == value) {
 			Logger.d(TAG, "modifyTextSize()");
-			int fontSize = pref.getInt(OptionActivity.fontSizefKey, OptionActivity.DEFAULT_FONT_SIZE_PERCENT);
-
+			int fontSize = PreferenceUtils.getfontSize(getActivity());
 			String loadFontSize = String.format("javascript:$('div').each(function(i, obj){$(this).css('font-size','%d%%');})", fontSize);
 			mWebview.loadUrl(loadFontSize);
-
 		}
 	}
 
@@ -706,6 +694,15 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			// $( "#rightBox" ).css( "float", "right" );
 		}
 
+	}
+
+	private void modifyExternalImageShow() {
+		boolean value = PreferenceUtils.getcbExternalImage(getActivity());
+		if (true == value) {
+			Logger.d(TAG, "modifyExternalImageShow()");
+			String loadExternalImage = "javascript:$('.external').css('display', 'block').css('width', '100%');";
+			mWebview.loadUrl(loadExternalImage);
+		}
 	}
 
 	public void loadUrlHomePage() {

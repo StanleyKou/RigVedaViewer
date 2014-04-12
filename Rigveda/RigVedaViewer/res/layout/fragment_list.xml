@@ -3,16 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
-    android:contentDescription="@string/fragment_list.xml"
-    android:paddingBottom="7.33dp"
-    android:paddingLeft="17.33dp"
-    android:paddingRight="7.33dp" >
+    android:contentDescription="@string/fragment_list.xml" >
 
     <TextView
         android:id="@+id/tvFootNoteTop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/common_background"
+        android:paddingLeft="7.33dp"
         android:text="@string/foot_note_title"
         android:textColor="@color/black"
         android:textStyle="italic" />
@@ -22,6 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tvFootNoteTop"
         android:contentDescription="@string/footnote_scrollview"
+        android:paddingLeft="17.33dp"
+        android:paddingRight="7.33dp"
         android:paddingTop="7.33dp" >
 
         <TextView
@@ -29,6 +29,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/footnote_textview"
+            android:paddingBottom="7.33dp"
             android:text="@string/no_footnote"
             android:textColor="@color/black" />
     </ScrollView>
@@ -40,6 +41,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:paddingBottom="7.33dp"
+        android:paddingLeft="7.33dp"
         android:paddingRight="7.33dp"
         android:src="@drawable/footnote_close" />
 

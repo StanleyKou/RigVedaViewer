@@ -38,6 +38,8 @@
     <string name="option_clear_cache_complete">리그베다뷰어의 인터넷 캐쉬가 모두삭제되었습니다.</string>
     <string name="option_show_alias">링크드립표시 (링크의 실제 이름과 표시되는 이름이 다른 경우 화면에 표시)</string>
     <string name="option_modify_youtube_iframe_width">유뷰브 동영상의 가로크기를 단말 가로크기에 맞춤</string>
+    <string name="option_show_external_image">외부 이미지를 항상 표시하고 숨기지 않음</string>
+    <string name="option_show_night_eye_protect">야간 안구 보호기능(페이지 로딩 완료 시 까지 전체화면 어둡게 설정)</string>
     <string name="option_color_caption">색상변경</string>
     <string name="option_color_text">텍스트색상 직접선택</string>
     <string name="option_color_text_button">선택</string>
@@ -66,7 +68,7 @@
     <string name="option_show_menuleft">메뉴를 왼쪽에 표시</string>
     <string name="option_show_menuright">메뉴를 오른쪽에 표시</string>
     <string name="option_about_btn">About</string>
-    <string name="option_about_text">RigVeda Viewer\n\n리그베다위키 비공식 뷰어 앱\n2014.02.03\nStanley_Kou\n\nhttp://stanleykou.tistory.com/\n\n이 앱은 리그베다위키의 허락 하에 뷰어로서 개발되었습니다.\n리그베다 위키와 관련된 질문이나 문의사항은 리그베다위키 게시판으로 해주시기 바랍니다.</string>
+    <string name="option_about_text">\nRigVeda Viewer\n리그베다 뷰어\n\n\nCopyright 2014\n제작자 : Stanley_Kou\n제작자 블로그 : http://stanleykou.tistory.com\n\n이 앱은 리그베다 위키의 허락 하에 개발되었습니다.\n\n리그베다 위키는 예전 엔하 위키의 새로운 이름입니다.\n(현재의 엔하위키는 엔젤하이로설정 위키의 이름으로 쓰이고 있습니다)\n\n리그베다 위키와 관련된 질문이나 문의사항은 리그베다위키 게시판으로 해주시기 바랍니다.\n\nhttp://wikibbs.net/wikibbs\n\n\n</string>
     <string name="option_clipboard_copied">클립보드에 블로그 URL이 복사되었습니다</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <string name="dialog_image_title">이미지 URL</string>

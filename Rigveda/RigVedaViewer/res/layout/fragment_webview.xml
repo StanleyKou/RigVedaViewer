@@ -112,7 +112,7 @@
         android:src="@drawable/to_right_selected" />
 
     <View
-        android:id="@+id/webviewSunGlass"
+        android:id="@+id/mWebviewNightEyeProtecter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@color/webview_sun_glass" />

@@ -71,10 +71,7 @@ public class Utils {
 
 	public static void installShortcut(Context context) {
 
-		// installShortCutPrefKey
-		SharedPreferences pref = context.getSharedPreferences("pref", Activity.MODE_PRIVATE);
-
-		boolean isShortcutInstalled = pref.getBoolean(SplashActivity.installShortCutPrefKey, false);
+		boolean isShortcutInstalled = PreferenceUtils.getIsShortcutInstalled(context);
 
 		if (false == isShortcutInstalled) {
 
@@ -91,9 +88,7 @@ public class Utils {
 			intent.putExtra("duplicate", false); // go launcher에서 인식불가. 원래는 preference 이용하지 않고 이 값만 이용해도 중복되지 않음.
 			context.sendBroadcast(intent);
 
-			SharedPreferences.Editor editor = pref.edit();
-			editor.putBoolean(SplashActivity.installShortCutPrefKey, true);
-			editor.commit();
+			PreferenceUtils.setIsShortcutInstalled(context, true);
 		}
 	}
 
@@ -219,7 +214,7 @@ public class Utils {
 
 	public static String getReverseLink(Context context, String currentURL) {
 		String itemName = getItemName(currentURL);
-		String reverseURL =context.getString(R.string.url_home_page_with_slash) + itemName +  context.getString(R.string.url_backlink_keyword) + itemName;
+		String reverseURL = context.getString(R.string.url_home_page_with_slash) + itemName + context.getString(R.string.url_backlink_keyword) + itemName;
 		return reverseURL;
 	}
 

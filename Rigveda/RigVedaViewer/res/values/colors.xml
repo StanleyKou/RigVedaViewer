@@ -12,7 +12,6 @@
     <color name="webview_progress">#44D5FF</color>
     <color name="common_background">#F3F3F3</color>
     <color name="option_activity_background">#E2E2E2</color>
-    <color name="option_textcolor_background">#AAAAAA</color>
     <color name="webview_sun_glass">#77000000</color>
 
 </resources>
