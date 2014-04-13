@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
@@ -86,7 +86,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, TAG, "onCreate()");
+		LogWrapper.d(TAG, TAG, "onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.option_activity);
 
@@ -526,9 +526,9 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	 * Delete the files older than numDays days from the application cache 0 means all files.
 	 */
 	public void clearCache(final Context context, final int numDays) {
-		Logger.i(TAG, String.format("Starting cache prune, deleting files older than %d days", numDays));
+		LogWrapper.i(TAG, String.format("Starting cache prune, deleting files older than %d days", numDays));
 		int numDeletedFiles = Utils.clearCacheFolder(context.getCacheDir(), numDays);
-		Logger.i(TAG, String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
+		LogWrapper.i(TAG, String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
 	}
 
 }

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.CanvasTransformer;
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 public class CustomViewBehind extends ViewGroup {
 
@@ -34,40 +34,40 @@ public class CustomViewBehind extends ViewGroup {
 
 	public CustomViewBehind(Context context) {
 		this(context, null);
-		Logger.d(TAG, "Constructor::CustomViewBehind()");
+		LogWrapper.d(TAG, "Constructor::CustomViewBehind()");
 		setContentDescription(CustomViewBehind.class.getSimpleName());
 	}
 
 	public CustomViewBehind(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mMarginThreshold = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, MARGIN_THRESHOLD, getResources().getDisplayMetrics());
-		Logger.d(TAG, "Constructor::CustomViewBehind(), with AttributeSet, mMarginThreshold(%s)", mMarginThreshold);
+		LogWrapper.d(TAG, "Constructor::CustomViewBehind(), with AttributeSet, mMarginThreshold(%s)", mMarginThreshold);
 		setContentDescription(CustomViewBehind.class.getSimpleName());
 	}
 
 	public void setCustomViewAbove(CustomViewAbove customViewAbove) {
-		Logger.d(TAG, "setCustomViewAbove()");
+		LogWrapper.d(TAG, "setCustomViewAbove()");
 		mViewAbove = customViewAbove;
 	}
 
 	public void setCanvasTransformer(CanvasTransformer t) {
-		Logger.d(TAG, "setCanvasTransformer()");
+		LogWrapper.d(TAG, "setCanvasTransformer()");
 		mTransformer = t;
 	}
 
 	public void setWidthOffset(int i) {
-		Logger.d(TAG, "setWidthOffset(%s)", i);
+		LogWrapper.d(TAG, "setWidthOffset(%s)", i);
 		mWidthOffset = i;
 		requestLayout();
 	}
 
 	public void setMarginThreshold(int marginThreshold) {
-		Logger.d(TAG, "setMarginThreshold(%s)", marginThreshold);
+		LogWrapper.d(TAG, "setMarginThreshold(%s)", marginThreshold);
 		mMarginThreshold = marginThreshold;
 	}
 
 	public int getMarginThreshold() {
-		Logger.d(TAG, "getMarginThreshold()");
+		LogWrapper.d(TAG, "getMarginThreshold()");
 		return mMarginThreshold;
 	}
 
@@ -76,7 +76,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void setContent(View v) {
-		Logger.d(TAG, "setContent()");
+		LogWrapper.d(TAG, "setContent()");
 		if (mContent != null)
 			removeView(mContent);
 		mContent = v;
@@ -84,7 +84,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public View getContent() {
-		Logger.d(TAG, "getContent()");
+		LogWrapper.d(TAG, "getContent()");
 		return mContent;
 	}
 
@@ -95,7 +95,7 @@ public class CustomViewBehind extends ViewGroup {
 	 *            the right menu
 	 */
 	public void setSecondaryContent(View v) {
-		Logger.d(TAG, "setSecondaryContent(), with view");
+		LogWrapper.d(TAG, "setSecondaryContent(), with view");
 		if (mSecondaryContent != null) {
 			removeView(mSecondaryContent);
 		}
@@ -105,18 +105,18 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public View getSecondaryContent() {
-		Logger.d(TAG, "getSecondaryContent()");
+		LogWrapper.d(TAG, "getSecondaryContent()");
 		return mSecondaryContent;
 	}
 
 	public void setChildrenEnabled(boolean enabled) {
-		Logger.d(TAG, "setChildrenEnabled(%s)", enabled);
+		LogWrapper.d(TAG, "setChildrenEnabled(%s)", enabled);
 		mChildrenEnabled = enabled;
 	}
 
 	@Override
 	public void scrollTo(int x, int y) {
-		Logger.d(TAG, "scrollTo(%s, %s)", x, y);
+		LogWrapper.d(TAG, "scrollTo(%s, %s)", x, y);
 		super.scrollTo(x, y);
 		if (mTransformer != null) {
 			invalidate();
@@ -125,19 +125,19 @@ public class CustomViewBehind extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent e) {
-		Logger.d(TAG, "onInterceptTouchEvent()");
+		LogWrapper.d(TAG, "onInterceptTouchEvent()");
 		return !mChildrenEnabled;
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		Logger.d(TAG, "onTouchEvent()");
+		LogWrapper.d(TAG, "onTouchEvent()");
 		return !mChildrenEnabled;
 	}
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		Logger.d(TAG, "dispatchDraw()");
+		LogWrapper.d(TAG, "dispatchDraw()");
 		if (mTransformer != null) {
 			canvas.save();
 			mTransformer.transformCanvas(canvas, mViewAbove.getPercentOpen());
@@ -150,7 +150,7 @@ public class CustomViewBehind extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Logger.d(TAG, "onLayout(), changed(%s)", changed);
+		LogWrapper.d(TAG, "onLayout(), changed(%s)", changed);
 		final int width = r - l;
 		final int height = b - t;
 		mContent.layout(0, 0, width - mWidthOffset, height);
@@ -161,7 +161,7 @@ public class CustomViewBehind extends ViewGroup {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		Logger.d(TAG, "onMeasure(), widthMeasureSpec(%s), heightMeasureSpec(%s)", widthMeasureSpec, heightMeasureSpec);
+		LogWrapper.d(TAG, "onMeasure(), widthMeasureSpec(%s), heightMeasureSpec(%s)", widthMeasureSpec, heightMeasureSpec);
 		int width = getDefaultSize(0, widthMeasureSpec);
 		int height = getDefaultSize(0, heightMeasureSpec);
 		setMeasuredDimension(width, height);
@@ -184,7 +184,7 @@ public class CustomViewBehind extends ViewGroup {
 	private float mFadeDegree;
 
 	public void setMode(int mode) {
-		Logger.d(TAG, "setMode(%s)", mode);
+		LogWrapper.d(TAG, "setMode(%s)", mode);
 		if (mode == SlidingMenu.LEFT || mode == SlidingMenu.RIGHT) {
 			if (mContent != null) {
 				mContent.setVisibility(View.VISIBLE);
@@ -198,45 +198,45 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public int getMode() {
-		Logger.d(TAG, "getMode()");
+		LogWrapper.d(TAG, "getMode()");
 		return mMode;
 	}
 
 	public void setScrollScale(float scrollScale) {
-		Logger.d(TAG, "setScrollScale(%s)", scrollScale);
+		LogWrapper.d(TAG, "setScrollScale(%s)", scrollScale);
 		mScrollScale = scrollScale;
 	}
 
 	public float getScrollScale() {
-		Logger.d(TAG, "getScrollScale()");
+		LogWrapper.d(TAG, "getScrollScale()");
 		return mScrollScale;
 	}
 
 	public void setShadowDrawable(Drawable shadow) {
-		Logger.d(TAG, "setShadowDrawable()");
+		LogWrapper.d(TAG, "setShadowDrawable()");
 		mShadowDrawable = shadow;
 		invalidate();
 	}
 
 	public void setSecondaryShadowDrawable(Drawable shadow) {
-		Logger.d(TAG, "setSecondaryShadowDrawable()");
+		LogWrapper.d(TAG, "setSecondaryShadowDrawable()");
 		mSecondaryShadowDrawable = shadow;
 		invalidate();
 	}
 
 	public void setShadowWidth(int width) {
-		Logger.d(TAG, "setShadowWidth(), width(%s)", width);
+		LogWrapper.d(TAG, "setShadowWidth(), width(%s)", width);
 		mShadowWidth = width;
 		invalidate();
 	}
 
 	public void setFadeEnabled(boolean b) {
-		Logger.d(TAG, "setFadeEnabled(%s)", b);
+		LogWrapper.d(TAG, "setFadeEnabled(%s)", b);
 		mFadeEnabled = b;
 	}
 
 	public void setFadeDegree(float degree) {
-		Logger.d(TAG, "setFadeDegree(), degree(%s)", degree);
+		LogWrapper.d(TAG, "setFadeDegree(), degree(%s)", degree);
 		if (degree > 1.0f || degree < 0.0f) {
 			throw new IllegalStateException("The BehindFadeDegree must be between 0.0f and 1.0f");
 		}
@@ -244,7 +244,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public int getMenuPage(int page) {
-		Logger.d(TAG, "getMenuPage(), page(%s)", page);
+		LogWrapper.d(TAG, "getMenuPage(), page(%s)", page);
 		page = (page > 1) ? 2 : ((page < 1) ? 0 : page);
 		if (mMode == SlidingMenu.LEFT && page > 1) {
 			return 0;
@@ -256,7 +256,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void scrollBehindTo(View content, int x, int y) {
-		Logger.d(TAG, "scrollBehindTo(%s, %s)", x, y);
+		LogWrapper.d(TAG, "scrollBehindTo(%s, %s)", x, y);
 		int vis = View.VISIBLE;
 		if (mMode == SlidingMenu.LEFT) {
 			if (x >= content.getLeft())
@@ -280,13 +280,13 @@ public class CustomViewBehind extends ViewGroup {
 		}
 
 		if (vis == View.INVISIBLE) {
-			Logger.d(TAG, "scrollBehindTo(), behind INVISIBLE");
+			LogWrapper.d(TAG, "scrollBehindTo(), behind INVISIBLE");
 		}
 		setVisibility(vis);
 	}
 
 	public int getMenuLeft(View content, int page) {
-		Logger.d(TAG, "getMenuLeft(), page(%s)", page);
+		LogWrapper.d(TAG, "getMenuLeft(), page(%s)", page);
 		if (mMode == SlidingMenu.LEFT) {
 			switch (page) {
 			case 0:
@@ -315,7 +315,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public int getAbsLeftBound(View content) {
-		Logger.d(TAG, "getAbsLeftBound()");
+		LogWrapper.d(TAG, "getAbsLeftBound()");
 		if (mMode == SlidingMenu.LEFT || mMode == SlidingMenu.LEFT_RIGHT) {
 			return content.getLeft() - getBehindWidth();
 		} else if (mMode == SlidingMenu.RIGHT) {
@@ -325,7 +325,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public int getAbsRightBound(View content) {
-		Logger.d(TAG, "getAbsRightBound()");
+		LogWrapper.d(TAG, "getAbsRightBound()");
 		if (mMode == SlidingMenu.LEFT) {
 			return content.getLeft();
 		} else if (mMode == SlidingMenu.RIGHT || mMode == SlidingMenu.LEFT_RIGHT) {
@@ -335,7 +335,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public boolean marginTouchAllowed(View content, int x) {
-		Logger.d(TAG, "marginTouchAllowed(%s)", x);
+		LogWrapper.d(TAG, "marginTouchAllowed(%s)", x);
 		int left = content.getLeft();
 		int right = content.getRight();
 		if (mMode == SlidingMenu.LEFT) {
@@ -349,12 +349,12 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void setTouchMode(int i) {
-		Logger.d(TAG, "setTouchMode(%s)", i);
+		LogWrapper.d(TAG, "setTouchMode(%s)", i);
 		mTouchMode = i;
 	}
 
 	public boolean menuOpenTouchAllowed(View content, int currPage, float x) {
-		Logger.d(TAG, "menuOpenTouchAllowed(), currPage(%s), x(%s)", currPage, x);
+		LogWrapper.d(TAG, "menuOpenTouchAllowed(), currPage(%s), x(%s)", currPage, x);
 
 		switch (mTouchMode) {
 		case SlidingMenu.TOUCHMODE_FULLSCREEN:
@@ -366,7 +366,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public boolean menuTouchInQuickReturn(View content, int currPage, float x) {
-		Logger.d(TAG, "menuTouchInQuickReturn(), currPage(%s), x(%s)", currPage, x);
+		LogWrapper.d(TAG, "menuTouchInQuickReturn(), currPage(%s), x(%s)", currPage, x);
 		if (mMode == SlidingMenu.LEFT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 0)) {
 			return x >= content.getLeft();
 		} else if (mMode == SlidingMenu.RIGHT || (mMode == SlidingMenu.LEFT_RIGHT && currPage == 2)) {
@@ -376,7 +376,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public boolean menuClosedSlideAllowed(float dx) {
-		Logger.d(TAG, "menuClosedSlideAllowed(), dx(%s)", dx);
+		LogWrapper.d(TAG, "menuClosedSlideAllowed(), dx(%s)", dx);
 		if (mMode == SlidingMenu.LEFT) {
 			return dx > 0;
 		} else if (mMode == SlidingMenu.RIGHT) {
@@ -388,7 +388,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public boolean menuOpenSlideAllowed(float dx) {
-		Logger.d(TAG, "menuOpenSlideAllowed(), dx(%s)", dx);
+		LogWrapper.d(TAG, "menuOpenSlideAllowed(), dx(%s)", dx);
 		if (mMode == SlidingMenu.LEFT) {
 			return dx < 0;
 		} else if (mMode == SlidingMenu.RIGHT) {
@@ -422,7 +422,7 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void drawFade(View content, Canvas canvas, float openPercent) {
-		Logger.d(TAG, "drawFade(), openPercent(%s)", openPercent);
+		LogWrapper.d(TAG, "drawFade(), openPercent(%s)", openPercent);
 		if (!mFadeEnabled) {
 			return;
 		}
@@ -452,7 +452,7 @@ public class CustomViewBehind extends ViewGroup {
 	private View mSelectedView;
 
 	public void drawSelector(View content, Canvas canvas, float openPercent) {
-		Logger.d(TAG, "drawSelector(), openPercent(%s)", openPercent);
+		LogWrapper.d(TAG, "drawSelector(), openPercent(%s)", openPercent);
 		if (!mSelectorEnabled) {
 			return;
 		}
@@ -480,12 +480,12 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	public void setSelectorEnabled(boolean b) {
-		Logger.d(TAG, "setSelectorEnabled(%s)", b);
+		LogWrapper.d(TAG, "setSelectorEnabled(%s)", b);
 		mSelectorEnabled = b;
 	}
 
 	public void setSelectedView(View v) {
-		Logger.d(TAG, "setSelectedView()");
+		LogWrapper.d(TAG, "setSelectedView()");
 		if (mSelectedView != null) {
 			mSelectedView.setTag(R.id.selected_view, null);
 			mSelectedView = null;
@@ -499,14 +499,14 @@ public class CustomViewBehind extends ViewGroup {
 	}
 
 	private int getSelectorTop() {
-		Logger.d(TAG, "getSelectorTop()");
+		LogWrapper.d(TAG, "getSelectorTop()");
 		int y = mSelectedView.getTop();
 		y += (mSelectedView.getHeight() - mSelectorDrawable.getHeight()) / 2;
 		return y;
 	}
 
 	public void setSelectorBitmap(Bitmap b) {
-		Logger.d(TAG, "setSelectorBitmap()");
+		LogWrapper.d(TAG, "setSelectorBitmap()");
 		mSelectorDrawable = b;
 		refreshDrawableState();
 	}

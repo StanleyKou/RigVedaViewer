@@ -11,6 +11,6 @@
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name_eng"
         android:scaleType="fitXY"
-        android:src="@drawable/splash_2014_02_04" />
+        android:src="@drawable/splash_2014_04_12" />
 
 </RelativeLayout>

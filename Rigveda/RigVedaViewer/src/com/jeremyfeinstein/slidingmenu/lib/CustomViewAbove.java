@@ -28,7 +28,7 @@ import android.widget.Scroller;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnClosedListener;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 public class CustomViewAbove extends ViewGroup {
 	private static String TAG = CustomViewAbove.class.getSimpleName();
@@ -39,7 +39,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	private static final Interpolator sInterpolator = new Interpolator() {
 		public float getInterpolation(float t) {
-			Logger.d(TAG, "Interpolator::getInterpolation()");
+			LogWrapper.d(TAG, "Interpolator::getInterpolation()");
 			t -= 1.0f;
 			return t * t * t * t * t + 1.0f;
 		}
@@ -144,19 +144,19 @@ public class CustomViewAbove extends ViewGroup {
 
 	public CustomViewAbove(Context context) {
 		this(context, null);
-		Logger.d(TAG, "Constructor::CustomViewAbove()");
+		LogWrapper.d(TAG, "Constructor::CustomViewAbove()");
 		setContentDescription(CustomViewAbove.class.getSimpleName());
 	}
 
 	public CustomViewAbove(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		Logger.d(TAG, "Constructor::CustomViewAbove(), with AttributeSet");
+		LogWrapper.d(TAG, "Constructor::CustomViewAbove(), with AttributeSet");
 		initCustomViewAbove();
 		setContentDescription(CustomViewAbove.class.getSimpleName());
 	}
 
 	void initCustomViewAbove() {
-		Logger.d(TAG, "initCustomViewAbove()");
+		LogWrapper.d(TAG, "initCustomViewAbove()");
 
 		setWillNotDraw(false);
 		setDescendantFocusability(FOCUS_AFTER_DESCENDANTS);
@@ -194,7 +194,7 @@ public class CustomViewAbove extends ViewGroup {
 	 *            Item index to select
 	 */
 	public void setCurrentItem(int item) {
-		Logger.d(TAG, "setCurrentItem(), item(%s)", item);
+		LogWrapper.d(TAG, "setCurrentItem(), item(%s)", item);
 		setCurrentItemInternal(item, true, false);
 	}
 
@@ -207,22 +207,22 @@ public class CustomViewAbove extends ViewGroup {
 	 *            True to smoothly scroll to the new item, false to transition immediately
 	 */
 	public void setCurrentItem(int item, boolean smoothScroll) {
-		Logger.d(TAG, "setCurrentItem(), item(%s), smoothScroll(%s)", item, smoothScroll);
+		LogWrapper.d(TAG, "setCurrentItem(), item(%s), smoothScroll(%s)", item, smoothScroll);
 		setCurrentItemInternal(item, smoothScroll, false);
 	}
 
 	public int getCurrentItem() {
-		Logger.d(TAG, "getCurrentItem()");
+		LogWrapper.d(TAG, "getCurrentItem()");
 		return mCurItem;
 	}
 
 	void setCurrentItemInternal(int item, boolean smoothScroll, boolean always) {
-		Logger.d(TAG, "setCurrentItemInternal(), item(%s), smoothScroll(%s), always(%s)", item, smoothScroll, always);
+		LogWrapper.d(TAG, "setCurrentItemInternal(), item(%s), smoothScroll(%s), always(%s)", item, smoothScroll, always);
 		setCurrentItemInternal(item, smoothScroll, always, 0);
 	}
 
 	void setCurrentItemInternal(int item, boolean smoothScroll, boolean always, int velocity) {
-		Logger.d(TAG, "setCurrentItemInternal(), item(%s), smoothScroll(%s), always(%s), velocity(%s)", item, smoothScroll, always, velocity);
+		LogWrapper.d(TAG, "setCurrentItemInternal(), item(%s), smoothScroll(%s), always(%s), velocity(%s)", item, smoothScroll, always, velocity);
 		if (!always && mCurItem == item) {
 			setScrollingCacheEnabled(false);
 			return;
@@ -256,7 +256,7 @@ public class CustomViewAbove extends ViewGroup {
 	 *            Listener to set
 	 */
 	public void setOnPageChangeListener(OnPageChangeListener listener) {
-		Logger.d(TAG, "setOnPageChangeListener()");
+		LogWrapper.d(TAG, "setOnPageChangeListener()");
 		mOnPageChangeListener = listener;
 	}
 
@@ -267,12 +267,12 @@ public class CustomViewAbove extends ViewGroup {
 	 */
 
 	public void setOnOpenedListener(OnOpenedListener l) {
-		Logger.d(TAG, "setOnOpenedListener()");
+		LogWrapper.d(TAG, "setOnOpenedListener()");
 		mOpenedListener = l;
 	}
 
 	public void setOnClosedListener(OnClosedListener l) {
-		Logger.d(TAG, "setOnClosedListener()");
+		LogWrapper.d(TAG, "setOnClosedListener()");
 		mClosedListener = l;
 	}
 
@@ -284,26 +284,26 @@ public class CustomViewAbove extends ViewGroup {
 	 * @return The old listener that was set, if any.
 	 */
 	OnPageChangeListener setInternalPageChangeListener(OnPageChangeListener listener) {
-		Logger.d(TAG, "setInternalPageChangeListener()");
+		LogWrapper.d(TAG, "setInternalPageChangeListener()");
 		OnPageChangeListener oldListener = mInternalPageChangeListener;
 		mInternalPageChangeListener = listener;
 		return oldListener;
 	}
 
 	public void addIgnoredView(View v) {
-		Logger.d(TAG, "addIgnoredView()");
+		LogWrapper.d(TAG, "addIgnoredView()");
 		if (!mIgnoredViews.contains(v)) {
 			mIgnoredViews.add(v);
 		}
 	}
 
 	public void removeIgnoredView(View v) {
-		Logger.d(TAG, "removeIgnoredView()");
+		LogWrapper.d(TAG, "removeIgnoredView()");
 		mIgnoredViews.remove(v);
 	}
 
 	public void clearIgnoredViews() {
-		Logger.d(TAG, "clearIgnoredViews()");
+		LogWrapper.d(TAG, "clearIgnoredViews()");
 		mIgnoredViews.clear();
 	}
 
@@ -312,14 +312,14 @@ public class CustomViewAbove extends ViewGroup {
 	// purely linear fashion. Instead, we use this method to moderate the effect that the distance
 	// of travel has on the overall snap duration.
 	float distanceInfluenceForSnapDuration(float f) {
-		Logger.d(TAG, "distanceInfluenceForSnapDuration(), f(%s)", f);
+		LogWrapper.d(TAG, "distanceInfluenceForSnapDuration(), f(%s)", f);
 		f -= 0.5f; // center the values about 0.
 		f *= 0.3f * Math.PI / 2.0f;
 		return (float) FloatMath.sin(f);
 	}
 
 	public int getDestScrollX(int page) {
-		Logger.d(TAG, "getDestScrollX(), page(%s)", page);
+		LogWrapper.d(TAG, "getDestScrollX(), page(%s)", page);
 		switch (page) {
 		case 0:
 		case 2:
@@ -331,27 +331,27 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private int getLeftBound() {
-		Logger.d(TAG, "getLeftBound()");
+		LogWrapper.d(TAG, "getLeftBound()");
 		return mViewBehind.getAbsLeftBound(mContent);
 	}
 
 	private int getRightBound() {
-		Logger.d(TAG, "getRightBound()");
+		LogWrapper.d(TAG, "getRightBound()");
 		return mViewBehind.getAbsRightBound(mContent);
 	}
 
 	public int getContentLeft() {
-		Logger.d(TAG, "getContentLeft()");
+		LogWrapper.d(TAG, "getContentLeft()");
 		return mContent.getLeft() + mContent.getPaddingLeft();
 	}
 
 	public boolean isMenuOpen() {
-		Logger.d(TAG, "isMenuOpen()");
+		LogWrapper.d(TAG, "isMenuOpen()");
 		return mCurItem == 0 || mCurItem == 2;
 	}
 
 	private boolean isInIgnoredView(MotionEvent ev) {
-		Logger.d(TAG, "isInIgnoredView()");
+		LogWrapper.d(TAG, "isInIgnoredView()");
 		Rect rect = new Rect();
 		for (View v : mIgnoredViews) {
 			v.getHitRect(rect);
@@ -371,7 +371,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public int getChildWidth(int i) {
-		Logger.d(TAG, "getChildWidth(), i(%s)", i);
+		LogWrapper.d(TAG, "getChildWidth(), i(%s)", i);
 		switch (i) {
 		case 0:
 			return getBehindWidth();
@@ -383,12 +383,12 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public boolean isSlidingEnabled() {
-		Logger.d(TAG, "isSlidingEnabled()");
+		LogWrapper.d(TAG, "isSlidingEnabled()");
 		return mEnabled;
 	}
 
 	public void setSlidingEnabled(boolean b) {
-		Logger.d(TAG, "setSlidingEnabled(), b(%s)", b);
+		LogWrapper.d(TAG, "setSlidingEnabled(), b(%s)", b);
 		mEnabled = b;
 	}
 
@@ -401,7 +401,7 @@ public class CustomViewAbove extends ViewGroup {
 	 *            the number of pixels to scroll by on the Y axis
 	 */
 	void smoothScrollTo(int x, int y) {
-		Logger.d(TAG, "smoothScrollTo(), x(%s), y(%s)");
+		LogWrapper.d(TAG, "smoothScrollTo(), x(%s), y(%s)");
 		smoothScrollTo(x, y, 0);
 	}
 
@@ -416,7 +416,7 @@ public class CustomViewAbove extends ViewGroup {
 	 *            the velocity associated with a fling, if applicable. (0 otherwise)
 	 */
 	void smoothScrollTo(int x, int y, int velocity) {
-		Logger.d(TAG, "smoothScrollTo(), x(%s), y(%s), velocity(%s)", x, y, velocity);
+		LogWrapper.d(TAG, "smoothScrollTo(), x(%s), y(%s), velocity(%s)", x, y, velocity);
 		if (getChildCount() == 0) {
 			// Nothing to do.
 			setScrollingCacheEnabled(false);
@@ -463,7 +463,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public void setContent(View v) {
-		Logger.d(TAG, "setContent()");
+		LogWrapper.d(TAG, "setContent()");
 		if (mContent != null) {
 			this.removeView(mContent);
 		}
@@ -472,18 +472,18 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public View getContent() {
-		Logger.d(TAG, "getContent()");
+		LogWrapper.d(TAG, "getContent()");
 		return mContent;
 	}
 
 	public void setCustomViewBehind(CustomViewBehind cvb) {
-		Logger.d(TAG, "setCustomViewBehind()");
+		LogWrapper.d(TAG, "setCustomViewBehind()");
 		mViewBehind = cvb;
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		Logger.d(TAG, "onMeasure(), widthMeasureSpec(%s), heightMeasureSpec(%s)", widthMeasureSpec, heightMeasureSpec);
+		LogWrapper.d(TAG, "onMeasure(), widthMeasureSpec(%s), heightMeasureSpec(%s)", widthMeasureSpec, heightMeasureSpec);
 		int width = getDefaultSize(0, widthMeasureSpec);
 		int height = getDefaultSize(0, heightMeasureSpec);
 		setMeasuredDimension(width, height);
@@ -495,7 +495,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-		Logger.d(TAG, "onSizeChanged(), w(%s), h(%s), oldw(%s), oldh(%s)", w, h, oldw, oldh);
+		LogWrapper.d(TAG, "onSizeChanged(), w(%s), h(%s), oldw(%s), oldh(%s)", w, h, oldw, oldh);
 		super.onSizeChanged(w, h, oldw, oldh);
 		// Make sure scroll position is set correctly.
 		if (w != oldw) {
@@ -509,14 +509,14 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		Logger.d(TAG, "onLayout(), changed(%s)", changed);
+		LogWrapper.d(TAG, "onLayout(), changed(%s)", changed);
 		final int width = r - l;
 		final int height = b - t;
 		mContent.layout(0, 0, width, height);
 	}
 
 	public void setAboveOffset(int i) {
-		Logger.d(TAG, "setAboveOffset(), offset(%s)", i);
+		LogWrapper.d(TAG, "setAboveOffset(), offset(%s)", i);
 		// RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams)mContent.getLayoutParams());
 		// params.setMargins(i, params.topMargin, params.rightMargin, params.bottomMargin);
 		mContent.setPadding(i, mContent.getPaddingTop(), mContent.getPaddingRight(), mContent.getPaddingBottom());
@@ -547,7 +547,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private void pageScrolled(int xpos) {
-		Logger.d(TAG, "pageScrolled(), xpos(%s)", xpos);
+		LogWrapper.d(TAG, "pageScrolled(), xpos(%s)", xpos);
 		final int widthWithMargin = getWidth();
 		final int position = xpos / widthWithMargin;
 		final int offsetPixels = xpos % widthWithMargin;
@@ -567,7 +567,7 @@ public class CustomViewAbove extends ViewGroup {
 	 *            Value in pixels indicating the offset from position.
 	 */
 	protected void onPageScrolled(int position, float offset, int offsetPixels) {
-		Logger.d(TAG, "onPageScrolled(), position(%s), offset(%s), offsetPixels(%s)", position, offset, offsetPixels);
+		LogWrapper.d(TAG, "onPageScrolled(), position(%s), offset(%s), offsetPixels(%s)", position, offset, offsetPixels);
 		if (mOnPageChangeListener != null) {
 			mOnPageChangeListener.onPageScrolled(position, offset, offsetPixels);
 		}
@@ -608,17 +608,17 @@ public class CustomViewAbove extends ViewGroup {
 	protected int mTouchMode = SlidingMenu.TOUCHMODE_MARGIN;
 
 	public void setTouchMode(int i) {
-		Logger.d(TAG, "setTouchMode(), mode(%s)", i);
+		LogWrapper.d(TAG, "setTouchMode(), mode(%s)", i);
 		mTouchMode = i;
 	}
 
 	public int getTouchMode() {
-		Logger.d(TAG, "getTouchMode()");
+		LogWrapper.d(TAG, "getTouchMode()");
 		return mTouchMode;
 	}
 
 	private boolean thisTouchAllowed(MotionEvent ev) {
-		Logger.d(TAG, "thisTouchAllowed()");
+		LogWrapper.d(TAG, "thisTouchAllowed()");
 
 		int x = (int) (ev.getX() + mScrollX);
 		if (isMenuOpen()) {
@@ -644,12 +644,12 @@ public class CustomViewAbove extends ViewGroup {
 			allowed = mViewBehind.menuClosedSlideAllowed(dx);
 		}
 
-		Logger.d(TAG, "thisSlideAllowed(), allowed(%s), dx(%s)", allowed, dx);
+		LogWrapper.d(TAG, "thisSlideAllowed(), allowed(%s), dx(%s)", allowed, dx);
 		return allowed;
 	}
 
 	private int getPointerIndex(MotionEvent ev, int id) {
-		Logger.d(TAG, "getPointerIndex(), id(%s)", id);
+		LogWrapper.d(TAG, "getPointerIndex(), id(%s)", id);
 
 		int activePointerIndex = MotionEventCompat.findPointerIndex(ev, id);
 		if (activePointerIndex == -1) {
@@ -662,7 +662,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		Logger.d(TAG, "onInterceptTouchEvent()");
+		LogWrapper.d(TAG, "onInterceptTouchEvent()");
 
 		if (!mEnabled) {
 			return false;
@@ -716,7 +716,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		Logger.d(TAG, "onTouchEvent()");
+		LogWrapper.d(TAG, "onTouchEvent()");
 
 		if (!mEnabled) {
 			return false;
@@ -839,7 +839,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private void determineDrag(MotionEvent ev) {
-		Logger.d(TAG, "determineDrag()");
+		LogWrapper.d(TAG, "determineDrag()");
 
 		final int activePointerId = mActivePointerId;
 		final int pointerIndex = getPointerIndex(ev, activePointerId);
@@ -862,19 +862,19 @@ public class CustomViewAbove extends ViewGroup {
 			// setScrollingCacheEnabled(true);
 
 			if (mViewBehind != null) {
-				Logger.d(TAG, "mViewBehind is not null");
+				LogWrapper.d(TAG, "mViewBehind is not null");
 			} else {
-				Logger.d(TAG, "mViewBehind is null");
+				LogWrapper.d(TAG, "mViewBehind is null");
 			}
 
 			if (mContent.isEnabled()) {
-				Logger.d(TAG, "mContent is enabled");
+				LogWrapper.d(TAG, "mContent is enabled");
 			} else {
-				Logger.d(TAG, "mContent is not enabled");
+				LogWrapper.d(TAG, "mContent is not enabled");
 			}
 
 			if (false == isMenuOpen()) {
-				Logger.d(TAG, "globalX :" + GlobalVariables.getWebviewScrollX());
+				LogWrapper.d(TAG, "globalX :" + GlobalVariables.getWebviewScrollX());
 
 				if (GlobalVariables.getWebviewScrollX() == 0) {
 					startDrag();
@@ -898,7 +898,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	public void scrollTo(int x, int y) {
-		Logger.d(TAG, "scrollTo(), x(%s), y(%s)", x, y);
+		LogWrapper.d(TAG, "scrollTo(), x(%s), y(%s)", x, y);
 
 		super.scrollTo(x, y);
 		mScrollX = x;
@@ -907,7 +907,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private int determineTargetPage(float pageOffset, int velocity, int deltaX) {
-		Logger.d(TAG, "determineTargetPage(), pageOffset(%s), velocity(%s), deltaX(%s)", pageOffset, velocity, deltaX);
+		LogWrapper.d(TAG, "determineTargetPage(), pageOffset(%s), velocity(%s), deltaX(%s)", pageOffset, velocity, deltaX);
 		int targetPage = mCurItem;
 		if (Math.abs(deltaX) > mFlingDistance && Math.abs(velocity) > mMinimumVelocity) {
 			if (velocity > 0 && deltaX > 0) {
@@ -927,7 +927,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		Logger.d(TAG, "dispatchDraw()");
+		LogWrapper.d(TAG, "dispatchDraw()");
 		super.dispatchDraw(canvas);
 		// Draw the margin drawable if needed.
 		mViewBehind.drawShadow(mContent, canvas);
@@ -939,7 +939,7 @@ public class CustomViewAbove extends ViewGroup {
 	private float mScrollX = 0.0f;
 
 	private void onSecondaryPointerUp(MotionEvent ev) {
-		Logger.d(TAG, "onSecondaryPointerUp()");
+		LogWrapper.d(TAG, "onSecondaryPointerUp()");
 
 		final int pointerIndex = MotionEventCompat.getActionIndex(ev);
 		final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
@@ -956,13 +956,13 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private void startDrag() {
-		Logger.d(TAG, "startDrag()");
+		LogWrapper.d(TAG, "startDrag()");
 		mIsBeingDragged = true;
 		mQuickReturn = false;
 	}
 
 	private void endDrag() {
-		Logger.d(TAG, "endDrag()");
+		LogWrapper.d(TAG, "endDrag()");
 		mQuickReturn = false;
 		mIsBeingDragged = false;
 		mIsUnableToDrag = false;
@@ -975,7 +975,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	private void setScrollingCacheEnabled(boolean enabled) {
-		Logger.d(TAG, "setScrollingCacheEnabled(), enabled(%s)", enabled);
+		LogWrapper.d(TAG, "setScrollingCacheEnabled(), enabled(%s)", enabled);
 		if (mScrollingCacheEnabled != enabled) {
 			mScrollingCacheEnabled = enabled;
 			if (USE_CACHE) {
@@ -1006,7 +1006,7 @@ public class CustomViewAbove extends ViewGroup {
 	 * @return true if child views of v can be scrolled by delta of dx.
 	 */
 	protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
-		Logger.d(TAG, "canScroll(), checkV(%s), dx(%s), x(%s), y(%s)", checkV, dx, x, y);
+		LogWrapper.d(TAG, "canScroll(), checkV(%s), dx(%s), x(%s), y(%s)", checkV, dx, x, y);
 		if (v instanceof ViewGroup) {
 			final ViewGroup group = (ViewGroup) v;
 			final int scrollX = v.getScrollX();
@@ -1027,7 +1027,7 @@ public class CustomViewAbove extends ViewGroup {
 
 	@Override
 	public boolean dispatchKeyEvent(KeyEvent event) {
-		Logger.d(TAG, "dispatchKeyEvent()");
+		LogWrapper.d(TAG, "dispatchKeyEvent()");
 		// Let the focused view and/or our descendants get the key first
 		return super.dispatchKeyEvent(event) || executeKeyEvent(event);
 	}
@@ -1040,7 +1040,7 @@ public class CustomViewAbove extends ViewGroup {
 	 * @return Return true if the event was handled, else false.
 	 */
 	public boolean executeKeyEvent(KeyEvent event) {
-		Logger.d(TAG, "executeKeyEvent()");
+		LogWrapper.d(TAG, "executeKeyEvent()");
 
 		boolean handled = false;
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {
@@ -1068,7 +1068,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	public boolean arrowScroll(int direction) {
-		Logger.d(TAG, "arrowScroll(), direction(%s)", direction);
+		LogWrapper.d(TAG, "arrowScroll(), direction(%s)", direction);
 
 		View currentFocused = findFocus();
 		if (currentFocused == this) {
@@ -1105,7 +1105,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	boolean pageLeft() {
-		Logger.d(TAG, "pageLeft()");
+		LogWrapper.d(TAG, "pageLeft()");
 
 		if (mCurItem > 0) {
 			setCurrentItem(mCurItem - 1, true);
@@ -1115,7 +1115,7 @@ public class CustomViewAbove extends ViewGroup {
 	}
 
 	boolean pageRight() {
-		Logger.d(TAG, "pageRight()");
+		LogWrapper.d(TAG, "pageRight()");
 
 		if (mCurItem < 1) {
 			setCurrentItem(mCurItem + 1, true);

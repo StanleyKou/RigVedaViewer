@@ -14,7 +14,7 @@ import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.base.BaseActivity;
 import com.kou.android.RigVedaViewer.fragment.CustomWebViewFragment;
 import com.kou.android.RigVedaViewer.fragment.FootNoteMenuFragment;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 /**
  * WebViewFragmentHolderActivity
@@ -41,7 +41,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 	public WebViewFragmentHolderActivity() {
 		super(R.string.app_name_eng);
-		Logger.d(TAG, TAG, "Constructor::CenterFragmentChangeActivity()");
+		LogWrapper.d(TAG, TAG, "Constructor::CenterFragmentChangeActivity()");
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	 * */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreate()");
+		LogWrapper.d(TAG, "onCreate()");
 
 		super.onCreate(savedInstanceState);
 		// set the Above View
@@ -88,7 +88,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		Logger.d(TAG, "onSaveInstanceState()");
+		LogWrapper.d(TAG, "onSaveInstanceState()");
 		getSupportFragmentManager().putFragment(outState, "mContent", mContent);
 		getSupportFragmentManager().putFragment(outState, "mMenu", mMenu);
 		super.onSaveInstanceState(outState);
@@ -96,7 +96,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-		Logger.d(TAG, "onRestoreInstanceState()");
+		LogWrapper.d(TAG, "onRestoreInstanceState()");
 
 		mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 
@@ -171,7 +171,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 								Thread.sleep(BACK_AGAIN_TO_EXIT_TIME);
 								bIsBackKeyPressed = false;
 							} catch (InterruptedException e) {
-								Logger.e(Logger.TAG, "", e);
+								LogWrapper.e(LogWrapper.TAG, "", e);
 							}
 						}
 
@@ -208,7 +208,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 	}
 
 	public void setFootNote(final String footNote) {
-		Logger.d(TAG, "setFootNote()");
+		LogWrapper.d(TAG, "setFootNote()");
 		runOnUiThread(new Runnable() {
 
 			@Override

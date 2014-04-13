@@ -18,7 +18,7 @@ import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 
 /**
@@ -38,7 +38,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreateView()");
+		LogWrapper.d(TAG, "onCreateView()");
 
 		mainView = (RelativeLayout) inflater.inflate(R.layout.fragment_list, null);
 
@@ -58,7 +58,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
-		Logger.d(TAG, "onSaveInstanceState()");
+		LogWrapper.d(TAG, "onSaveInstanceState()");
 		super.onSaveInstanceState(outState);
 	}
 

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
 /**
@@ -23,7 +23,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 	 */
 	public BaseActivity(int titleRes) {
 		mTitleRes = titleRes;
-		Logger.d(TAG, "Contructor::BaseActivity()");
+		LogWrapper.d(TAG, "Contructor::BaseActivity()");
 	}
 
 	/**
@@ -31,7 +31,7 @@ public class BaseActivity extends SlidingFragmentActivity {
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreate()");
+		LogWrapper.d(TAG, "onCreate()");
 		super.onCreate(savedInstanceState);
 
 		setTitle(mTitleRes);

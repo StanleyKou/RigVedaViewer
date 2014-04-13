@@ -10,7 +10,7 @@ import android.view.ViewGroup.LayoutParams;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 public class SlidingActivityHelper {
 
@@ -37,7 +37,7 @@ public class SlidingActivityHelper {
 	 */
 	public SlidingActivityHelper(Activity activity) {
 		mActivity = activity;
-		Logger.d(TAG, "SlidingActivityHelper()");
+		LogWrapper.d(TAG, "SlidingActivityHelper()");
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class SlidingActivityHelper {
 	 * @param savedInstanceState the saved instance state (unused)
 	 */
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreate()");
+		LogWrapper.d(TAG, "onCreate()");
 		mSlidingMenu = (SlidingMenu) LayoutInflater.from(mActivity).inflate(R.layout.slidingmenumain, null);
 	}
 
@@ -56,7 +56,7 @@ public class SlidingActivityHelper {
 	 * @param savedInstanceState the saved instance state (unused)
 	 */
 	public void onPostCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onPostCreate()");
+		LogWrapper.d(TAG, "onPostCreate()");
 		if (mViewBehind == null || mViewAbove == null) {
 			throw new IllegalStateException("Both setBehindContentView must be called " + "in onCreate in addition to setContentView.");
 		}
@@ -97,7 +97,7 @@ public class SlidingActivityHelper {
 	 * false if you want the ActionBar to stay in place
 	 */
 	public void setSlidingActionBarEnabled(boolean slidingActionBarEnabled) {
-		Logger.d(TAG, "setSlidingActionBarEnabled()");
+		LogWrapper.d(TAG, "setSlidingActionBarEnabled()");
 		if (mOnPostCreateCalled) {
 			throw new IllegalStateException("enableSlidingActionBar must be called in onCreate.");
 		}
@@ -111,7 +111,7 @@ public class SlidingActivityHelper {
 	 * @return The view if found or null otherwise.
 	 */
 	public View findViewById(int id) {
-		Logger.d(TAG, "findViewById()");
+		LogWrapper.d(TAG, "findViewById()");
 		
 		View v;
 		if (mSlidingMenu != null) {
@@ -131,7 +131,7 @@ public class SlidingActivityHelper {
 	 * @param outState Bundle in which to place your saved state.
 	 */
 	public void onSaveInstanceState(Bundle outState) {
-		Logger.d(TAG, "onSaveInstanceState()");
+		LogWrapper.d(TAG, "onSaveInstanceState()");
 		outState.putBoolean("SlidingActivityHelper.open", mSlidingMenu.isMenuShowing());
 		outState.putBoolean("SlidingActivityHelper.secondary", mSlidingMenu.isSecondaryMenuShowing());
 	}
@@ -143,7 +143,7 @@ public class SlidingActivityHelper {
 	 * @param params LayoutParams for that view (unused)
 	 */
 	public void registerAboveContentView(View v, LayoutParams params) {
-		Logger.d(TAG, "registerAboveContentView()");
+		LogWrapper.d(TAG, "registerAboveContentView()");
 		if (!mBroadcasting) {
 			mViewAbove = v;
 		}
@@ -159,7 +159,7 @@ public class SlidingActivityHelper {
 	 * @param v The desired content to display.
 	 */
 	public void setContentView(View v) {
-		Logger.d(TAG, "setContentView()");
+		LogWrapper.d(TAG, "setContentView()");
 		mBroadcasting = true;
 		mActivity.setContentView(v);
 	}
@@ -172,7 +172,7 @@ public class SlidingActivityHelper {
 	 * @param layoutParams Layout parameters for the view. (unused)
 	 */
 	public void setBehindContentView(View view, LayoutParams layoutParams) {
-		Logger.d(TAG, "setBehindContentView()");
+		LogWrapper.d(TAG, "setBehindContentView()");
 		mViewBehind = view;
 		mSlidingMenu.setMenu(mViewBehind);
 	}
@@ -183,7 +183,7 @@ public class SlidingActivityHelper {
 	 * @return the SlidingMenu associated with this activity.
 	 */
 	public SlidingMenu getSlidingMenu() {
-		Logger.d(TAG, "getSlidingMenu()");
+		LogWrapper.d(TAG, "getSlidingMenu()");
 		return mSlidingMenu;
 	}
 
@@ -191,7 +191,7 @@ public class SlidingActivityHelper {
 	 * Toggle the SlidingMenu. If it is open, it will be closed, and vice versa.
 	 */
 	public void toggle() {
-		Logger.d(TAG, "toggle()");
+		LogWrapper.d(TAG, "toggle()");
 		mSlidingMenu.toggle();
 	}
 
@@ -199,7 +199,7 @@ public class SlidingActivityHelper {
 	 * Close the SlidingMenu and show the content view.
 	 */
 	public void showContent() {
-		Logger.d(TAG, "showContent()");
+		LogWrapper.d(TAG, "showContent()");
 		mSlidingMenu.showContent();
 	}
 
@@ -207,7 +207,7 @@ public class SlidingActivityHelper {
 	 * Open the SlidingMenu and show the menu view.
 	 */
 	public void showMenu() {
-		Logger.d(TAG, "showMenu()");
+		LogWrapper.d(TAG, "showMenu()");
 		mSlidingMenu.showMenu();
 	}
 
@@ -216,7 +216,7 @@ public class SlidingActivityHelper {
 	 * if there is only one.
 	 */
 	public void showSecondaryMenu() {
-		Logger.d(TAG, "showSecondaryMenu()");
+		LogWrapper.d(TAG, "showSecondaryMenu()");
 		mSlidingMenu.showSecondaryMenu();
 	}
 
@@ -228,7 +228,7 @@ public class SlidingActivityHelper {
 	 * @return true, if successful
 	 */
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		Logger.d(TAG, "onKeyUp(), keyCode(%s)", keyCode);
+		LogWrapper.d(TAG, "onKeyUp(), keyCode(%s)", keyCode);
 		
 		if (keyCode == KeyEvent.KEYCODE_BACK && mSlidingMenu.isMenuShowing()) {
 			showContent();

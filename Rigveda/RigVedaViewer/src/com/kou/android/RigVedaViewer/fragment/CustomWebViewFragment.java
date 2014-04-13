@@ -7,13 +7,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -51,7 +49,7 @@ import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
 import com.kou.android.RigVedaViewer.base.BaseWebView;
 import com.kou.android.RigVedaViewer.utils.DownloadFilesTask;
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
@@ -368,7 +366,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			public boolean onLongClick(View v) {
 
 				HitTestResult result = mWebview.getHitTestResult();
-				Logger.d(TAG, "LongClick: " + result.getExtra());
+				LogWrapper.d(TAG, "LongClick: " + result.getExtra());
 
 				if (result.getType() == HitTestResult.IMAGE_TYPE || result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE) {
 					AlertDialog dialog = getImageProcessDialog(result.getExtra());
@@ -406,10 +404,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				// getResource를 읽어올 수 없는 상태이면 종료. isAdded를 쓰지 않는 이유는, Activity만 있으면 되기 때문.
 				if (getActivity() == null) {
-					Logger.d(TAG, "getActivity is null");
+					LogWrapper.d(TAG, "getActivity is null");
 					return;
 				} else {
-					Logger.d(TAG, "getActivity is good");
+					LogWrapper.d(TAG, "getActivity is good");
 				}
 
 				String footNote = getString(R.string.loading_footnote);
@@ -440,17 +438,17 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
-				Logger.d(TAG, "onPageFinished");
+				LogWrapper.d(TAG, "onPageFinished");
 				setCurrentURL(url);
 
 				mProgressBar.setVisibility(View.GONE);
 
 				// getResource를 읽어올 수 없는 상태이면 종료. isAdded를 쓰지 않는 이유는, Activity만 있으면 되기 때문.
 				if (getActivity() == null) {
-					Logger.d(TAG, "getActivity is null");
+					LogWrapper.d(TAG, "getActivity is null");
 					return;
 				} else {
-					Logger.d(TAG, "getActivity is good");
+					LogWrapper.d(TAG, "getActivity is good");
 				}
 
 				String homeURL = getHomeURL();
@@ -464,7 +462,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			@Override
 			public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 				super.onReceivedError(view, errorCode, description, failingUrl);
-				Logger.d(TAG, "error code:" + errorCode);
+				LogWrapper.d(TAG, "error code:" + errorCode);
 
 				mNetworkErrorDialog = getNetworkErrorDialog();
 				if (mNetworkErrorDialog != null && !mNetworkErrorDialog.isShowing()) {
@@ -603,7 +601,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyShowLinkDrip() {
-		Logger.d(TAG, "showLinkDrip()");
+		LogWrapper.d(TAG, "showLinkDrip()");
 		// 링크명과 표시 명이 다른 경우, 표시 명에 링크 명을 추가로 표시
 		boolean value = PreferenceUtils.getcbAlias(getActivity());
 
@@ -621,7 +619,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyYouTubeIframeWidth() {
-		Logger.d(TAG, "modifyYouTubeIframeWidth()");
+		LogWrapper.d(TAG, "modifyYouTubeIframeWidth()");
 		boolean value = PreferenceUtils.getcbModifyYouTubeWidth(getActivity());
 
 		if (true == value) {
@@ -633,7 +631,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void modifyTextBackgroundColor() {
 		boolean value = PreferenceUtils.getcbTextColor(getActivity());
 		if (true == value) {
-			Logger.d(TAG, "modifyTextBackgroundColor()");
+			LogWrapper.d(TAG, "modifyTextBackgroundColor()");
 
 			int textColor = PreferenceUtils.gettextColor(getActivity());
 			int backgroundColor = PreferenceUtils.getbackgroundColor(getActivity());
@@ -659,7 +657,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void modifyTextSize() {
 		boolean value = PreferenceUtils.getcbFontSize(getActivity());
 		if (true == value) {
-			Logger.d(TAG, "modifyTextSize()");
+			LogWrapper.d(TAG, "modifyTextSize()");
 			int fontSize = PreferenceUtils.getfontSize(getActivity());
 			String loadFontSize = String.format("javascript:$('div').each(function(i, obj){$(this).css('font-size','%d%%');})", fontSize);
 			mWebview.loadUrl(loadFontSize);
@@ -667,7 +665,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void modifyMakeFootNote() {
-		Logger.d(TAG, "runFootNoteJS()");
+		LogWrapper.d(TAG, "runFootNoteJS()");
 		mWebview.loadUrl("javascript:$('.foot').children().each(function(i, obj) {if (obj.tagName.toLowerCase() == 'a' && obj.title != '') {window.HTMLOUT.processFootNote(obj.innerHTML, $(obj).attr('id'), obj.title);}});");
 		mWebview.loadUrl("javascript:window.HTMLOUT.setFootNote();");
 	}
@@ -699,7 +697,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void modifyExternalImageShow() {
 		boolean value = PreferenceUtils.getcbExternalImage(getActivity());
 		if (true == value) {
-			Logger.d(TAG, "modifyExternalImageShow()");
+			LogWrapper.d(TAG, "modifyExternalImageShow()");
 			String loadExternalImage = "javascript:$('.external').css('display', 'block').css('width', '100%');";
 			mWebview.loadUrl(loadExternalImage);
 		}
@@ -722,7 +720,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	public void clearHistory() {
-		Logger.d(TAG, "clearHistory()");
+		LogWrapper.d(TAG, "clearHistory()");
 		mWebview.clearHistory();
 	}
 
@@ -829,7 +827,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void makeFootNoteList(String fnInnerHTML, String href, String rfnTitle) {
-		Logger.d(TAG, "makeFootNoteList" + fnInnerHTML);
+		LogWrapper.d(TAG, "makeFootNoteList" + fnInnerHTML);
 
 		// 한줌 물망초
 		// 공생전

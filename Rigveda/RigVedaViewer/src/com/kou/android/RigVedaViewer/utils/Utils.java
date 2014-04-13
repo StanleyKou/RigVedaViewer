@@ -48,7 +48,7 @@ public class Utils {
 		List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		for (ApplicationInfo packageInfo : packages) {
 			if (schemUrl.equalsIgnoreCase(packageInfo.packageName)) {
-				Logger.d(TAG, "isInstalled : true");
+				LogWrapper.d(TAG, "isInstalled : true");
 				isInstalled = true;
 				break;
 			}
@@ -64,7 +64,7 @@ public class Utils {
 			versionName = pInfo.versionName;
 		} catch (NameNotFoundException e) {
 			e.printStackTrace();
-			Logger.e(TAG, e.toString());
+			LogWrapper.e(TAG, e.toString());
 		}
 		return versionName;
 	}
@@ -137,7 +137,7 @@ public class Utils {
 		File file = new File(Environment.getExternalStorageDirectory(), activity.getString(R.string.app_name_eng));
 		if (!file.exists()) {
 			if (!file.mkdirs()) {
-				Logger.e(TAG, "Create app folder failed.");
+				LogWrapper.e(TAG, "Create app folder failed.");
 				ret = false;
 			}
 		}
@@ -206,7 +206,7 @@ public class Utils {
 					}
 				}
 			} catch (Exception e) {
-				Logger.e(TAG, String.format("Failed to clean the cache, error %s", e.getMessage()));
+				LogWrapper.e(TAG, String.format("Failed to clean the cache, error %s", e.getMessage()));
 			}
 		}
 		return deletedFiles;

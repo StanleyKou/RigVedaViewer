@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 /**
  * SampleListFragment
@@ -22,12 +22,12 @@ public class SampleListFragment extends ListFragment {
 	private final String TAG = SampleListFragment.class.getSimpleName();
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreateView()");
+		LogWrapper.d(TAG, "onCreateView()");
 		return inflater.inflate(R.layout.fragment_list, null);
 	}
 
 	public void onActivityCreated(Bundle savedInstanceState) {
-		Logger.d(TAG, "onActivityCreated()");
+		LogWrapper.d(TAG, "onActivityCreated()");
 		super.onActivityCreated(savedInstanceState);
 
 		SampleAdapter adapter = new SampleAdapter(getActivity());

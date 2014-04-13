@@ -8,7 +8,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ListView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 public class SlidingListActivity extends ListActivity implements SlidingActivityBase {
 	
@@ -21,7 +21,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onCreate()");
+		LogWrapper.d(TAG, "onCreate()");
 		super.onCreate(savedInstanceState);
 		mHelper = new SlidingActivityHelper(this);
 		mHelper.onCreate(savedInstanceState);
@@ -35,7 +35,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public void onPostCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, "onPostCreate()");
+		LogWrapper.d(TAG, "onPostCreate()");
 		super.onPostCreate(savedInstanceState);
 		mHelper.onPostCreate(savedInstanceState);
 	}
@@ -45,7 +45,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public View findViewById(int id) {
-		Logger.d(TAG, "findViewById(), id(%s)", id);
+		LogWrapper.d(TAG, "findViewById(), id(%s)", id);
 		View v = super.findViewById(id);
 		if (v != null){
 			return v;
@@ -58,7 +58,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		Logger.d(TAG, "onSaveInstanceState()");
+		LogWrapper.d(TAG, "onSaveInstanceState()");
 		super.onSaveInstanceState(outState);
 		mHelper.onSaveInstanceState(outState);
 	}
@@ -68,7 +68,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public void setContentView(int id) {
-		Logger.d(TAG, "setContentView(), with id");
+		LogWrapper.d(TAG, "setContentView(), with id");
 		setContentView(getLayoutInflater().inflate(id, null));
 	}
 
@@ -77,7 +77,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public void setContentView(View v) {
-		Logger.d(TAG, "setContentView(), with view");
+		LogWrapper.d(TAG, "setContentView(), with view");
 		setContentView(v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
@@ -86,7 +86,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public void setContentView(View v, LayoutParams params) {
-		Logger.d(TAG, "setContentView(), with view and layoutParams");
+		LogWrapper.d(TAG, "setContentView(), with view and layoutParams");
 		super.setContentView(v, params);
 		mHelper.registerAboveContentView(v, params);
 	}
@@ -95,7 +95,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(int)
 	 */
 	public void setBehindContentView(int id) {
-		Logger.d(TAG, "setBehindContentView(), with id");
+		LogWrapper.d(TAG, "setBehindContentView(), with id");
 		setBehindContentView(getLayoutInflater().inflate(id, null));
 	}
 
@@ -103,7 +103,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View)
 	 */
 	public void setBehindContentView(View v) {
-		Logger.d(TAG, "setBehindContentView(), with view");
+		LogWrapper.d(TAG, "setBehindContentView(), with view");
 		setBehindContentView(v, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 	}
 
@@ -111,7 +111,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setBehindContentView(android.view.View, android.view.ViewGroup.LayoutParams)
 	 */
 	public void setBehindContentView(View v, LayoutParams params) {
-		Logger.d(TAG, "setBehindContentView(), with view and layoutParams");
+		LogWrapper.d(TAG, "setBehindContentView(), with view and layoutParams");
 		mHelper.setBehindContentView(v, params);
 	}
 
@@ -119,7 +119,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#getSlidingMenu()
 	 */
 	public SlidingMenu getSlidingMenu() {
-		Logger.d(TAG, "getSlidingMenu()");
+		LogWrapper.d(TAG, "getSlidingMenu()");
 		return mHelper.getSlidingMenu();
 	}
 
@@ -127,7 +127,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#toggle()
 	 */
 	public void toggle() {
-		Logger.d(TAG, "toggle()");
+		LogWrapper.d(TAG, "toggle()");
 		mHelper.toggle();
 	}
 
@@ -135,7 +135,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#showAbove()
 	 */
 	public void showContent() {
-		Logger.d(TAG, "showContent()");
+		LogWrapper.d(TAG, "showContent()");
 		mHelper.showContent();
 	}
 
@@ -143,7 +143,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#showBehind()
 	 */
 	public void showMenu() {
-		Logger.d(TAG, "showMenu()");
+		LogWrapper.d(TAG, "showMenu()");
 		mHelper.showMenu();
 	}
 	
@@ -152,7 +152,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#showSecondaryMenu()
 	 */
 	public void showSecondaryMenu() {
-		Logger.d(TAG, "showSecondaryMenu()");
+		LogWrapper.d(TAG, "showSecondaryMenu()");
 		mHelper.showSecondaryMenu();
 	}
 
@@ -160,7 +160,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 * @see com.jeremyfeinstein.slidingmenu.lib.app.SlidingActivityBase#setSlidingActionBarEnabled(boolean)
 	 */
 	public void setSlidingActionBarEnabled(boolean b) {
-		Logger.d(TAG, "setSlidingActionBarEnabled(), b(%s)", b);
+		LogWrapper.d(TAG, "setSlidingActionBarEnabled(), b(%s)", b);
 		mHelper.setSlidingActionBarEnabled(b);
 	}
 
@@ -169,7 +169,7 @@ public class SlidingListActivity extends ListActivity implements SlidingActivity
 	 */
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		Logger.d(TAG, "onKeyUp(), keyCode", keyCode);
+		LogWrapper.d(TAG, "onKeyUp(), keyCode", keyCode);
 		boolean b = mHelper.onKeyUp(keyCode, event);
 		if (b) {
 			return b;

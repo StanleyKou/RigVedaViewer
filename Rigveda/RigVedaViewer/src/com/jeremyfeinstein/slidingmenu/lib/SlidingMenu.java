@@ -28,7 +28,7 @@ import android.widget.RelativeLayout;
 
 import com.jeremyfeinstein.slidingmenu.lib.CustomViewAbove.OnPageChangeListener;
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 public class SlidingMenu extends RelativeLayout {
 
@@ -158,7 +158,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public SlidingMenu(Context context) {
 		this(context, null);
-		Logger.d(TAG, "Constructor::SlidingMenu()");
+		LogWrapper.d(TAG, "Constructor::SlidingMenu()");
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class SlidingMenu extends RelativeLayout {
 	public SlidingMenu(Activity activity, int slideStyle) {
 		this(activity, null);
 		this.attachToActivity(activity, slideStyle);
-		Logger.d(TAG, "Constructor::SlidingMenu(), with slideStyle");
+		LogWrapper.d(TAG, "Constructor::SlidingMenu(), with slideStyle");
 	}
 
 	/**
@@ -185,7 +185,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	public SlidingMenu(Context context, AttributeSet attrs) {
 		this(context, attrs, 0);
-		Logger.d(TAG, "Constructor::SlidingMenu(), with AttributeSet");
+		LogWrapper.d(TAG, "Constructor::SlidingMenu(), with AttributeSet");
 	}
 
 	/**
@@ -201,7 +201,7 @@ public class SlidingMenu extends RelativeLayout {
 	public SlidingMenu(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
-		Logger.d(TAG, "Constructor::SlidingMenu(), with AttributeSet and defStyle");
+		LogWrapper.d(TAG, "Constructor::SlidingMenu(), with AttributeSet and defStyle");
 		LayoutParams behindParams = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		mViewBehind = new CustomViewBehind(context);
 		addView(mViewBehind, behindParams);
@@ -310,7 +310,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            either SLIDING_CONTENT or SLIDING_WINDOW
 	 */
 	public void attachToActivity(Activity activity, int slideStyle) {
-		Logger.d(TAG, "attachToActivity(), slideStyle(%s)", slideStyle);
+		LogWrapper.d(TAG, "attachToActivity(), slideStyle(%s)", slideStyle);
 		attachToActivity(activity, slideStyle, false);
 	}
 
@@ -325,7 +325,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            whether or not the ActionBar is overlaid
 	 */
 	public void attachToActivity(Activity activity, int slideStyle, boolean actionbarOverlay) {
-		Logger.d(TAG, "attachToActivity(), slideStyle(%s), actionbarOverlay(%s)", slideStyle, actionbarOverlay);
+		LogWrapper.d(TAG, "attachToActivity(), slideStyle(%s), actionbarOverlay(%s)", slideStyle, actionbarOverlay);
 
 		if (slideStyle != SLIDING_WINDOW && slideStyle != SLIDING_CONTENT) {
 			throw new IllegalArgumentException("slideStyle must be either SLIDING_WINDOW or SLIDING_CONTENT");
@@ -375,7 +375,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new content
 	 */
 	public void setContent(int res) {
-		Logger.d(TAG, "setContent()");
+		LogWrapper.d(TAG, "setContent()");
 		setContent(LayoutInflater.from(getContext()).inflate(res, null));
 	}
 
@@ -386,7 +386,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The desired content to display.
 	 */
 	public void setContent(View view) {
-		Logger.d(TAG, "setContent(), with view");
+		LogWrapper.d(TAG, "setContent(), with view");
 		mViewAbove.setContent(view);
 		showContent();
 	}
@@ -397,7 +397,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the current content
 	 */
 	public View getContent() {
-		Logger.d(TAG, "getContent()");
+		LogWrapper.d(TAG, "getContent()");
 		return mViewAbove.getContent();
 	}
 
@@ -408,7 +408,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new content
 	 */
 	public void setMenu(int res) {
-		Logger.d(TAG, "setMenu()");
+		LogWrapper.d(TAG, "setMenu()");
 		setMenu(LayoutInflater.from(getContext()).inflate(res, null));
 	}
 
@@ -419,7 +419,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The desired content to display.
 	 */
 	public void setMenu(View v) {
-		Logger.d(TAG, "setMenu(), with view");
+		LogWrapper.d(TAG, "setMenu(), with view");
 		mViewBehind.setContent(v);
 	}
 
@@ -429,7 +429,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the main menu
 	 */
 	public View getMenu() {
-		Logger.d(TAG, "getMenu()");
+		LogWrapper.d(TAG, "getMenu()");
 		return mViewBehind.getContent();
 	}
 
@@ -440,7 +440,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new content
 	 */
 	public void setSecondaryMenu(int res) {
-		Logger.d(TAG, "setSecondaryMenu()");
+		LogWrapper.d(TAG, "setSecondaryMenu()");
 		setSecondaryMenu(LayoutInflater.from(getContext()).inflate(res, null));
 	}
 
@@ -451,7 +451,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The desired content to display.
 	 */
 	public void setSecondaryMenu(View v) {
-		Logger.d(TAG, "setSecondaryMenu(), with view");
+		LogWrapper.d(TAG, "setSecondaryMenu(), with view");
 		mViewBehind.setSecondaryContent(v);
 		// mViewBehind.invalidate();
 	}
@@ -462,7 +462,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the current menu
 	 */
 	public View getSecondaryMenu() {
-		Logger.d(TAG, "getSecondaryMenu()");
+		LogWrapper.d(TAG, "getSecondaryMenu()");
 		return mViewBehind.getSecondaryContent();
 	}
 
@@ -473,7 +473,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to enable sliding, false to disable it.
 	 */
 	public void setSlidingEnabled(boolean b) {
-		Logger.d(TAG, "setSlidingEnabled(%s)", b);
+		LogWrapper.d(TAG, "setSlidingEnabled(%s)", b);
 		mViewAbove.setSlidingEnabled(b);
 	}
 
@@ -483,7 +483,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return true, if is sliding enabled
 	 */
 	public boolean isSlidingEnabled() {
-		Logger.d(TAG, "isSlidingEnabled()");
+		LogWrapper.d(TAG, "isSlidingEnabled()");
 		return mViewAbove.isSlidingEnabled();
 	}
 
@@ -494,7 +494,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            must be either SlidingMenu.LEFT or SlidingMenu.RIGHT
 	 */
 	public void setMode(int mode) {
-		Logger.d(TAG, "setMode(%s)", mode);
+		LogWrapper.d(TAG, "setMode(%s)", mode);
 		if (mode != LEFT && mode != RIGHT && mode != LEFT_RIGHT) {
 			throw new IllegalStateException("SlidingMenu mode must be LEFT, RIGHT, or LEFT_RIGHT");
 		}
@@ -507,7 +507,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the current mode, either SlidingMenu.LEFT or SlidingMenu.RIGHT
 	 */
 	public int getMode() {
-		Logger.d(TAG, "getMode()");
+		LogWrapper.d(TAG, "getMode()");
 		return mViewBehind.getMode();
 	}
 
@@ -518,7 +518,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to set static mode, false to disable static mode.
 	 */
 	public void setStatic(boolean b) {
-		Logger.d(TAG, "setStatic(%s)", b);
+		LogWrapper.d(TAG, "setStatic(%s)", b);
 		if (b) {
 			setSlidingEnabled(false);
 			mViewAbove.setCustomViewBehind(null);
@@ -536,7 +536,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Opens the menu and shows the menu view.
 	 */
 	public void showMenu() {
-		Logger.d(TAG, "showMenu()");
+		LogWrapper.d(TAG, "showMenu()");
 		showMenu(true);
 	}
 
@@ -547,7 +547,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to animate the transition, false to ignore animation
 	 */
 	public void showMenu(boolean animate) {
-		Logger.d(TAG, "showMenu(%s)", animate);
+		LogWrapper.d(TAG, "showMenu(%s)", animate);
 		mViewAbove.setCurrentItem(0, animate);
 	}
 
@@ -555,7 +555,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Opens the menu and shows the secondary menu view. Will default to the regular menu if there is only one.
 	 */
 	public void showSecondaryMenu() {
-		Logger.d(TAG, "showSecondaryMenu()");
+		LogWrapper.d(TAG, "showSecondaryMenu()");
 		showSecondaryMenu(true);
 	}
 
@@ -566,7 +566,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to animate the transition, false to ignore animation
 	 */
 	public void showSecondaryMenu(boolean animate) {
-		Logger.d(TAG, "showSecondaryMenu(%s)", animate);
+		LogWrapper.d(TAG, "showSecondaryMenu(%s)", animate);
 		mViewAbove.setCurrentItem(2, animate);
 	}
 
@@ -574,7 +574,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Closes the menu and shows the above view.
 	 */
 	public void showContent() {
-		Logger.d(TAG, "showContent()");
+		LogWrapper.d(TAG, "showContent()");
 		showContent(true);
 	}
 
@@ -585,7 +585,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to animate the transition, false to ignore animation
 	 */
 	public void showContent(boolean animate) {
-		Logger.d(TAG, "showContent(%s)", animate);
+		LogWrapper.d(TAG, "showContent(%s)", animate);
 		mViewAbove.setCurrentItem(1, animate);
 	}
 
@@ -593,7 +593,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Toggle the SlidingMenu. If it is open, it will be closed, and vice versa.
 	 */
 	public void toggle() {
-		Logger.d(TAG, "toggle()");
+		LogWrapper.d(TAG, "toggle()");
 		toggle(true);
 	}
 
@@ -604,7 +604,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to animate the transition, false to ignore animation
 	 */
 	public void toggle(boolean animate) {
-		Logger.d(TAG, "toggle(%s)", animate);
+		LogWrapper.d(TAG, "toggle(%s)", animate);
 		if (isMenuShowing()) {
 			showContent(animate);
 		} else {
@@ -618,7 +618,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return Whether or not the behind view is showing
 	 */
 	public boolean isMenuShowing() {
-		Logger.d(TAG, "isMenuShowing()");
+		LogWrapper.d(TAG, "isMenuShowing()");
 		return mViewAbove.getCurrentItem() == 0 || mViewAbove.getCurrentItem() == 2;
 	}
 
@@ -628,7 +628,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return Whether or not the behind view is showing
 	 */
 	public boolean isSecondaryMenuShowing() {
-		Logger.d(TAG, "isSecondaryMenuShowing()");
+		LogWrapper.d(TAG, "isSecondaryMenuShowing()");
 		return mViewAbove.getCurrentItem() == 2;
 	}
 
@@ -638,7 +638,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return The margin on the right of the screen that the behind view scrolls to
 	 */
 	public int getBehindOffset() {
-		Logger.d(TAG, "getBehindOffset()");
+		LogWrapper.d(TAG, "getBehindOffset()");
 		return ((RelativeLayout.LayoutParams) mViewBehind.getLayoutParams()).rightMargin;
 	}
 
@@ -649,7 +649,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The margin, in pixels, on the right of the screen that the behind view scrolls to.
 	 */
 	public void setBehindOffset(int i) {
-		Logger.d(TAG, "setBehindOffset(%s)", i);
+		LogWrapper.d(TAG, "setBehindOffset(%s)", i);
 		// RelativeLayout.LayoutParams params = ((RelativeLayout.LayoutParams)mViewBehind.getLayoutParams());
 		// int bottom = params.bottomMargin;
 		// int top = params.topMargin;
@@ -665,7 +665,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The dimension resource id to be set as the behind offset. The menu, when open, will leave this width margin on the right of the screen.
 	 */
 	public void setBehindOffsetRes(int resID) {
-		Logger.d(TAG, "setBehindOffsetRes()");
+		LogWrapper.d(TAG, "setBehindOffsetRes()");
 		int i = (int) getContext().getResources().getDimension(resID);
 		setBehindOffset(i);
 	}
@@ -677,7 +677,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new above offset, in pixels
 	 */
 	public void setAboveOffset(int i) {
-		Logger.d(TAG, "setAboveOffset(%s)", i);
+		LogWrapper.d(TAG, "setAboveOffset(%s)", i);
 		mViewAbove.setAboveOffset(i);
 	}
 
@@ -688,7 +688,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The dimension resource id to be set as the above offset.
 	 */
 	public void setAboveOffsetRes(int resID) {
-		Logger.d(TAG, "setAboveOffsetRes()");
+		LogWrapper.d(TAG, "setAboveOffsetRes()");
 		int i = (int) getContext().getResources().getDimension(resID);
 		setAboveOffset(i);
 	}
@@ -700,7 +700,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The width the Sliding Menu will open to, in pixels
 	 */
 	public void setBehindWidth(int i) {
-		Logger.d(TAG, "setBehindWidth(%s)", i);
+		LogWrapper.d(TAG, "setBehindWidth(%s)", i);
 		int width;
 		Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
 		try {
@@ -723,7 +723,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The dimension resource id to be set as the behind width offset. The menu, when open, will open this wide.
 	 */
 	public void setBehindWidthRes(int res) {
-		Logger.d(TAG, "setBehindWidthRes()");
+		LogWrapper.d(TAG, "setBehindWidthRes()");
 		int i = (int) getContext().getResources().getDimension(res);
 		setBehindWidth(i);
 	}
@@ -734,7 +734,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return The scale of the parallax scroll
 	 */
 	public float getBehindScrollScale() {
-		Logger.d(TAG, "getBehindScrollScale()");
+		LogWrapper.d(TAG, "getBehindScrollScale()");
 		return mViewBehind.getScrollScale();
 	}
 
@@ -744,7 +744,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the touch mode margin threshold
 	 */
 	public int getTouchmodeMarginThreshold() {
-		Logger.d(TAG, "getTouchmodeMarginThreshold()");
+		LogWrapper.d(TAG, "getTouchmodeMarginThreshold()");
 		return mViewBehind.getMarginThreshold();
 	}
 
@@ -754,7 +754,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @param touchmodeMarginThreshold
 	 */
 	public void setTouchmodeMarginThreshold(int touchmodeMarginThreshold) {
-		Logger.d(TAG, "setTouchmodeMarginThreshold(%s)", touchmodeMarginThreshold);
+		LogWrapper.d(TAG, "setTouchmodeMarginThreshold(%s)", touchmodeMarginThreshold);
 		mViewBehind.setMarginThreshold(touchmodeMarginThreshold);
 	}
 
@@ -765,7 +765,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The scale of the parallax scroll (i.e. 1.0f scrolls 1 pixel for every 1 pixel that the above view scrolls and 0.0f scrolls 0 pixels)
 	 */
 	public void setBehindScrollScale(float f) {
-		Logger.d(TAG, "setBehindScrollScale(%s)", f);
+		LogWrapper.d(TAG, "setBehindScrollScale(%s)", f);
 		if (f < 0 && f > 1) {
 			throw new IllegalStateException("ScrollScale must be between 0 and 1");
 		}
@@ -779,7 +779,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new behind canvas transformer
 	 */
 	public void setBehindCanvasTransformer(CanvasTransformer t) {
-		Logger.d(TAG, "setBehindCanvasTransformer()");
+		LogWrapper.d(TAG, "setBehindCanvasTransformer()");
 		mViewBehind.setCanvasTransformer(t);
 	}
 
@@ -789,7 +789,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * @return the touch mode above
 	 */
 	public int getTouchModeAbove() {
-		Logger.d(TAG, "getTouchModeAbove()");
+		LogWrapper.d(TAG, "getTouchModeAbove()");
 		return mViewAbove.getTouchMode();
 	}
 
@@ -800,7 +800,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new touch mode
 	 */
 	public void setTouchModeAbove(int i) {
-		Logger.d(TAG, "setTouchModeAbove(%s)", i);
+		LogWrapper.d(TAG, "setTouchModeAbove(%s)", i);
 		if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN && i != TOUCHMODE_NONE) {
 			throw new IllegalStateException("TouchMode must be set to either" + "TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
 		}
@@ -814,7 +814,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new touch mode
 	 */
 	public void setTouchModeBehind(int i) {
-		Logger.d(TAG, "setTouchModeBehind(%s)", i);
+		LogWrapper.d(TAG, "setTouchModeBehind(%s)", i);
 		if (i != TOUCHMODE_FULLSCREEN && i != TOUCHMODE_MARGIN && i != TOUCHMODE_NONE) {
 			throw new IllegalStateException("TouchMode must be set to either" + "TOUCHMODE_FULLSCREEN or TOUCHMODE_MARGIN or TOUCHMODE_NONE.");
 		}
@@ -828,7 +828,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the resource ID of the new shadow drawable
 	 */
 	public void setShadowDrawable(int resId) {
-		Logger.d(TAG, "setShadowDrawable(%s)", resId);
+		LogWrapper.d(TAG, "setShadowDrawable(%s)", resId);
 		setShadowDrawable(getContext().getResources().getDrawable(resId));
 	}
 
@@ -839,7 +839,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new shadow drawable
 	 */
 	public void setShadowDrawable(Drawable d) {
-		Logger.d(TAG, "setShadowDrawable()");
+		LogWrapper.d(TAG, "setShadowDrawable()");
 		mViewBehind.setShadowDrawable(d);
 	}
 
@@ -850,7 +850,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the resource ID of the new shadow drawable
 	 */
 	public void setSecondaryShadowDrawable(int resId) {
-		Logger.d(TAG, "setSecondaryShadowDrawable(%s)", resId);
+		LogWrapper.d(TAG, "setSecondaryShadowDrawable(%s)", resId);
 		setSecondaryShadowDrawable(getContext().getResources().getDrawable(resId));
 	}
 
@@ -861,7 +861,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new shadow drawable
 	 */
 	public void setSecondaryShadowDrawable(Drawable d) {
-		Logger.d(TAG, "setSecondaryShadowDrawable()");
+		LogWrapper.d(TAG, "setSecondaryShadowDrawable()");
 		mViewBehind.setSecondaryShadowDrawable(d);
 	}
 
@@ -872,7 +872,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            The dimension resource id to be set as the shadow width.
 	 */
 	public void setShadowWidthRes(int resId) {
-		Logger.d(TAG, "setShadowWidthRes(%s)", resId);
+		LogWrapper.d(TAG, "setShadowWidthRes(%s)", resId);
 		setShadowWidth((int) getResources().getDimension(resId));
 	}
 
@@ -883,7 +883,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new shadow width, in pixels
 	 */
 	public void setShadowWidth(int pixels) {
-		Logger.d(TAG, "setShadowWidth(%s)", pixels);
+		LogWrapper.d(TAG, "setShadowWidth(%s)", pixels);
 		mViewBehind.setShadowWidth(pixels);
 	}
 
@@ -894,7 +894,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to enable fade, false to disable it
 	 */
 	public void setFadeEnabled(boolean b) {
-		Logger.d(TAG, "setFadeEnabled(%s)", b);
+		LogWrapper.d(TAG, "setFadeEnabled(%s)", b);
 		mViewBehind.setFadeEnabled(b);
 	}
 
@@ -905,7 +905,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new fade degree, between 0.0f and 1.0f
 	 */
 	public void setFadeDegree(float f) {
-		Logger.d(TAG, "setFadeDegree(%s)", f);
+		LogWrapper.d(TAG, "setFadeDegree(%s)", f);
 		mViewBehind.setFadeDegree(f);
 	}
 
@@ -916,7 +916,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            true to draw the selector, false to not draw the selector
 	 */
 	public void setSelectorEnabled(boolean b) {
-		Logger.d(TAG, "setSelectorEnabled(%s)", b);
+		LogWrapper.d(TAG, "setSelectorEnabled(%s)", b);
 		mViewBehind.setSelectorEnabled(true);
 	}
 
@@ -927,7 +927,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new selected view
 	 */
 	public void setSelectedView(View v) {
-		Logger.d(TAG, "setSelectedView()");
+		LogWrapper.d(TAG, "setSelectedView()");
 		mViewBehind.setSelectedView(v);
 	}
 
@@ -938,7 +938,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            a resource ID for the selector drawable
 	 */
 	public void setSelectorDrawable(int res) {
-		Logger.d(TAG, "setSelectorDrawable()");
+		LogWrapper.d(TAG, "setSelectorDrawable()");
 		mViewBehind.setSelectorBitmap(BitmapFactory.decodeResource(getResources(), res));
 	}
 
@@ -949,7 +949,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new selector bitmap
 	 */
 	public void setSelectorBitmap(Bitmap b) {
-		Logger.d(TAG, "setSelectorBitmap()");
+		LogWrapper.d(TAG, "setSelectorBitmap()");
 		mViewBehind.setSelectorBitmap(b);
 	}
 
@@ -960,7 +960,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            a view to be ignored
 	 */
 	public void addIgnoredView(View v) {
-		Logger.d(TAG, "addIgnoredView()");
+		LogWrapper.d(TAG, "addIgnoredView()");
 		mViewAbove.addIgnoredView(v);
 	}
 
@@ -971,7 +971,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            a view not wanted to be ignored anymore
 	 */
 	public void removeIgnoredView(View v) {
-		Logger.d(TAG, "removeIgnoredView()");
+		LogWrapper.d(TAG, "removeIgnoredView()");
 		mViewAbove.removeIgnoredView(v);
 	}
 
@@ -979,7 +979,7 @@ public class SlidingMenu extends RelativeLayout {
 	 * Clear the list of Views ignored by the Touch Down event when mode is Fullscreen
 	 */
 	public void clearIgnoredViews() {
-		Logger.d(TAG, "clearIgnoredViews()");
+		LogWrapper.d(TAG, "clearIgnoredViews()");
 		mViewAbove.clearIgnoredViews();
 	}
 
@@ -990,7 +990,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new OnOpenListener
 	 */
 	public void setOnOpenListener(OnOpenListener listener) {
-		Logger.d(TAG, "setOnOpenListener()");
+		LogWrapper.d(TAG, "setOnOpenListener()");
 		// mViewAbove.setOnOpenListener(listener);
 		mOpenListener = listener;
 	}
@@ -1002,7 +1002,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new setOnCloseListener
 	 */
 	public void setOnCloseListener(OnCloseListener listener) {
-		Logger.d(TAG, "setOnCloseListener()");
+		LogWrapper.d(TAG, "setOnCloseListener()");
 		// mViewAbove.setOnCloseListener(listener);
 		mCloseListener = listener;
 	}
@@ -1014,7 +1014,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new OnOpenedListener
 	 */
 	public void setOnOpenedListener(OnOpenedListener listener) {
-		Logger.d(TAG, "setOnOpenedListener()");
+		LogWrapper.d(TAG, "setOnOpenedListener()");
 		mViewAbove.setOnOpenedListener(listener);
 	}
 
@@ -1025,7 +1025,7 @@ public class SlidingMenu extends RelativeLayout {
 	 *            the new OnClosedListener
 	 */
 	public void setOnClosedListener(OnClosedListener listener) {
-		Logger.d(TAG, "setOnClosedListener()");
+		LogWrapper.d(TAG, "setOnClosedListener()");
 		mViewAbove.setOnClosedListener(listener);
 	}
 
@@ -1035,18 +1035,18 @@ public class SlidingMenu extends RelativeLayout {
 
 		public SavedState(Parcelable superState, int item) {
 			super(superState);
-			Logger.d(TAG, "SavedState() with item(%s)", item);
+			LogWrapper.d(TAG, "SavedState() with item(%s)", item);
 			mItem = item;
 		}
 
 		private SavedState(Parcel in) {
 			super(in);
-			Logger.d(TAG, "SavedState()");
+			LogWrapper.d(TAG, "SavedState()");
 			mItem = in.readInt();
 		}
 
 		public int getItem() {
-			Logger.d(TAG, "getItem()");
+			LogWrapper.d(TAG, "getItem()");
 			return mItem;
 		}
 
@@ -1056,19 +1056,19 @@ public class SlidingMenu extends RelativeLayout {
 		 * @see android.view.AbsSavedState#writeToParcel(android.os.Parcel, int)
 		 */
 		public void writeToParcel(Parcel out, int flags) {
-			Logger.d(TAG, "writeToParcel()");
+			LogWrapper.d(TAG, "writeToParcel()");
 			super.writeToParcel(out, flags);
 			out.writeInt(mItem);
 		}
 
 		public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
 			public SavedState createFromParcel(Parcel in) {
-				Logger.d(TAG, "createFromParcel()");
+				LogWrapper.d(TAG, "createFromParcel()");
 				return new SavedState(in);
 			}
 
 			public SavedState[] newArray(int size) {
-				Logger.d(TAG, "newArray()");
+				LogWrapper.d(TAG, "newArray()");
 				return new SavedState[size];
 			}
 		};
@@ -1082,7 +1082,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	@Override
 	protected Parcelable onSaveInstanceState() {
-		Logger.d(TAG, "onSaveInstanceState()");
+		LogWrapper.d(TAG, "onSaveInstanceState()");
 		Parcelable superState = super.onSaveInstanceState();
 		SavedState ss = new SavedState(superState, mViewAbove.getCurrentItem());
 		return ss;
@@ -1095,7 +1095,7 @@ public class SlidingMenu extends RelativeLayout {
 	 */
 	@Override
 	protected void onRestoreInstanceState(Parcelable state) {
-		Logger.d(TAG, "onRestoreInstanceState()");
+		LogWrapper.d(TAG, "onRestoreInstanceState()");
 		SavedState ss = (SavedState) state;
 		super.onRestoreInstanceState(ss.getSuperState());
 		mViewAbove.setCurrentItem(ss.getItem());
@@ -1109,13 +1109,13 @@ public class SlidingMenu extends RelativeLayout {
 	@SuppressLint("NewApi")
 	@Override
 	protected boolean fitSystemWindows(Rect insets) {
-		Logger.d(TAG, "fitSystemWindows()");
+		LogWrapper.d(TAG, "fitSystemWindows()");
 		int leftPadding = insets.left;
 		int rightPadding = insets.right;
 		int topPadding = insets.top;
 		int bottomPadding = insets.bottom;
 		if (!mActionbarOverlay) {
-			Logger.d(TAG, "fitSystemWindows(), setting padding!");
+			LogWrapper.d(TAG, "fitSystemWindows(), setting padding!");
 			setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 		}
 		return true;
@@ -1126,7 +1126,7 @@ public class SlidingMenu extends RelativeLayout {
 	// @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@TargetApi(11)
 	public void manageLayers(float percentOpen) {
-		Logger.d(TAG, "manageLayers(), percentOpen(%s)", percentOpen);
+		LogWrapper.d(TAG, "manageLayers(), percentOpen(%s)", percentOpen);
 		if (Build.VERSION.SDK_INT < 11) {
 			return;
 		}

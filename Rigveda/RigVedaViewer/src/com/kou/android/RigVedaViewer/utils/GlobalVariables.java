@@ -15,7 +15,7 @@ public class GlobalVariables {
 	public static float footNoteTextSize = 0;
 
 	public static int getWebviewScrollX() {
-		Logger.d(TAG, "wx X:" + webviewScrollX);
+		LogWrapper.d(TAG, "wx X:" + webviewScrollX);
 		return webviewScrollX;
 	}
 

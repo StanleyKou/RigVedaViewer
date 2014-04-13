@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 /**
  * BaseWebView
@@ -90,7 +90,7 @@ public class BaseWebView extends WebView {
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		super.onScrollChanged(l, t, oldl, oldt);
 
-		Logger.d(TAG, "BaseWebView onScrollChanged :" + l);
+		LogWrapper.d(TAG, "BaseWebView onScrollChanged :" + l);
 		GlobalVariables.setWebviewScrollX(l);
 	}
 }

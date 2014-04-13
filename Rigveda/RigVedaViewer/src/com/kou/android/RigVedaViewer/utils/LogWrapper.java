@@ -5,8 +5,8 @@ import java.io.StringWriter;
 
 import android.util.Log;
 
-public class Logger {
-	private Logger() {
+public class LogWrapper {
+	private LogWrapper() {
 	}
 
 	/**
@@ -23,54 +23,54 @@ public class Logger {
 	public static final String TAG = "RIGVEDAVIEWER";
 	public static final String ARTICLEREADER_TAG = "READER";
 
-	public static int logLevel = Logger.NONE;
+	public static int logLevel = LogWrapper.NONE;
 
 	public static void setLogLevel(int logLevel) {
-		if (logLevel >= Logger.ALL && logLevel <= Logger.NONE) {
-			Logger.logLevel = logLevel;
+		if (logLevel >= LogWrapper.ALL && logLevel <= LogWrapper.NONE) {
+			LogWrapper.logLevel = logLevel;
 		}
 	}
 
 	public static void e(String tag, String message, Throwable tr) {
-		if (Logger.logLevel <= Log.ERROR) {
+		if (LogWrapper.logLevel <= Log.ERROR) {
 
 			Log.e(tag, getMessageWithCaller(message), tr);
 		}
 	}
 
 	public static void e(String tag, String message) {
-		if (Logger.logLevel <= Log.ERROR) {
+		if (LogWrapper.logLevel <= Log.ERROR) {
 
 			Log.e(tag, getMessageWithCaller(message));
 		}
 	}
 
 	public static void w(String tag, String message) {
-		if (Logger.logLevel <= Log.WARN) {
+		if (LogWrapper.logLevel <= Log.WARN) {
 			Log.w(tag, getMessageWithCaller(message));
 		}
 	}
 
 	public static void i(String tag, String message, Throwable tr) {
-		if (Logger.logLevel <= Log.INFO) {
+		if (LogWrapper.logLevel <= Log.INFO) {
 			Log.i(tag, getMessageWithCaller(message), tr);
 		}
 	}
 
 	public static void i(String tag, String message) {
-		if (Logger.logLevel <= Log.INFO) {
+		if (LogWrapper.logLevel <= Log.INFO) {
 			Log.i(tag, getMessageWithCaller(message));
 		}
 	}
 
 	public static void d(String tag, String message) {
-		if (Logger.logLevel <= Log.DEBUG) {
+		if (LogWrapper.logLevel <= Log.DEBUG) {
 			Log.d(tag, getMessageWithCaller(message));
 		}
 	}
 
 	public static void d(String tag, String message, Object... params) {
-		if (Logger.logLevel <= Log.DEBUG) {
+		if (LogWrapper.logLevel <= Log.DEBUG) {
 			if (params != null && params.length > 0) {
 				message = String.format(message, params);
 			}
@@ -79,7 +79,7 @@ public class Logger {
 	}
 
 	public static void v(String tag, String message) {
-		if (Logger.logLevel <= Log.VERBOSE) {
+		if (LogWrapper.logLevel <= Log.VERBOSE) {
 			Log.v(tag, getMessageWithCaller(message));
 		}
 	}

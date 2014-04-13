@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.kou.android.RigVedaViewer.R;
-import com.kou.android.RigVedaViewer.utils.Logger;
+import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.Utils;
 
 /**
@@ -35,7 +35,7 @@ public class SplashActivity extends Activity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		Logger.d(TAG, TAG, "onCreate()");
+		LogWrapper.d(TAG, TAG, "onCreate()");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splash_activity);
 		Utils.installShortcut(this);
