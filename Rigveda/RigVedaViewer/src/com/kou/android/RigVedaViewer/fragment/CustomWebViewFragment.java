@@ -623,8 +623,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		boolean value = PreferenceUtils.getcbModifyYouTubeWidth(getActivity());
 
 		if (true == value) {
-			// iframe 태그의 가로세로를 모두 auto로 설정
-			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='auto';obj.height='auto';});}modifyYoutubeWidth();");
+			// iframe 태그의 가로를 100%, 세로를 auto로 설정
+			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='100%';obj.height='auto';});}modifyYoutubeWidth();");
 		}
 	}
 
@@ -645,12 +645,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
 			String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
 
-			String loadStringDiv = String.format("javascript:$('#mainBody').css('color','#%s');$('#mainBody').css('background-color','#%s');", textColorString, backgroundColorString);
-			mWebview.loadUrl(loadStringDiv);
-
-			String loadStringA = String.format("javascript:$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');}$('#mainBody').css('color','#%s');$('#mainBody').css('background-color','#%s');)", linkTextColorString, backgroundColorString, textColorString, backgroundColorString);
-			mWebview.loadUrl(loadStringA);
-
+			String jQueryString = String.format("javascript:$('#mainBody').css('background-color','#%s');$('#wikiContent').css('color','#%s');$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');});", backgroundColorString, textColorString, linkTextColorString, backgroundColorString);
+			mWebview.loadUrl(jQueryString);
 		}
 	}
 
