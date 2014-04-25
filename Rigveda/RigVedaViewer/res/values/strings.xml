@@ -3,6 +3,7 @@
 
     <string name="app_name">리그베다 뷰어</string>
     <string name="app_name_eng">RigVedaViewer</string>
+    <string name="loading_shimmer_text">RigVeda\nViewer</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <string name="url_blank">about:blank</string>
     <string name="url_random_page">http://rigvedawiki.net/r1/wiki.php/?action=randompage</string>

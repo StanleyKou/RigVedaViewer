@@ -111,10 +111,27 @@
         android:paddingLeft="3.33dp"
         android:src="@drawable/to_right_selected" />
 
-    <View
+    <LinearLayout
         android:id="@+id/mWebviewNightEyeProtecter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/webview_sun_glass" />
+        android:background="@color/webview_sun_glass"        
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="70" />
+
+        <com.romainpiel.shimmer.ShimmerTextView
+            android:id="@+id/tvShimmmer"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="fill_parent"
+            android:layout_weight="30"
+            android:text="@string/loading_shimmer_text"
+            android:textColor="#444"
+            android:textSize="50sp" />
+    </LinearLayout>
 
 </RelativeLayout>

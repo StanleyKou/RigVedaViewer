@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
@@ -52,6 +53,8 @@ import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 import com.kou.android.RigVedaViewer.utils.Utils;
+import com.romainpiel.shimmer.Shimmer;
+import com.romainpiel.shimmer.ShimmerTextView;
 
 /**
  * CustomWebViewFragment.
@@ -66,6 +69,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private View mMainView;
 	private BaseWebView mWebview;
 	private View mWebviewNightEyeProtecter;
+	private ShimmerTextView tvShimmmer;
+	private Shimmer shimmer;
 
 	private Handler handler = new Handler(Looper.getMainLooper());
 
@@ -196,6 +201,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public void onClick(View v) {
+		handler.post(menuShowRunnable);
+
 		switch (v.getId()) {
 		case R.id.btnRandom:
 			loadUrl(R.string.url_random_page);
@@ -350,9 +357,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		mWebview = (BaseWebView) mMainView.findViewById(R.id.webviewMain);
 		mWebview.restoreState(savedInstanceState);
 
-		// mWebview.getSettings().setBuiltInZoomControls(true);
-		mWebview.getSettings().setSupportZoom(true);
-		mWebview.getSettings().setUseWideViewPort(true);
+		mWebview.getSettings().setUseWideViewPort(false); // prevent double-tap zoom
 		mWebview.getSettings().setAllowFileAccess(true);
 
 		mWebview.setInitialScale(1);
@@ -389,6 +394,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 				boolean isNightEyeProtecter = PreferenceUtils.getcbNightEyeProtect(getActivity());
 				if (true == isNightEyeProtecter) {
 					mWebviewNightEyeProtecter.setVisibility(View.VISIBLE);
+					shimmer.start(tvShimmmer);
 				}
 
 				mProgressBar.setVisibility(View.VISIBLE);
@@ -485,7 +491,20 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			}
 		});
 
+		mWebview.setOnTouchListener(new View.OnTouchListener() {
+
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				handler.removeCallbacks(menuHideRunnable);
+				handler.post(menuShowRunnable);
+				handler.postDelayed(menuHideRunnable, 2000);
+				return false;
+			}
+		});
+
 		mWebviewNightEyeProtecter = mMainView.findViewById(R.id.mWebviewNightEyeProtecter);
+		tvShimmmer = (ShimmerTextView) mMainView.findViewById(R.id.tvShimmmer);
+		shimmer = new Shimmer();
 
 		if (getCurrentURL() != null && getCurrentURL().length() > 0) {
 			loadUrl(getCurrentURL());
@@ -588,11 +607,13 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}
 		modifyMakeFootNote();
 
+		handler.postDelayed(menuHideRunnable, 2000);
 		handler.postDelayed(new Runnable() {
 
 			@Override
 			public void run() {
 				mWebviewNightEyeProtecter.setVisibility(View.GONE);
+				shimmer.cancel();
 
 			}
 		}, 500);
@@ -698,6 +719,26 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			mWebview.loadUrl(loadExternalImage);
 		}
 	}
+
+	private Runnable menuHideRunnable = new Runnable() {
+		@Override
+		public void run() {
+			AlphaAnimation alpha = new AlphaAnimation(1.0F, 0.3F);
+			alpha.setDuration(200);
+			alpha.setFillAfter(true);
+			llMenu.startAnimation(alpha);
+		}
+	};
+
+	private Runnable menuShowRunnable = new Runnable() {
+		@Override
+		public void run() {
+			AlphaAnimation alpha = new AlphaAnimation(0.3F, 1.0F);
+			alpha.setDuration(200);
+			alpha.setFillAfter(true);
+			llMenu.startAnimation(alpha);
+		}
+	};
 
 	public void loadUrlHomePage() {
 		String homeURL = getHomeURL();

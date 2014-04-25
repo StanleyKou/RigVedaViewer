@@ -137,7 +137,7 @@ public class PreferenceUtils {
 	}
 
 	public static boolean getcbShowReverseLink(Context applicationContext) {
-		return loadBooleanPreference(applicationContext, PREF_KEY_cbShowReverseLink, true);
+		return loadBooleanPreference(applicationContext, PREF_KEY_cbShowReverseLink, false);
 	}
 
 	public static boolean getcbShowFootNote(Context applicationContext) {
