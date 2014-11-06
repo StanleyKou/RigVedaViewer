@@ -10,7 +10,7 @@
         android:id="@+id/loadingBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
-        android:layout_height="7.33dp"
+        android:layout_height="2.33dp"
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:progressDrawable="@drawable/progess_drawable" />
@@ -19,7 +19,6 @@
         android:id="@+id/webviewMain"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
         android:layout_below="@id/loadingBar" />
 
     <LinearLayout
@@ -50,7 +49,8 @@
             android:id="@+id/btnRandom"
             android:layout_width="49.33dp"
             android:layout_height="33.33dp"
-            android:includeFontPadding="false"
+            android:background="@drawable/lower_menu_btn_selector"
+            android:includeFontPadding="true"
             android:paddingBottom="7.33dp"
             android:text="@string/button_random" />
 
@@ -58,7 +58,8 @@
             android:id="@+id/btnReverseLink"
             android:layout_width="49.33dp"
             android:layout_height="33.33dp"
-            android:includeFontPadding="false"
+            android:background="@drawable/lower_menu_btn_selector"
+            android:includeFontPadding="true"
             android:paddingBottom="7.33dp"
             android:text="@string/button_reverse_link"
             android:textSize="10dp" />
@@ -67,8 +68,17 @@
             android:id="@+id/btnFootNote"
             android:layout_width="49.33dp"
             android:layout_height="33.33dp"
+            android:background="@drawable/lower_menu_btn_selector"
             android:includeFontPadding="false"
             android:text="@string/button_footnote" />
+
+        <Button
+            android:id="@+id/btnExit"
+            android:layout_width="49.33dp"
+            android:layout_height="33.33dp"
+            android:background="@drawable/lower_menu_btn_selector"
+            android:includeFontPadding="false"
+            android:text="@string/button_exit" />
     </LinearLayout>
 
     <ImageView
@@ -115,7 +125,7 @@
         android:id="@+id/mWebviewNightEyeProtecter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/webview_sun_glass"        
+        android:background="@color/webview_sun_glass"
         android:orientation="vertical" >
 
         <View
@@ -126,12 +136,13 @@
         <com.romainpiel.shimmer.ShimmerTextView
             android:id="@+id/tvShimmmer"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
             android:layout_weight="30"
             android:text="@string/loading_shimmer_text"
             android:textColor="#444"
-            android:textSize="50sp" />
+            android:textSize="18dp"
+            android:typeface="monospace" />
     </LinearLayout>
 
 </RelativeLayout>

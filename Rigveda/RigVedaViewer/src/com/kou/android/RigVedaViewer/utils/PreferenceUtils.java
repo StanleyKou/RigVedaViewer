@@ -25,6 +25,7 @@ public class PreferenceUtils {
 	private final static String PREF_KEY_fontSize = "fontSize";
 
 	private static final String PREF_KEY_cbFontSize = "cbFontSize";
+	private static final String PREF_KEY_cbShowExit = "cbShowExit";
 	private static final String PREF_KEY_cbShowPrev = "cbShowPrev";
 	private static final String PREF_KEY_cbShowNext = "cbShowNext";
 	private static final String PREF_KEY_cbShowRandom = "cbShowRandom";
@@ -32,6 +33,7 @@ public class PreferenceUtils {
 	private static final String PREF_KEY_cbShowFootNote = "cbShowFootNote";
 	private static final String PREF_KEY_cbShowMenuLeft = "cbShowMenuLeft";
 	private static final String PREF_KEY_IsShortcutInstalled = "installShortCut";
+	private static final String PREF_KEY_lastPageURL = "lastPageURL";
 
 	public final static int DEFAULT_FONT_SIZE_PERCENT = 100;
 
@@ -124,6 +126,10 @@ public class PreferenceUtils {
 		return loadIntPreference(applicationContext, PREF_KEY_fontSize, DEFAULT_FONT_SIZE_PERCENT);
 	}
 
+	public static boolean getcbShowExit(Context applicationContext) {
+		return loadBooleanPreference(applicationContext, PREF_KEY_cbShowExit, false);
+	}
+
 	public static boolean getcbShowPrev(Context applicationContext) {
 		return loadBooleanPreference(applicationContext, PREF_KEY_cbShowPrev, false);
 	}
@@ -150,6 +156,10 @@ public class PreferenceUtils {
 
 	public static boolean getIsShortcutInstalled(Context applicationContext) {
 		return loadBooleanPreference(applicationContext, PREF_KEY_IsShortcutInstalled, false);
+	}
+
+	public static String getLastPageURL(Context applicationContext) {
+		return loadStringPreference(applicationContext, PREF_KEY_lastPageURL);
 	}
 
 	// ///////////////////////// SET /////////////////////////
@@ -194,6 +204,10 @@ public class PreferenceUtils {
 		saveIntPreference(applicationContext, PREF_KEY_fontSize, value);
 	}
 
+	public static void setcbShowExit(Context applicationContext, boolean value) {
+		saveBooleanPreference(applicationContext, PREF_KEY_cbShowExit, value);
+	}
+
 	public static void setcbShowPrev(Context applicationContext, boolean value) {
 		saveBooleanPreference(applicationContext, PREF_KEY_cbShowPrev, value);
 	}
@@ -220,6 +234,10 @@ public class PreferenceUtils {
 
 	public static void setIsShortcutInstalled(Context applicationContext, boolean value) {
 		saveBooleanPreference(applicationContext, PREF_KEY_IsShortcutInstalled, value);
+	}
+
+	public static void setLastPageURL(Context applicationContext, String lastPageURL) {
+		saveStringPreference(applicationContext, PREF_KEY_lastPageURL, lastPageURL);
 	}
 
 }

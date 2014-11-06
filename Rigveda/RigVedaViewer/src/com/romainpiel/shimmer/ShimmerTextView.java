@@ -114,7 +114,7 @@ public class ShimmerTextView extends TextView implements ShimmerViewBase {
     @Override
     public void onDraw(Canvas canvas) {
         if (shimmerViewHelper != null) {
-            shimmerViewHelper.onDraw();
+            shimmerViewHelper.onShimmerDraw();
         }
         super.onDraw(canvas);
     }

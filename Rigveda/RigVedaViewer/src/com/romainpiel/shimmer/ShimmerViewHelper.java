@@ -166,7 +166,7 @@ public class ShimmerViewHelper {
      * content of the wrapping view's onDraw(Canvas)
      * MUST BE CALLED BEFORE SUPER STATEMENT
      */
-    public void onDraw() {
+    public void onShimmerDraw() {
 
         // only draw the shader gradient over the text while animating
         if (isShimmering) {

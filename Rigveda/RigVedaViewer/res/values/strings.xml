@@ -3,7 +3,7 @@
 
     <string name="app_name">리그베다 뷰어</string>
     <string name="app_name_eng">RigVedaViewer</string>
-    <string name="loading_shimmer_text">RigVeda\nViewer</string>
+    <string name="loading_shimmer_text">RigVeda Viewer</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
     <string name="url_blank">about:blank</string>
     <string name="url_random_page">http://rigvedawiki.net/r1/wiki.php/?action=randompage</string>
@@ -32,6 +32,7 @@
     <string name="button_random">랜덤</string>
     <string name="button_reverse_link">역링크</string>
     <string name="button_footnote">각주</string>
+    <string name="button_exit">종료</string>
     <string name="option_caption_option">옵션설정</string>
     <string name="option_caption_menu">메뉴설정</string>
     <!-- ////////////////////////////////////////////////////////////////////////////////////////////////////// -->
@@ -61,6 +62,7 @@
     <string name="option_fontSize_percent">%</string>
     <string name="option_fontSize_up">▲</string>
     <string name="option_fontSize_down">▼</string>
+    <string name="option_show_exit">종료 버튼 보이기</string>
     <string name="option_show_prev">이전으로 가기 버튼 보이기</string>
     <string name="option_show_next">다음으로 가기 버튼 보이기</string>
     <string name="option_show_random">랜덤 버튼 보이기</string>

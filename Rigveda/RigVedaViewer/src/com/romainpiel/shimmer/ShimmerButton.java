@@ -114,7 +114,7 @@ public class ShimmerButton extends Button implements ShimmerViewBase {
     @Override
     public void onDraw(Canvas canvas) {
         if (shimmerViewHelper != null) {
-            shimmerViewHelper.onDraw();
+            shimmerViewHelper.onShimmerDraw();
         }
         super.onDraw(canvas);
     }

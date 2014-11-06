@@ -1,9 +1,10 @@
 package com.romainpiel.shimmer;
 
-import android.animation.Animator;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.view.View;
+
+import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.animation.ValueAnimator;
 
 /**
  * Shimmer User: romainpiel Date: 06/03/2014 Time: 15:42

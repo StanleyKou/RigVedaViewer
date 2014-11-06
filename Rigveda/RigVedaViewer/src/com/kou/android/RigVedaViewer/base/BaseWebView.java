@@ -89,8 +89,6 @@ public class BaseWebView extends WebView {
 	@Override
 	protected void onScrollChanged(int l, int t, int oldl, int oldt) {
 		super.onScrollChanged(l, t, oldl, oldt);
-
-		LogWrapper.d(TAG, "BaseWebView onScrollChanged :" + l);
 		GlobalVariables.setWebviewScrollX(l);
 	}
 }

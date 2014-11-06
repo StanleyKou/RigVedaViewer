@@ -22,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.text.ClipboardManager;
 import android.text.SpannableStringBuilder;
 import android.text.style.ClickableSpan;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,9 +32,9 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
 import android.webkit.WebViewClient;
@@ -67,6 +68,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private final String TAG = CustomWebViewFragment.class.getSimpleName();
 
 	private View mMainView;
+
 	private BaseWebView mWebview;
 	private View mWebviewNightEyeProtecter;
 	private ShimmerTextView tvShimmmer;
@@ -80,9 +82,11 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private LinearLayout llMenu;
 	private boolean isMenuLeft = true;
 
+	// Left bottom menu
 	private Button btnRandom;
 	private Button btnReverseLink;
 	private Button btnFootNote;
+	private Button btnExit;
 
 	private ImageView ivToRightNotSelected;
 	private ImageView ivToRightSelected;
@@ -115,6 +119,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		btnRandom = (Button) mMainView.findViewById(R.id.btnRandom);
 		btnReverseLink = (Button) mMainView.findViewById(R.id.btnReverseLink);
 		btnFootNote = (Button) mMainView.findViewById(R.id.btnFootNote);
+		btnExit = (Button) mMainView.findViewById(R.id.btnExit);
 
 		btnRandom.setOnClickListener(this);
 		btnRandom.setOnTouchListener(this);
@@ -122,6 +127,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		btnReverseLink.setOnClickListener(this);
 		btnFootNote.setOnClickListener(this);
 		btnFootNote.setOnTouchListener(this);
+		btnExit.setOnClickListener(this);
+		btnExit.setOnTouchListener(this);
 
 		mProgressBar = (ProgressBar) mMainView.findViewById(R.id.loadingBar);
 		mProgressBar.setMax(100);
@@ -158,6 +165,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public void onResume() {
 		CookieSyncManager.getInstance().sync(); // 지금은 필요 없음. 나중에 쿠키를 쓰게되면 유용함.
+		boolean valuecbShowExit = PreferenceUtils.getcbShowExit(getActivity());
 		boolean valuecbShowPrev = PreferenceUtils.getcbShowPrev(getActivity());
 		boolean valuecbShowNext = PreferenceUtils.getcbShowNext(getActivity());
 		boolean valuecbShowRandom = PreferenceUtils.getcbShowRandom(getActivity());
@@ -170,6 +178,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		btnRandom.setVisibility(true == valuecbShowRandom ? View.VISIBLE : View.GONE);
 		btnReverseLink.setVisibility(true == valuecbShowReverseLink ? View.VISIBLE : View.GONE);
 		btnFootNote.setVisibility(true == valuecbShowFootNote ? View.VISIBLE : View.GONE);
+		btnExit.setVisibility(true == valuecbShowExit ? View.VISIBLE : View.GONE);
 
 		if (true == valuecbShowMenuLeft) {
 			showMenuLeft();
@@ -183,6 +192,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	@Override
 	public void onDestroyView() {
 		saveScrollPosition();
+		saveLastPageURL();
 		mWebview.destroy();
 		super.onDestroyView();
 	}
@@ -204,6 +214,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		handler.post(menuShowRunnable);
 
 		switch (v.getId()) {
+
 		case R.id.btnRandom:
 			loadUrl(R.string.url_random_page);
 			break;
@@ -219,6 +230,19 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		case R.id.ivNavNext:
 			processNaviNext();
 			break;
+		case R.id.btnExit:
+			getActivity().finish();
+			break;
+
+		// case R.id.ivUpperMenuPrev:
+		// processNaviPrev();
+		// break;
+		// case R.id.ivUpperMenuNext:
+		// processNaviNext();
+		// break;
+		// case R.id.btnUpperMenuSearch:
+		// processSearch();
+		// break;
 		}
 
 	}
@@ -259,6 +283,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+
 		if (v.getId() == R.id.llMenu || v.getId() == R.id.btnRandom || v.getId() == R.id.btnReverseLink || v.getId() == R.id.btnFootNote) {
 			if (true == isMenuLeft) {
 				switch (event.getAction()) {
@@ -358,9 +383,14 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		mWebview.restoreState(savedInstanceState);
 
 		mWebview.getSettings().setUseWideViewPort(false); // prevent double-tap zoom
-		mWebview.getSettings().setAllowFileAccess(true);
+		mWebview.getSettings().setBuiltInZoomControls(false);
+		mWebview.getSettings().setSupportZoom(false);
+		mWebview.getSettings().setDefaultZoom(ZoomDensity.FAR);
 
-		mWebview.setInitialScale(1);
+		mWebview.getSettings().setAllowFileAccess(true);
+		mWebview.getSettings().setDomStorageEnabled(true);
+
+		// mWebview.setInitialScale(1);
 
 		mWebview.getSettings().setJavaScriptEnabled(true); // for redirect
 		mWebview.addJavascriptInterface(new CustomJavaScriptInterface(), "HTMLOUT");
@@ -389,7 +419,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		mWebview.setWebViewClient(new WebViewClient() {
 
 			@Override
-			public void onPageStarted(WebView view, String url, Bitmap favicon) {
+			public void onPageStarted(WebView view, final String url, Bitmap favicon) {
 
 				boolean isNightEyeProtecter = PreferenceUtils.getcbNightEyeProtect(getActivity());
 				if (true == isNightEyeProtecter) {
@@ -418,6 +448,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				String footNote = getString(R.string.loading_footnote);
 				((WebViewFragmentHolderActivity) getActivity()).setFootNote(footNote);
+
+				postModifyWebPage(url);
 			}
 
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -447,7 +479,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 				LogWrapper.d(TAG, "onPageFinished");
 				setCurrentURL(url);
 
+				saveLastPageURL();
+
 				mProgressBar.setVisibility(View.GONE);
+				// shimmer.cancel();
 
 				// getResource를 읽어올 수 없는 상태이면 종료. isAdded를 쓰지 않는 이유는, Activity만 있으면 되기 때문.
 				if (getActivity() == null) {
@@ -462,7 +497,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 					clearHistory();
 				}
 
-				postModifyWebPage(url);
+				// postModifyWebPage(url);
 			}
 
 			@Override
@@ -495,6 +530,35 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+
+				// search 창이 포커스를 받아 키보드가 올라오는 것을 방지하기 위해
+				// InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+				// imm.hideSoftInputFromWindow(etUpperMenuSearch.getWindowToken(), 0);
+
+				// switch (event.getAction() & MotionEvent.ACTION_MASK) {
+				// case MotionEvent.ACTION_DOWN:
+				// LogWrapper.d(TAG, "ACTION_DOWN. Y:" + event.getY());
+				// prevDistanceY = event.getY();
+				// break;
+				//
+				// case MotionEvent.ACTION_UP:
+				// LogWrapper.d(TAG, "ACTION_UP");
+				//
+				// if (prevDistanceY - event.getY() > 0) {
+				// scrollerLinearLayout.pullUp();
+				// } else if (prevDistanceY - event.getY() < 0) {
+				// scrollerLinearLayout.pullDown();
+				// }
+				// break;
+				// case MotionEvent.ACTION_MOVE:
+				// LogWrapper.d(TAG, "ACTION_MOVE");
+				//
+				// scrollerLinearLayout.pullMove(0, (int) event.getY());
+				//
+				// break;
+				//
+				// }
+
 				handler.removeCallbacks(menuHideRunnable);
 				handler.post(menuShowRunnable);
 				handler.postDelayed(menuHideRunnable, 2000);
@@ -506,8 +570,11 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		tvShimmmer = (ShimmerTextView) mMainView.findViewById(R.id.tvShimmmer);
 		shimmer = new Shimmer();
 
+		// getLastPageURL
 		if (getCurrentURL() != null && getCurrentURL().length() > 0) {
 			loadUrl(getCurrentURL());
+		} else if (PreferenceUtils.getLastPageURL(getActivity()) != null && PreferenceUtils.getLastPageURL(getActivity()).length() > 0) {
+			loadUrl(PreferenceUtils.getLastPageURL(getActivity()));
 		} else {
 			loadUrlHomePage();
 		}
@@ -578,11 +645,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void postModifyWebPage(final String url) {
 		// 현재 화면이 랜덤 페이지가 아닌 경우에만 동작
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
-			handler.postDelayed(modifyWebPageRunnable, 100);
 			// 타이밍 이슈때문에 딜레이. 리그베다 원래 페이지의 구글애드가 읽혀오는 시간, 이미지 로딩이 완료되는 시간이 필요함. 그런데 정확히 완료되는 시점을 알아내는 방법을 확인 못해 일단 딜레이를 강제로 줌.
 			// bool 변수로 페이지 수정이 완료되었는지 체크를 하기 때문에 두 번 동작하지는 않음.
-			handler.postDelayed(modifyWebPageRunnable, 2000);
-			handler.postDelayed(modifyWebPageRunnable, 5000);
+			handler.postDelayed(modifyWebPageRunnable, 3000);
+			handler.postDelayed(modifyWebPageRunnable, 10000);
 		}
 	}
 
@@ -793,6 +859,16 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		mWebview.loadUrl(getString(R.string.url_random_page));
 	}
 
+	public void processSearch() {
+		// http://rigvedawiki.net/r1/wiki.php/data
+		// String searchKeyword = etUpperMenuSearch.getText().toString();
+		//
+		// if (searchKeyword.length() > 0) {
+		// String searchString = getString(R.string.url_home_page_with_slash) + searchKeyword;
+		// mWebview.loadUrl(searchString);
+		// }
+	}
+
 	public void processNaviHome() {
 		loadUrlHomePage();
 	}
@@ -848,12 +924,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private class CustomJavaScriptInterface {
-		@JavascriptInterface
 		public void processFootNote(String fnInnerHTML, String href, String rfnTitle) {
 			makeFootNoteList(fnInnerHTML, href, rfnTitle);
 		}
 
-		@JavascriptInterface
 		public void setFootNote() {
 			if (ssb.length() == 0) {
 				ssb.append(getString(R.string.no_footnote));
@@ -970,5 +1044,28 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		float percentWebview = (mWebview.getScrollY() - mWebview.getTop()) / (float) mWebview.getContentHeight();
 		GlobalVariables.currentURLScrollPercent = percentWebview;
 	}
+
+	public void saveLastPageURL() {
+		String lastPageURL = mWebview.getUrl();
+		PreferenceUtils.setLastPageURL(getActivity(), lastPageURL);
+	}
+
+	// private float prevDistanceY = 0;
+	private SimpleOnGestureListener mListener = new SimpleOnGestureListener() {
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			// FIXING
+			LogWrapper.d(TAG, "mListener distanceY:" + distanceY);
+			// if (distanceY > 0) {
+			// scrollerLinearLayout.pullUp();
+			// } else if (distanceY < 0) {
+			// scrollerLinearLayout.pullDown();
+			// }
+
+			// scrollerLinearLayout.scrollMenuBy(0, (int) distanceY);
+			// prevDistanceY = distanceY;
+			return true;
+		}
+	};
 
 }

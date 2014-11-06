@@ -40,6 +40,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private CheckBox cbNightEyeProtect;
 	private CheckBox cbTextColor;
 	private CheckBox cbFontSize;
+	private CheckBox cbShowExit;
 	private CheckBox cbShowPrev;
 	private CheckBox cbShowNext;
 	private CheckBox cbShowRandom;
@@ -99,6 +100,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbNightEyeProtect = (CheckBox) findViewById(R.id.cbNightEyeProtect);
 		cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
 		cbFontSize = (CheckBox) findViewById(R.id.cbFontSize);
+		cbShowExit = (CheckBox) findViewById(R.id.cbShowExit);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
 		cbShowNext = (CheckBox) findViewById(R.id.cbShowNext);
 		cbShowRandom = (CheckBox) findViewById(R.id.cbShowRandom);
@@ -371,6 +373,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		int fontSize = PreferenceUtils.getfontSize(getApplicationContext());
 		etFontSize.setText(Integer.toString(fontSize));
 
+		boolean valuecbShowExit = PreferenceUtils.getcbShowExit(getApplicationContext());
+		cbShowExit.setChecked(valuecbShowExit);
+		cbShowExit.setOnCheckedChangeListener(this);
+
 		boolean valuecbShowPrev = PreferenceUtils.getcbShowPrev(getApplicationContext());
 		cbShowPrev.setChecked(valuecbShowPrev);
 		cbShowPrev.setOnCheckedChangeListener(this);
@@ -407,6 +413,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		PreferenceUtils.setcbModifyYouTubeWidth(getApplicationContext(), cbModifyYouTubeWidth.isChecked());
 		PreferenceUtils.setcbExternalImage(getApplicationContext(), cbExternalImage.isChecked());
 		PreferenceUtils.setcbNightEyeProtect(getApplicationContext(), cbNightEyeProtect.isChecked());
+		PreferenceUtils.setcbShowExit(getApplicationContext(), cbShowExit.isChecked());
 		PreferenceUtils.setcbShowPrev(getApplicationContext(), cbShowPrev.isChecked());
 		PreferenceUtils.setcbShowNext(getApplicationContext(), cbShowNext.isChecked());
 		PreferenceUtils.setcbShowRandom(getApplicationContext(), cbShowRandom.isChecked());
@@ -478,6 +485,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		}
 			break;
 
+		case R.id.cbShowExit:
+			PreferenceUtils.setcbShowExit(getApplicationContext(), cbShowExit.isChecked());
+			break;
+
 		case R.id.cbShowPrev:
 			PreferenceUtils.setcbShowPrev(getApplicationContext(), cbShowPrev.isChecked());
 			break;
@@ -529,6 +540,6 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		LogWrapper.i(TAG, String.format("Starting cache prune, deleting files older than %d days", numDays));
 		int numDeletedFiles = Utils.clearCacheFolder(context.getCacheDir(), numDays);
 		LogWrapper.i(TAG, String.format("Cache pruning completed, %d files deleted", numDeletedFiles));
-	}
 
+	}
 }
