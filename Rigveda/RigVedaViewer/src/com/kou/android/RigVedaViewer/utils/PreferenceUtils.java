@@ -3,6 +3,7 @@ package com.kou.android.RigVedaViewer.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.webkit.WebSettings;
 
 /**
  * 
@@ -35,7 +36,7 @@ public class PreferenceUtils {
 	private static final String PREF_KEY_IsShortcutInstalled = "installShortCut";
 	private static final String PREF_KEY_lastPageURL = "lastPageURL";
 
-	public final static int DEFAULT_FONT_SIZE_PERCENT = 100;
+	public final static int DEFAULT_FONT_SIZE = WebSettings.TextSize.NORMAL.ordinal();
 
 	public final static int TEXTCOLOR_TYPE1 = 0xFF000000;
 	public final static int TEXTCOLOR_TYPE2 = 0xFF999999;
@@ -123,7 +124,7 @@ public class PreferenceUtils {
 	}
 
 	public static int getfontSize(Context applicationContext) {
-		return loadIntPreference(applicationContext, PREF_KEY_fontSize, DEFAULT_FONT_SIZE_PERCENT);
+		return loadIntPreference(applicationContext, PREF_KEY_fontSize, DEFAULT_FONT_SIZE);
 	}
 
 	public static boolean getcbShowExit(Context applicationContext) {

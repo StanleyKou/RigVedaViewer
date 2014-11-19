@@ -2,17 +2,15 @@ package com.kou.android.RigVedaViewer.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.ClipboardManager;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -77,9 +75,12 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 	// Font size
 	private View llFontSize;
-	private Button btnFontUp;
-	private Button btnFontDown;
-	private EditText etFontSize;
+	private int inputFontSize;
+	private Button btnTextSizeLARGEST;
+	private Button btnTextSizeLARGER;
+	private Button btnTextSizeNORMAL;
+	private Button btnTextSizeSMALLER;
+	private Button btnTextSizeSMALLEST;
 
 	/**
 	 * Initialize Activity.
@@ -175,35 +176,17 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		linkColorDialog = new ColorSelectorDialog(this, linkColorListener, PreferenceUtils.LINKCOLOR_TYPE1);
 
 		// Font size
-		btnFontUp = (Button) findViewById(R.id.btnFontUp);
-		btnFontUp.setOnClickListener(this);
-		btnFontDown = (Button) findViewById(R.id.btnFontDown);
-		btnFontDown.setOnClickListener(this);
-		etFontSize = (EditText) findViewById(R.id.etFontSize);
-		etFontSize.addTextChangedListener(new TextWatcher() {
+		btnTextSizeLARGEST = (Button) findViewById(R.id.btnTextSizeLARGEST);
+		btnTextSizeLARGER = (Button) findViewById(R.id.btnTextSizeLARGER);
+		btnTextSizeNORMAL = (Button) findViewById(R.id.btnTextSizeNORMAL);
+		btnTextSizeSMALLER = (Button) findViewById(R.id.btnTextSizeSMALLER);
+		btnTextSizeSMALLEST = (Button) findViewById(R.id.btnTextSizeSMALLEST);
 
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-				String inputFontSize = etFontSize.getText().toString();
-				int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
-				try {
-					inputFontSizeToInt = Integer.parseInt(inputFontSize);
-				} catch (NumberFormatException e) {
-					e.toString();
-				}
-
-				PreferenceUtils.setfontSize(getApplicationContext(), inputFontSizeToInt);
-			}
-		});
-
+		btnTextSizeLARGEST.setOnClickListener(this);
+		btnTextSizeLARGER.setOnClickListener(this);
+		btnTextSizeNORMAL.setOnClickListener(this);
+		btnTextSizeSMALLER.setOnClickListener(this);
+		btnTextSizeSMALLEST.setOnClickListener(this);
 	}
 
 	@Override
@@ -216,7 +199,6 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			break;
 
 		case R.id.btnAbout:
-			// about 제목을 클릭하면 블로그 URL이 클립보드로 복사됨. 그냥 클립보드 코드를 넣고 싶었음.
 			ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
 			clipboard.setText(getString(R.string.http_stanleykou_tistory_com_));
 			Toast.makeText(this, R.string.option_clipboard_copied, Toast.LENGTH_SHORT).show();
@@ -261,41 +243,31 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 			commitTextBackgroundColor();
 			break;
 
-		case R.id.btnFontUp: {
-
-			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
-			try {
-				inputFontSizeToInt = Integer.parseInt(inputFontSize);
-			} catch (NumberFormatException e) {
-				e.toString();
-			}
-
-			inputFontSizeToInt += 1;
-
-			etFontSize.setText(Integer.toString(inputFontSizeToInt));
-
-		}
+		case R.id.btnTextSizeLARGEST:
+			inputFontSize = 0;
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
+			setFontSizeButtons(inputFontSize);
 			break;
-
-		case R.id.btnFontDown:
-			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
-			try {
-				inputFontSizeToInt = Integer.parseInt(inputFontSize);
-			} catch (NumberFormatException e) {
-				e.toString();
-			}
-
-			inputFontSizeToInt -= 1;
-
-			if (inputFontSizeToInt < 1) {
-				inputFontSizeToInt = 1;
-			}
-
-			etFontSize.setText(Integer.toString(inputFontSizeToInt));
+		case R.id.btnTextSizeLARGER:
+			inputFontSize = 1;
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
+			setFontSizeButtons(inputFontSize);
 			break;
-
+		case R.id.btnTextSizeNORMAL:
+			inputFontSize = 2;
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
+			setFontSizeButtons(inputFontSize);
+			break;
+		case R.id.btnTextSizeSMALLER:
+			inputFontSize = 3;
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
+			setFontSizeButtons(inputFontSize);
+			break;
+		case R.id.btnTextSizeSMALLEST:
+			inputFontSize = 4;
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
+			setFontSizeButtons(inputFontSize);
+			break;
 		}
 	}
 
@@ -371,7 +343,10 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		}
 
 		int fontSize = PreferenceUtils.getfontSize(getApplicationContext());
-		etFontSize.setText(Integer.toString(fontSize));
+		if (fontSize > 4) {
+			fontSize = 2;
+		}
+		setFontSizeButtons(fontSize);
 
 		boolean valuecbShowExit = PreferenceUtils.getcbShowExit(getApplicationContext());
 		cbShowExit.setChecked(valuecbShowExit);
@@ -405,6 +380,46 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbShowMenuRight.setChecked(valuecbShowMenuRight);
 		cbShowMenuRight.setOnCheckedChangeListener(this);
 
+	}
+
+	private void setFontSizeButtons(int mode) {// 0:LARGER , 1:LARGEST , 2:NORMAL, 3:SMALLER, 4:SMALLEST
+		switch (mode) {
+		case 0:
+			btnTextSizeLARGEST.setBackgroundColor(Color.GREEN);
+			btnTextSizeLARGER.setBackgroundColor(Color.GRAY);
+			btnTextSizeNORMAL.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLER.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLEST.setBackgroundColor(Color.GRAY);
+			break;
+		case 1:
+			btnTextSizeLARGEST.setBackgroundColor(Color.GRAY);
+			btnTextSizeLARGER.setBackgroundColor(Color.GREEN);
+			btnTextSizeNORMAL.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLER.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLEST.setBackgroundColor(Color.GRAY);
+			break;
+		case 2:
+			btnTextSizeLARGEST.setBackgroundColor(Color.GRAY);
+			btnTextSizeLARGER.setBackgroundColor(Color.GRAY);
+			btnTextSizeNORMAL.setBackgroundColor(Color.GREEN);
+			btnTextSizeSMALLER.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLEST.setBackgroundColor(Color.GRAY);
+			break;
+		case 3:
+			btnTextSizeLARGEST.setBackgroundColor(Color.GRAY);
+			btnTextSizeLARGER.setBackgroundColor(Color.GRAY);
+			btnTextSizeNORMAL.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLER.setBackgroundColor(Color.GREEN);
+			btnTextSizeSMALLEST.setBackgroundColor(Color.GRAY);
+			break;
+		case 4:
+			btnTextSizeLARGEST.setBackgroundColor(Color.GRAY);
+			btnTextSizeLARGER.setBackgroundColor(Color.GRAY);
+			btnTextSizeNORMAL.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLER.setBackgroundColor(Color.GRAY);
+			btnTextSizeSMALLEST.setBackgroundColor(Color.GREEN);
+			break;
+		}
 	}
 
 	@Override
@@ -466,16 +481,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		case R.id.cbFontSize: {
 
 			PreferenceUtils.setcbFontSize(getApplicationContext(), cbFontSize.isChecked());
-
-			String inputFontSize = etFontSize.getText().toString();
-			int inputFontSizeToInt = PreferenceUtils.DEFAULT_FONT_SIZE_PERCENT;
-			try {
-				inputFontSizeToInt = Integer.parseInt(inputFontSize);
-			} catch (NumberFormatException e) {
-				e.toString();
-			}
-
-			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSizeToInt);
+			PreferenceUtils.setfontSize(getApplicationContext(), inputFontSize);
 
 			if (true == cbFontSize.isChecked()) {
 				llFontSize.setVisibility(View.VISIBLE);

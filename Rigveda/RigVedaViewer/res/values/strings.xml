@@ -58,7 +58,7 @@
     <string name="option_color_sample_caption">적용결과: </string>
     <string name="option_color_sample">가나다</string>
     <string name="option_color_sample_link">링크</string>
-    <string name="option_fontSize_caption">폰트크기 (100\%% ~ 105\%% 추천)</string>
+    <string name="option_fontSize_caption">폰트크기</string>
     <string name="option_fontSize_percent">%</string>
     <string name="option_fontSize_up">▲</string>
     <string name="option_fontSize_down">▼</string>

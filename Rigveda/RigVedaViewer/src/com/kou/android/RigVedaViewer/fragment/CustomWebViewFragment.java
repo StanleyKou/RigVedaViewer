@@ -14,6 +14,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +35,8 @@ import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.TextSize;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebView.HitTestResult;
@@ -164,7 +167,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	@Override
 	public void onResume() {
-		CookieSyncManager.getInstance().sync(); // Áö±ÝÀº ÇÊ¿ä ¾øÀ½. ³ªÁß¿¡ ÄíÅ°¸¦ ¾²°ÔµÇ¸é À¯¿ëÇÔ.
+		CookieSyncManager.getInstance().sync(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ß¿ï¿½ ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ÔµÇ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
 		boolean valuecbShowExit = PreferenceUtils.getcbShowExit(getActivity());
 		boolean valuecbShowPrev = PreferenceUtils.getcbShowPrev(getActivity());
 		boolean valuecbShowNext = PreferenceUtils.getcbShowNext(getActivity());
@@ -421,6 +424,8 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			@Override
 			public void onPageStarted(WebView view, final String url, Bitmap favicon) {
 
+				modifyTextSize();
+
 				boolean isNightEyeProtecter = PreferenceUtils.getcbNightEyeProtect(getActivity());
 				if (true == isNightEyeProtecter) {
 					mWebviewNightEyeProtecter.setVisibility(View.VISIBLE);
@@ -438,7 +443,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				ssb.clear();
 
-				// getResource¸¦ ÀÐ¾î¿Ã ¼ö ¾ø´Â »óÅÂÀÌ¸é Á¾·á. isAdded¸¦ ¾²Áö ¾Ê´Â ÀÌÀ¯´Â, Activity¸¸ ÀÖÀ¸¸é µÇ±â ¶§¹®.
+				// getResourceï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½. isAddedï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Activityï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±ï¿½ ï¿½ï¿½ï¿½ï¿½.
 				if (getActivity() == null) {
 					LogWrapper.d(TAG, "getActivity is null");
 					return;
@@ -484,7 +489,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 				mProgressBar.setVisibility(View.GONE);
 				// shimmer.cancel();
 
-				// getResource¸¦ ÀÐ¾î¿Ã ¼ö ¾ø´Â »óÅÂÀÌ¸é Á¾·á. isAdded¸¦ ¾²Áö ¾Ê´Â ÀÌÀ¯´Â, Activity¸¸ ÀÖÀ¸¸é µÇ±â ¶§¹®.
+				// getResourceï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½. isAddedï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, Activityï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç±ï¿½ ï¿½ï¿½ï¿½ï¿½.
 				if (getActivity() == null) {
 					LogWrapper.d(TAG, "getActivity is null");
 					return;
@@ -531,7 +536,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 
-				// search Ã¢ÀÌ Æ÷Ä¿½º¸¦ ¹Þ¾Æ Å°º¸µå°¡ ¿Ã¶ó¿À´Â °ÍÀ» ¹æÁöÇÏ±â À§ÇØ
+				// search Ã¢ï¿½ï¿½ ï¿½ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾ï¿½ Å°ï¿½ï¿½ï¿½å°¡ ï¿½Ã¶ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½
 				// InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 				// imm.hideSoftInputFromWindow(etUpperMenuSearch.getWindowToken(), 0);
 
@@ -643,10 +648,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	}
 
 	private void postModifyWebPage(final String url) {
-		// ÇöÀç È­¸éÀÌ ·£´ý ÆäÀÌÁö°¡ ¾Æ´Ñ °æ¿ì¿¡¸¸ µ¿ÀÛ
+		// ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (false == url.equalsIgnoreCase(getString(R.string.url_random_page))) {
-			// Å¸ÀÌ¹Ö ÀÌ½´¶§¹®¿¡ µô·¹ÀÌ. ¸®±×º£´Ù ¿ø·¡ ÆäÀÌÁöÀÇ ±¸±Û¾Öµå°¡ ÀÐÇô¿À´Â ½Ã°£, ÀÌ¹ÌÁö ·ÎµùÀÌ ¿Ï·áµÇ´Â ½Ã°£ÀÌ ÇÊ¿äÇÔ. ±×·±µ¥ Á¤È®È÷ ¿Ï·áµÇ´Â ½ÃÁ¡À» ¾Ë¾Æ³»´Â ¹æ¹ýÀ» È®ÀÎ ¸øÇØ ÀÏ´Ü µô·¹ÀÌ¸¦ °­Á¦·Î ÁÜ.
-			// bool º¯¼ö·Î ÆäÀÌÁö ¼öÁ¤ÀÌ ¿Ï·áµÇ¾ú´ÂÁö Ã¼Å©¸¦ ÇÏ±â ¶§¹®¿¡ µÎ ¹ø µ¿ÀÛÇÏÁö´Â ¾ÊÀ½.
+			// Å¸ï¿½Ì¹ï¿½ ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½×ºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Û¾Öµå°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç´ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½. ï¿½×·ï¿½ï¿½ï¿½ ï¿½ï¿½È®ï¿½ï¿½ ï¿½Ï·ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ë¾Æ³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½.
+			// bool ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½ï¿½ ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 			handler.postDelayed(modifyWebPageRunnable, 3000);
 			handler.postDelayed(modifyWebPageRunnable, 10000);
 		}
@@ -667,7 +672,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			modifyShowLinkDrip();
 			modifyYouTubeIframeWidth();
 			modifyTextBackgroundColor();
-			modifyTextSize();
+			// modifyTextSize(); // Move to page start
 			modifyOrientationCSS();
 			modifyExternalImageShow();
 		}
@@ -689,15 +694,15 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private void modifyShowLinkDrip() {
 		LogWrapper.d(TAG, "showLinkDrip()");
-		// ¸µÅ©¸í°ú Ç¥½Ã ¸íÀÌ ´Ù¸¥ °æ¿ì, Ç¥½Ã ¸í¿¡ ¸µÅ© ¸íÀ» Ãß°¡·Î Ç¥½Ã
+		// ï¿½ï¿½Å©ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ ï¿½ï¿½ï¿½, Ç¥ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
 		boolean value = PreferenceUtils.getcbAlias(getActivity());
 
 		if (true == value) {
 
-			// º»¹®¿¡ °¢ÁÖ¸¦ Ç¥½ÃÇÏÁö ¾ÊÀ½
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¸ï¿½ Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			mWebview.loadUrl("javascript:function attachToA(){$('a').each(function(i, obj){if (obj.id == '' && obj.title != '' && obj.title != obj.innerHTML) { obj.innerHTML += '<span style=background-color:#8AC007;>(' + obj.title + ')</span>';}});}");
 
-			// º»¹®¿¡ °¢ÁÖ¸¦ °ð¹Ù·Î Ç¥½Ã
+			// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½ï¿½Ù·ï¿½ Ç¥ï¿½ï¿½
 			// mWebview.loadUrl("javascript:function attachToA(){$('a').each(function(i, obj){if (obj.id != '' && obj.title != '' && obj.title != obj.innerHTML) { obj.innerHTML += '<span style=background-color:#8AC007;>(' + obj.title + ')</span>';}});}");
 
 			mWebview.loadUrl("javascript:if (typeof alreadyAttachToA === 'undefined'){attachToA();}");
@@ -710,7 +715,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		boolean value = PreferenceUtils.getcbModifyYouTubeWidth(getActivity());
 
 		if (true == value) {
-			// iframe ÅÂ±×ÀÇ °¡·Î¸¦ 100%, ¼¼·Î¸¦ auto·Î ¼³Á¤
+			// iframe ï¿½Â±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ 100%, ï¿½ï¿½ï¿½Î¸ï¿½ autoï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			mWebview.loadUrl("javascript:function modifyYoutubeWidth(){$('iframe').each(function(i, obj) {obj.width='100%';obj.height='auto';});}modifyYoutubeWidth();");
 		}
 	}
@@ -732,7 +737,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
 			String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
 
-			String jQueryString = String.format("javascript:$('#mainBody').css('background-color','#%s');$('#wikiContent').css('color','#%s');$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');});", backgroundColorString, textColorString, linkTextColorString, backgroundColorString);
+			String jQueryString = String
+					.format("javascript:$('#mainBody').css('background-color','#%s');$('#wikiContent').css('color','#%s');$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');});",
+							backgroundColorString, textColorString, linkTextColorString, backgroundColorString);
 			mWebview.loadUrl(jQueryString);
 		}
 	}
@@ -742,8 +749,34 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		if (true == value) {
 			LogWrapper.d(TAG, "modifyTextSize()");
 			int fontSize = PreferenceUtils.getfontSize(getActivity());
-			String loadFontSize = String.format("javascript:$('div').each(function(i, obj){$(this).css('font-size','%d%%');})", fontSize);
-			mWebview.loadUrl(loadFontSize);
+			if (fontSize > 4) { // for Backward Compatibility.
+				fontSize = 2;
+			}
+
+			WebSettings.TextSize textSize = WebSettings.TextSize.NORMAL;
+			switch (fontSize) {
+			case 0:
+				textSize = WebSettings.TextSize.LARGEST;
+				break;
+			case 1:
+				textSize = WebSettings.TextSize.LARGER;
+				break;
+			case 2:
+				textSize = WebSettings.TextSize.NORMAL;
+				break;
+			case 3:
+				textSize = WebSettings.TextSize.SMALLER;
+				break;
+			case 4:
+				textSize = WebSettings.TextSize.SMALLEST;
+				break;
+			}
+
+			mWebview.getSettings().setTextSize(textSize);
+
+			// String loadFontSize = String.format("javascript:$('div').each(function(i, obj){$(this).css('font-size','%d%%');})", fontSize);
+			// mWebview.loadUrl(loadFontSize);
+
 		}
 	}
 
@@ -875,7 +908,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	public boolean goBack() {
 		if (mWebview.canGoBack()) {
-			// randomÀ¸·Î µé¾î¿ÔÀ» °æ¿ì, ·£´ý ´©¸£±â ÀÌÀüÀÇ È­¸éÀ¸·Î º¸³¿.
+			// randomï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
 			WebBackForwardList mWebBackForwardList = mWebview.copyBackForwardList();
 			int historySize = mWebBackForwardList.getSize();
 
@@ -940,12 +973,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 	private void makeFootNoteList(String fnInnerHTML, String href, String rfnTitle) {
 		LogWrapper.d(TAG, "makeFootNoteList" + fnInnerHTML);
 
-		// ÇÑÁÜ ¹°¸ÁÃÊ
-		// °ø»ýÀü
+		// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		// http://stackoverflow.com/questions/9584136/how-to-click-or-tap-on-a-textview-text-on-different-words
 
-		// TODO : ÀÎÅÚ ¾ÆÅè ½Ã¸®Áî
-		// <a id="rfn13" href="#fn13" title="[[http://nocher.egloos.com/27255 ÂüÁ¶]]">[13]</a>
+		// TODO : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¸ï¿½ï¿½ï¿½
+		// <a id="rfn13" href="#fn13" title="[[http://nocher.egloos.com/27255 ï¿½ï¿½ï¿½ï¿½]]">[13]</a>
 
 		int initialLength = ssb.length();
 		ssb.append(fnInnerHTML);
@@ -973,7 +1006,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 		ssb.append(" ");
 
-		// Á¶¾ÇÇÏÁö¸¸, ¸µÅ©¿Í °¢ÁÖ¹øÈ£¸¦ ±¸ºÐÇÏ±â À§ÇØ º¯°æ
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¹ï¿½È£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		if (rfnTitle.contains("[[[")) {
 			rfnTitle = rfnTitle.replace("[[[", "[");
 			rfnTitle = rfnTitle.replace("]]]", "]");
@@ -996,7 +1029,7 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 			String linkitem = "";
 
 			if (linkWikiTag.contains("|")) {
-				// case 1 : [[¾È³ª(°Ü¿ï¿Õ±¹)|¾È³ª]]
+				// case 1 : [[ï¿½È³ï¿½(ï¿½Ü¿ï¿½Õ±ï¿½)|ï¿½È³ï¿½]]
 				String linkitems[] = linkWikiTag.split("[|]");
 				linkitem = linkitems[0];
 				linkitem = linkitem.replace("[", "");

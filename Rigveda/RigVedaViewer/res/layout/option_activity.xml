@@ -314,56 +314,56 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/option_color_background"
                 android:orientation="vertical"
+                android:gravity="center_vertical"
                 android:padding="7.33dp" >
 
                 <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:baselineAligned="true"
                     android:orientation="horizontal"
                     android:paddingBottom="7.33dp"
                     android:paddingLeft="21.33dp"
                     android:paddingTop="14.33dp" >
 
-                    <EditText
-                        android:id="@+id/etFontSize"
-                        android:layout_width="60dp"
-                        android:layout_height="31dp"
-                        android:background="@color/white"
-                        android:digits="0123456789"
-                        android:gravity="center"
-                        android:inputType="numberDecimal"
-                        android:textColor="@color/black"
-                        android:textSize="18dp" />
-
-                    <TextView
-                        android:id="@+id/tvFontSizePercent"
+                    <Button
+                        android:id="@+id/btnTextSizeLARGEST"
                         android:layout_width="wrap_content"
-                        android:layout_height="31dp"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:text="@string/option_fontSize_percent"
-                        android:textColor="@color/black"
-                        android:textSize="18dp" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="A"
+                        android:textSize="20dp" />
 
                     <Button
-                        android:id="@+id/btnFontUp"
-                        android:layout_width="31dp"
-                        android:layout_height="31dp"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:text="@string/option_fontSize_up"
-                        android:textColor="@color/black"
-                        android:textSize="18dp" />
+                        android:id="@+id/btnTextSizeLARGER"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="A"
+                        android:textSize="16dp" />
 
                     <Button
-                        android:id="@+id/btnFontDown"
-                        android:layout_width="31dp"
-                        android:layout_height="31dp"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:text="@string/option_fontSize_down"
-                        android:textColor="@color/black"
-                        android:textSize="18dp" />
+                        android:id="@+id/btnTextSizeNORMAL"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="Default"
+                        android:textSize="10dp" />
+
+                    <Button
+                        android:id="@+id/btnTextSizeSMALLER"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="5dp"
+                        android:text="A"
+                        android:textSize="8dp" />
+
+                    <Button
+                        android:id="@+id/btnTextSizeSMALLEST"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="A"
+                        android:textSize="4dp" />
                 </LinearLayout>
             </LinearLayout>
 
