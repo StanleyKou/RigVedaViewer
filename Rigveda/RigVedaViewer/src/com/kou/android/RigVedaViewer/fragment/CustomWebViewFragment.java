@@ -379,7 +379,6 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		PreferenceUtils.setcbShowMenuLeft(getActivity(), false);
 	}
 
-	@SuppressLint("SetJavaScriptEnabled")
 	private void initWebView(Bundle savedInstanceState) {
 
 		mWebview = (BaseWebView) mMainView.findViewById(R.id.webviewMain);
