@@ -44,7 +44,7 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 
 		tvFootNote = (TextView) mainView.findViewById(R.id.tvFootNote);
 
-		GlobalVariables.footNoteTextSize = tvFootNote.getTextSize();
+		float footNoteTextSize = tvFootNote.getTextSize();
 
 		ivFootNoteClose = mainView.findViewById(R.id.ivFootNoteClose);
 		ivFootNoteClose.setContentDescription(getString(R.string.footnote_close));
@@ -109,15 +109,24 @@ public class FootNoteMenuFragment extends Fragment implements OnClickListener {
 			boolean valuecbFontSize = PreferenceUtils.getcbFontSize(getActivity());
 			if (true == valuecbFontSize) {
 
-				float fontSize = PreferenceUtils.getfontSize(getActivity());
-				float footNoteTextSize = GlobalVariables.footNoteTextSize;
+				float fontSize = PreferenceUtils.getfontSize(getActivity()); // 0: Biggest, 1: Bigger, 2: Normal, 3: Smaller, 4:Smallest
 
-				if (footNoteTextSize == 0) {
-					footNoteTextSize = tvFootNote.getTextSize();
+				float footNoteTextSize = 22;
+
+				if (fontSize == 0) {
+					footNoteTextSize = 26;
+				} else if (fontSize == 1) {
+					footNoteTextSize = 22;
+				} else if (fontSize == 2) {
+					footNoteTextSize = 16;
+				} else if (fontSize == 3) {
+					footNoteTextSize = 12;
+				} else if (fontSize == 4) {
+					footNoteTextSize = 8;
 				}
 
-				float modifiedFontsize = footNoteTextSize * (fontSize / 100f);
-				tvFootNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, modifiedFontsize);
+				tvFootNote.setTextSize(TypedValue.COMPLEX_UNIT_DIP, footNoteTextSize);
+
 			}
 		}
 	}

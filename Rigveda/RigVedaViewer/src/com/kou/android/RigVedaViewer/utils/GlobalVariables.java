@@ -12,7 +12,6 @@ public class GlobalVariables {
 
 	public static String currentURL = "";
 	public static float currentURLScrollPercent = 0;
-	public static float footNoteTextSize = 0;
 
 	public static int getWebviewScrollX() {
 		LogWrapper.d(TAG, "wx X:" + webviewScrollX);
