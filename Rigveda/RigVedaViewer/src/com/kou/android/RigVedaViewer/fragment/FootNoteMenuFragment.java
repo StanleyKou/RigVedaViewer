@@ -17,7 +17,6 @@ import android.widget.TextView.BufferType;
 import com.kou.android.RigVedaViewer.R;
 import com.kou.android.RigVedaViewer.activity.OptionActivity;
 import com.kou.android.RigVedaViewer.activity.WebViewFragmentHolderActivity;
-import com.kou.android.RigVedaViewer.utils.GlobalVariables;
 import com.kou.android.RigVedaViewer.utils.LogWrapper;
 import com.kou.android.RigVedaViewer.utils.PreferenceUtils;
 

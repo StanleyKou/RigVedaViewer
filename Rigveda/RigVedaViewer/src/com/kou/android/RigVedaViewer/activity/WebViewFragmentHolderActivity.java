@@ -7,7 +7,6 @@ import android.text.SpannableStringBuilder;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -101,7 +100,7 @@ public class WebViewFragmentHolderActivity extends BaseActivity {
 
 		mContent = getSupportFragmentManager().getFragment(savedInstanceState, "mContent");
 
-		// It Works! FIXME: ¾Û ¹é±×¶ó¿îµå ½Ã ¸Þ¸ð¸® °¡ºñÁö ÄÃ·º¼Ç ÈÄ µÇ»ì¾Æ³¯ ¶§ ÀÌ·¸°Ô ÇØÁÖ¾î¾ß ¿ìÃø¸Þ´º°¡ º¸ÀÓ
+		// It Works! FIXME: ï¿½ï¿½ ï¿½ï¿½×¶ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ç»ï¿½Æ³ï¿½ ï¿½ï¿½ ï¿½Ì·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		mMenu = new FootNoteMenuFragment();
 		getSupportFragmentManager().beginTransaction().replace(R.id.menu_frame, mMenu).commit();
 

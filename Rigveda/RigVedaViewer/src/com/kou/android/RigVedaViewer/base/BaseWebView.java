@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.kou.android.RigVedaViewer.utils.GlobalVariables;
-import com.kou.android.RigVedaViewer.utils.LogWrapper;
 
 /**
  * BaseWebView
