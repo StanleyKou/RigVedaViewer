@@ -11,7 +11,9 @@ RigVedaViewer is Android webview application for RigVeda Wiki
 
 ![](website/image/RigvedaViewer.gif)
 
+
 리그베다 뷰어 [웹사이트][1]를 방문하시면 더 상세한 정보를 얻으실 수 있습니다. 
+
 For more information please see [the website][1]
 
 
