@@ -18,7 +18,7 @@ public class PreferenceUtils {
 	private static final String PREF_KEY_cbModifyYouTubeWidth = "cbModifyYouTubeWidth";
 	private static final String PREF_KEY_cbExternalImage = "cbExternalImage";
 	private static final String PREF_KEY_cbNightEyeProtect = "cbNightEyeProtect";
-	private static final String PREF_KEY_cbTextColor = "cbTextColor";
+	// private static final String PREF_KEY_cbTextColor = "cbTextColor";
 
 	private final static String PREF_KEY_textColor = "textColor";
 	private final static String PREF_KEY_backgroundColor = "backgroundColor";
@@ -103,9 +103,9 @@ public class PreferenceUtils {
 		return loadBooleanPreference(applicationContext, PREF_KEY_cbNightEyeProtect, true);
 	}
 
-	public static boolean getcbTextColor(Context applicationContext) {
-		return loadBooleanPreference(applicationContext, PREF_KEY_cbTextColor, false);
-	}
+	// public static boolean getcbTextColor(Context applicationContext) {
+	// return loadBooleanPreference(applicationContext, PREF_KEY_cbTextColor, false);
+	// }
 
 	public static int gettextColor(Context applicationContext) {
 		return loadIntPreference(applicationContext, PREF_KEY_textColor, TEXTCOLOR_TYPE1);
@@ -181,9 +181,9 @@ public class PreferenceUtils {
 		saveBooleanPreference(applicationContext, PREF_KEY_cbNightEyeProtect, value);
 	}
 
-	public static void setcbTextColor(Context applicationContext, boolean value) {
-		saveBooleanPreference(applicationContext, PREF_KEY_cbTextColor, value);
-	}
+	// public static void setcbTextColor(Context applicationContext, boolean value) {
+	// saveBooleanPreference(applicationContext, PREF_KEY_cbTextColor, value);
+	// }
 
 	public static void settextColor(Context applicationContext, int value) {
 		saveIntPreference(applicationContext, PREF_KEY_textColor, value);

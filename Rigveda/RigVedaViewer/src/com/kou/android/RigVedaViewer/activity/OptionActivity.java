@@ -36,7 +36,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private CheckBox cbModifyYouTubeWidth;
 	private CheckBox cbExternalImage;
 	private CheckBox cbNightEyeProtect;
-	private CheckBox cbTextColor;
+	// private CheckBox cbTextColor;
 	private CheckBox cbFontSize;
 	private CheckBox cbShowExit;
 	private CheckBox cbShowPrev;
@@ -51,7 +51,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 	private View tvAbout;
 
 	// Font - Background color
-	private View llColor;
+	// private View llColor;
 	private ColorSelectorDialog textColorDialog;
 	private ColorSelectorDialog backgroundColorDialog;
 	private ColorSelectorDialog linkColorDialog;
@@ -99,7 +99,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbModifyYouTubeWidth = (CheckBox) findViewById(R.id.cbModifyYouTubeWidth);
 		cbExternalImage = (CheckBox) findViewById(R.id.cbExternalImage);
 		cbNightEyeProtect = (CheckBox) findViewById(R.id.cbNightEyeProtect);
-		cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
+		// cbTextColor = (CheckBox) findViewById(R.id.cbTextColor);
 		cbFontSize = (CheckBox) findViewById(R.id.cbFontSize);
 		cbShowExit = (CheckBox) findViewById(R.id.cbShowExit);
 		cbShowPrev = (CheckBox) findViewById(R.id.cbShowPrev);
@@ -117,7 +117,7 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		tvAbout.setOnClickListener(this);
 
 		// Font - background color
-		llColor = findViewById(R.id.llColor);
+		// llColor = findViewById(R.id.llColor);
 		llFontSize = findViewById(R.id.llFontSize);
 		btnType1 = (Button) findViewById(R.id.btnType1);
 		btnType1.setOnClickListener(this);
@@ -303,25 +303,25 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 		cbNightEyeProtect.setChecked(valuecbNightEyeProtect);
 		cbNightEyeProtect.setOnCheckedChangeListener(this);
 
-		boolean valuecbTextColor = PreferenceUtils.getcbTextColor(getApplicationContext());
-		cbTextColor.setChecked(valuecbTextColor);
-		cbTextColor.setOnCheckedChangeListener(this);
-
-		if (true == cbTextColor.isChecked()) {
-			llColor.setVisibility(View.VISIBLE);
-		} else {
-			llColor.setVisibility(View.GONE);
-		}
-
-		btnTextColorPicker.setEnabled(cbTextColor.isChecked());
-		btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
-		btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
-		btnType1.setEnabled(cbTextColor.isChecked());
-		btnType2.setEnabled(cbTextColor.isChecked());
-		btnType3.setEnabled(cbTextColor.isChecked());
-		btnType1Link.setEnabled(cbTextColor.isChecked());
-		btnType2Link.setEnabled(cbTextColor.isChecked());
-		btnType3Link.setEnabled(cbTextColor.isChecked());
+		// boolean valuecbTextColor = PreferenceUtils.getcbTextColor(getApplicationContext());
+		// cbTextColor.setChecked(valuecbTextColor);
+		// cbTextColor.setOnCheckedChangeListener(this);
+		//
+		// if (true == cbTextColor.isChecked()) {
+		// llColor.setVisibility(View.VISIBLE);
+		// } else {
+		// llColor.setVisibility(View.GONE);
+		// }
+		//
+		// btnTextColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnType1.setEnabled(cbTextColor.isChecked());
+		// btnType2.setEnabled(cbTextColor.isChecked());
+		// btnType3.setEnabled(cbTextColor.isChecked());
+		// btnType1Link.setEnabled(cbTextColor.isChecked());
+		// btnType2Link.setEnabled(cbTextColor.isChecked());
+		// btnType3Link.setEnabled(cbTextColor.isChecked());
 
 		textColor = PreferenceUtils.gettextColor(getApplicationContext());
 		backgroundColor = PreferenceUtils.getbackgroundColor(getApplicationContext());
@@ -456,27 +456,28 @@ public class OptionActivity extends Activity implements OnCheckedChangeListener,
 
 		case R.id.cbNightEyeProtect:
 			PreferenceUtils.setcbNightEyeProtect(getApplicationContext(), cbNightEyeProtect.isChecked());
-
-		case R.id.cbTextColor: {
-			PreferenceUtils.setcbTextColor(getApplicationContext(), cbTextColor.isChecked());
-
-			if (true == cbTextColor.isChecked()) {
-				llColor.setVisibility(View.VISIBLE);
-			} else {
-				llColor.setVisibility(View.GONE);
-			}
-
-			btnTextColorPicker.setEnabled(cbTextColor.isChecked());
-			btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
-			btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
-			btnType1.setEnabled(cbTextColor.isChecked());
-			btnType2.setEnabled(cbTextColor.isChecked());
-			btnType3.setEnabled(cbTextColor.isChecked());
-			btnType1Link.setEnabled(cbTextColor.isChecked());
-			btnType2Link.setEnabled(cbTextColor.isChecked());
-			btnType3Link.setEnabled(cbTextColor.isChecked());
-		}
 			break;
+
+		// case R.id.cbTextColor: {
+		// PreferenceUtils.setcbTextColor(getApplicationContext(), cbTextColor.isChecked());
+		//
+		// if (true == cbTextColor.isChecked()) {
+		// llColor.setVisibility(View.VISIBLE);
+		// } else {
+		// llColor.setVisibility(View.GONE);
+		// }
+		//
+		// btnTextColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnBackgroundColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnLinkColorPicker.setEnabled(cbTextColor.isChecked());
+		// btnType1.setEnabled(cbTextColor.isChecked());
+		// btnType2.setEnabled(cbTextColor.isChecked());
+		// btnType3.setEnabled(cbTextColor.isChecked());
+		// btnType1Link.setEnabled(cbTextColor.isChecked());
+		// btnType2Link.setEnabled(cbTextColor.isChecked());
+		// btnType3Link.setEnabled(cbTextColor.isChecked());
+		// }
+		// break;
 
 		case R.id.cbFontSize: {
 

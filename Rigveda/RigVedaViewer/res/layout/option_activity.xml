@@ -86,7 +86,8 @@
                 android:drawableLeft="@drawable/cb_selector"
                 android:paddingTop="14.33dp"
                 android:text="@string/option_color_caption"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/llColor"
@@ -313,8 +314,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/option_color_background"
-                android:orientation="vertical"
                 android:gravity="center_vertical"
+                android:orientation="vertical"
                 android:padding="7.33dp" >
 
                 <LinearLayout

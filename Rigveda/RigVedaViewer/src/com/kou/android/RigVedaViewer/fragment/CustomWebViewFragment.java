@@ -453,6 +453,9 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 				postModifyWebPage(url);
 			}
 
+			// http://stackoverflow.com/questions/23298290/webview-shouldoverrideurlloading-not-called-for-invalid-links
+			// Kitkat webview will not call shouldOverrideUrlLoading
+			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
 
 				if (getCurrentURL() != null && url != null && url.equals(getCurrentURL())) {
@@ -464,10 +467,12 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 				if (url.contains("file:///android_asset/webkit/")) {
 					// do nothing. security origin error.
-				} else if (false == url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page))) {
-					Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-					startActivity(i);
-				} else {
+				}
+				// else if (false == url.contains(CustomWebViewFragment.this.getString(R.string.url_home_page))) {
+				// Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				// startActivity(i);
+				// }
+				else {
 					view.loadUrl(url);
 				}
 
@@ -665,9 +670,10 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 
 	private void modifyWebPage() {
 		if (getActivity() != null) { // on orientation changed, there is no activity for a while.
+			modifyRemoveNavbar();
 			modifyShowLinkDrip();
 			modifyYouTubeIframeWidth();
-			modifyTextBackgroundColor();
+			// modifyTextBackgroundColor();
 			// modifyTextSize(); // Move to page start
 			modifyOrientationCSS();
 			modifyExternalImageShow();
@@ -686,6 +692,13 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}, 500);
 
 		isModifyFinished = true;
+	}
+
+	private void modifyRemoveNavbar() {
+		LogWrapper.d(TAG, "showLinkDrip()");
+		mWebview.loadUrl("javascript:$('.navbar-nav').hide();");
+		mWebview.loadUrl("javascript:$('.header').hide();");
+		mWebview.loadUrl("javascript:$('div').each(function() {if($(this).height()==42){$(this).hide();}});");
 	}
 
 	private void modifyShowLinkDrip() {
@@ -716,29 +729,29 @@ public class CustomWebViewFragment extends Fragment implements OnClickListener, 
 		}
 	}
 
-	private void modifyTextBackgroundColor() {
-		boolean value = PreferenceUtils.getcbTextColor(getActivity());
-		if (true == value) {
-			LogWrapper.d(TAG, "modifyTextBackgroundColor()");
-
-			int textColor = PreferenceUtils.gettextColor(getActivity());
-			int backgroundColor = PreferenceUtils.getbackgroundColor(getActivity());
-			int linkTextColor = PreferenceUtils.getlinkColorPrefKey(getActivity());
-
-			textColor = 0x00FFFFFF & textColor;
-			backgroundColor = 0x00FFFFFF & backgroundColor;
-			linkTextColor = 0x00FFFFFF & linkTextColor;
-
-			String textColorString = Utils.getSixDigitHexString(textColor);
-			String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
-			String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
-
-			String jQueryString = String
-					.format("javascript:$('#mainBody').css('background-color','#%s');$('#wikiContent').css('color','#%s');$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');});",
-							backgroundColorString, textColorString, linkTextColorString, backgroundColorString);
-			mWebview.loadUrl(jQueryString);
-		}
-	}
+	// private void modifyTextBackgroundColor() {
+	// boolean value = PreferenceUtils.getcbTextColor(getActivity());
+	// if (true == value) {
+	// LogWrapper.d(TAG, "modifyTextBackgroundColor()");
+	//
+	// int textColor = PreferenceUtils.gettextColor(getActivity());
+	// int backgroundColor = PreferenceUtils.getbackgroundColor(getActivity());
+	// int linkTextColor = PreferenceUtils.getlinkColorPrefKey(getActivity());
+	//
+	// textColor = 0x00FFFFFF & textColor;
+	// backgroundColor = 0x00FFFFFF & backgroundColor;
+	// linkTextColor = 0x00FFFFFF & linkTextColor;
+	//
+	// String textColorString = Utils.getSixDigitHexString(textColor);
+	// String backgroundColorString = Utils.getSixDigitHexString(backgroundColor);
+	// String linkTextColorString = Utils.getSixDigitHexString(linkTextColor);
+	//
+	// String jQueryString = String
+	// .format("javascript:$('#mainBody').css('background-color','#%s');$('#wikiContent').css('color','#%s');$('a').each(function(i, obj){$(this).css('color','#%s');$(this).css('background-color','#%s');});",
+	// backgroundColorString, textColorString, linkTextColorString, backgroundColorString);
+	// mWebview.loadUrl(jQueryString);
+	// }
+	// }
 
 	private void modifyTextSize() {
 		boolean value = PreferenceUtils.getcbFontSize(getActivity());
